@@ -1,5 +1,12 @@
+import { Hero } from "../components";
+import { CTA } from "../components";
 const Home = () => {
-  return <div></div>;
+  return (
+    <div>
+      <Hero />
+      <CTA />
+    </div>
+  );
 };
 
 export default Home;
