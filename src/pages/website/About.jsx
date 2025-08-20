@@ -1,5 +1,4 @@
-import { Badge } from "../components/ui/Badge";
-
+import { Badge } from "../../components/ui/Badge";
 const About = () => {
   return (
     <main className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-green-50">

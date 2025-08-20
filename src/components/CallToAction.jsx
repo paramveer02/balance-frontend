@@ -1,6 +1,5 @@
 import Button from "./ui/Button";
-
-export function CTA() {
+const CallToAction = () => {
   return (
     <section className="px-6 py-20 bg-gradient-to-r from-purple-600 via-blue-600 to-green-600">
       <div className="max-w-4xl mx-auto text-center">
@@ -34,4 +33,6 @@ export function CTA() {
       </div>
     </section>
   );
-}
+};
+
+export default CallToAction;
