@@ -1,6 +1,6 @@
-import { CTA } from "./CallToAction";
+import CallToAction from "./CallToAction";
 import { Navbar } from "./NavBar";
 import { Footer } from "./Footer";
 import { Hero } from "./Hero";
 
-export { CTA, Hero, Footer, Navbar };
+export { CallToAction, Hero, Footer, Navbar };

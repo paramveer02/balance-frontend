@@ -7,25 +7,26 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <Link to="/" className="text-2xl font-bold text-gray-900">
-              LevelUp Life
+            <Link className="btn btn-ghost" to="/">
+              <img src="/BalanceLogo.svg" className="w-full"></img>
             </Link>
           </div>
 
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              <Link
-                to="/about"
-                className="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              >
+              <Link to="/about" className="btn btn-ghost">
                 About Us
               </Link>
             </div>
           </div>
 
           <div className="flex items-center space-x-3">
-            <button className="btn btn-ghost">login</button>
-            <button className="btn btn-primary">Signup</button>
+            <Link to="/login" className="btn btn-ghost">
+              Login
+            </Link>
+            <Link to="/signup" className="btn btn-primary">
+              Signup
+            </Link>
           </div>
 
           <div className="md:hidden">

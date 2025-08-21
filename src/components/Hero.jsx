@@ -10,11 +10,11 @@ export function Hero() {
 
       <div className="relative max-w-4xl mx-auto text-center">
         <Badge className="mb-6 bg-gradient-to-r from-purple-600 to-blue-600 text-white border-0 px-4 py-2">
-          🚀 Level Up Your Life
+          🧘🏻 We launched new features
         </Badge>
 
         <h1 className="text-5xl lg:text-7xl font-bold bg-gradient-to-r from-purple-600 via-blue-600 to-green-600 bg-clip-text text-transparent mb-6">
-          LevelUp Life
+          BALANCE # Your # Life
         </h1>
 
         <p className="text-xl lg:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
