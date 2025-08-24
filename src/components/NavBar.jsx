@@ -1,7 +1,22 @@
-import { Link } from "react-router";
-import Button from "./ui/Button";
+import { Link } from 'react-router';
+import Button from './ui/Button';
+import { useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { signOut } from '../data/auth';
 
 export function Navbar() {
+  const { user, setUser } = useContext(AuthContext);
+
+  const logOut = async () => {
+    try {
+      await signOut();
+      console.log('Logout successful!');
+      setUser(null);
+    } catch (error) {
+      console.log('Something went wrong. Logout failed!');
+    }
+  };
+
   return (
     <nav className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,9 +36,16 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center space-x-3">
-            <Link to="/login" className="btn btn-ghost">
-              Login
-            </Link>
+            {user ? (
+              <Link to="/" className="btn btn-ghost" onClick={logOut}>
+                Logout
+              </Link>
+            ) : (
+              <Link to="/login" className="btn btn-ghost">
+                Login
+              </Link>
+            )}
+
             <Link to="/signup" className="btn btn-primary">
               Signup
             </Link>

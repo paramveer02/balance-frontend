@@ -1,40 +1,33 @@
-import { useNavigate } from "react-router";
-import { Link } from "react-router";
+import { useNavigate } from 'react-router';
+import { Link } from 'react-router';
+import { useState, useContext } from 'react';
+import { signIn } from '../../data/auth';
+import { AuthContext } from '../../context/AuthContext';
 
 const Login = () => {
+  const [{ email, password }, setForm] = useState({
+    email: '',
+    password: '',
+  });
+  const [loading, setLoading] = useState(false);
+  const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const handleChange = (e) =>
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-
-    const email = formData.get("email");
-    const password = formData.get("password");
-
     try {
-      const response = await fetch("http://localhost:3001/xxxxxx", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-
-      const result = await response.json();
-      login(result.token, result.user);
-
-      localStorage.setItem("loginSuccess", "true");
-      navigate("/");
+      e.preventDefault();
+      if (!email || !password) throw new Error('All fields required');
+      setLoading(true);
+      const user = await signIn({ email, password });
+      setUser(user);
+      console.log('Login successful. Welcome back!');
+      navigate('/');
     } catch (error) {
-      console.error("Login failed:", error);
+      console.log(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,6 +48,8 @@ const Login = () => {
                     type="email"
                     id="email"
                     name="email"
+                    value={email}
+                    onChange={handleChange}
                     required
                     className="input w-full"
                   />
@@ -65,6 +60,8 @@ const Login = () => {
                     type="password"
                     id="password"
                     name="password"
+                    value={password}
+                    onChange={handleChange}
                     required
                     className="input w-full"
                   />
@@ -76,7 +73,7 @@ const Login = () => {
                   Login
                 </button>
                 <p className="text-base text-center">
-                  Don't have an account?{" "}
+                  Don't have an account?{' '}
                   {
                     <Link
                       to="/signup"
