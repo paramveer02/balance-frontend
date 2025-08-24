@@ -3,7 +3,7 @@ if (!API_URL) throw new Error('API URL is required. Check you .env file');
 const baseURL = `${API_URL}`;
 
 //Signup in progress
-const signUp = async (formData) => {
+/* const signUp = async (formData) => {
   const res = await fetch(`${baseURL}/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -11,7 +11,7 @@ const signUp = async (formData) => {
   });
 
   if (!res.ok) throw new Error('Something went wrong. Signup failed');
-};
+}; */
 
 const signIn = async (formData) => {
   const res = await fetch(`${baseURL}/auth/login`, {
@@ -46,4 +46,4 @@ const me = async () => {
   return data;
 };
 
-export { signUp, signIn, signOut, me };
+export { signIn, signOut, me };
