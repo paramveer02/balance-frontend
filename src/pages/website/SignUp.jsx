@@ -1,35 +1,35 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from 'react-router';
 
 const SignUp = () => {
   const navigate = useNavigate();
 
   const submitAction = async (formData) => {
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const confirmedPassword = formData.get("confirm-password");
-    const name = formData.get("name");
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const confirmedPassword = formData.get('confirm-password');
+    const name = formData.get('name');
 
     if (password !== confirmedPassword) {
       alert("passworts don't match");
     } else if (password.length < 7) {
-      alert("passwort needs min 8 characters");
+      alert('passwort needs min 8 characters');
     } else if (!email) {
-      alert("Please enter valid email.");
+      alert('Please enter valid email.');
     } else {
       try {
-        const res = await fetch("http://localhost:3001/api/users", {
-          method: "POST",
+        const res = await fetch('http://localhost:3001/api/users', {
+          method: 'POST',
           body: JSON.stringify({ email, password, name }),
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         });
 
         if (res.ok) {
-          const response = await fetch("http://localhost:3001/api/auth/login", {
-            method: "POST",
+          const response = await fetch('http://localhost:3001/api/auth/login', {
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, password }),
           });
@@ -38,10 +38,10 @@ const SignUp = () => {
           setToken(result.token);
           setUser(result.user);
           setIsAuth(true);
-          localStorage.setItem("token", result.token);
-          localStorage.setItem("loginSuccess", "true");
+          localStorage.setItem('token', result.token);
+          localStorage.setItem('loginSuccess', 'true');
 
-          navigate("/");
+          navigate('/');
         }
       } catch (error) {
         console.log(error);
@@ -96,7 +96,7 @@ const SignUp = () => {
               </button>
               <div className="text-center">
                 <p className="text-base">
-                  Already have and Account?{" "}
+                  Already have and Account?{' '}
                   {
                     <Link to="/login" className="link link-hover text-blue-800">
                       Log in
