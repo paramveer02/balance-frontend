@@ -1,0 +1,99 @@
+/* --- Font Import --- */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+
+/* --- Tailwind CSS Directives --- */
+@import "tailwindcss";
+@plugin "daisyui";
+
+/*@import 'tailwindcss/preflight';: This replaces @tailwind base and provides a comprehensive set of base styles to ensure cross-browser consistency.
+@import 'tailwindcss';: This replaces both @tailwind components and @tailwind utilities, injecting all the component and utility classes that Tailwind is known for.*/
+
+/* ---------------------------------------------------
+  Global Custom Styles
+  ---------------------------------------------------
+*/
+
+/* --- Root Variables (Color Palette) --- */
+:root {
+  --primary-color: #009b7a;
+  --secondary-color: #584ffb;
+}
+
+/* --- Heading Styles (h1-h6) --- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 700; /* Bold */
+}
+
+h1 {
+  font-size: 2.5rem; /* 40px */
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 2rem; /* 32px */
+  line-height: 1.35;
+}
+
+h3 {
+  font-size: 1.5rem; /* 24px */
+  line-height: 1.33;
+}
+
+h4 {
+  font-size: 1.25rem; /* 18px */
+  line-height: 1.2;
+}
+
+h5 {
+  font-size: 1rem; /* 16px */
+  line-height: 1.25;
+}
+
+h6 {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.33;
+}
+
+/* --- Text Styles (body text) --- */
+p,
+span,
+div {
+  font-family: "DM Sans", sans-serif;
+  font-weight: 400; /* Regular */
+}
+
+.text-xxs {
+  font-size: 0.625rem; /* 10px */
+  line-height: 1.2;
+}
+
+.text-xs {
+  font-size: 0.75rem; /* 12px */
+  line-height: 1.16;
+}
+
+.text-sm {
+  font-size: 0.875rem; /* 14px */
+  line-height: 1.14;
+}
+
+.text-md {
+  font-size: 1rem; /* 16px */
+  line-height: 1.14;
+}
+
+.text-lg {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.11;
+}
+
+.text-xl {
+  font-size: 1.25rem; /* 20px */
+  line-height: 1.2;
+}

@@ -1,6 +1,8 @@
 import Home from "./pages/website/Home";
 import About from "./pages/website/About";
 import MainLayout from "./layouts/MainLayout";
+import StyleGuide from "./pages/StyleGuide";
+import TaskDetail from "./pages/application/TaskDetail";
 import { Routes, Route } from "react-router";
 
 import Login from "./pages/website/Login";
@@ -14,6 +16,8 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
       </Route>
+      <Route path="/style" element={<StyleGuide />} />
+      <Route path="/detail" element={<TaskDetail />} />
     </Routes>
   );
 };
