@@ -1,14 +1,26 @@
-import Home from "./pages/website/Home";
-import About from "./pages/website/About";
+import { useState } from "react";
+import { Routes, Route, useNavigate } from "react-router";
+import { AllowanceForm, IntroScreen, TaskDetail } from "./pages/application";
+import { About, Home, Login, SignUp } from "./pages/website";
 import MainLayout from "./layouts/MainLayout";
 import StyleGuide from "./pages/StyleGuide";
-import TaskDetail from "./pages/application/TaskDetail";
-import { AllowanceForm } from "./pages/application";
-import { Routes, Route } from "react-router";
+import { onboardingSteps } from "./data/onboardingData";
 
-import Login from "./pages/website/Login";
-import SignUp from "./pages/website/SignUp";
 const App = () => {
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const handleNext = () => {
+    if (currentStepIndex < onboardingSteps.length - 1) {
+      setCurrentStepIndex(currentStepIndex + 1);
+    } else {
+      console.log("Onboarding completed!");
+      navigate("/allowance");
+    }
+  };
+  // Get current step data
+  const currentStepData = onboardingSteps[currentStepIndex];
+
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
@@ -20,6 +32,20 @@ const App = () => {
       <Route path="/style" element={<StyleGuide />} />
       <Route path="/detail" element={<TaskDetail />} />
       <Route path="/allowance" element={<AllowanceForm />} />
+      <Route
+        path="/intro"
+        element={
+          <IntroScreen
+            title={currentStepData.title}
+            description={currentStepData.description}
+            buttonText={currentStepData.buttonText}
+            currentStep={currentStepData.currentStep}
+            totalSteps={currentStepData.totalSteps}
+            onNext={handleNext}
+            imageUrl={currentStepData.imageUrl}
+          />
+        }
+      />
     </Routes>
   );
 };

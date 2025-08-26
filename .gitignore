@@ -1,4 +1,4 @@
-# Logs
+# Logs : Ignores environment files, log folders, and all types of log files from npm, yarn, pnpm, and lerna.
 .env.development
 
 logs
@@ -9,12 +9,13 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+#Build Outputs: Ignores dependencies (node_modules), build output (dist, dist-ssr), and any file ending with .local.
 node_modules
 dist
 dist-ssr
 *.local
 
-# Editor directories and files
+# Editor directories and files: Ignores dependencies (node_modules), build output (dist, dist-ssr), and any file ending with .local. The line !.vscode/extensions.json un-ignores that specific file, so you can share recommended extensions.
 .vscode/*
 !.vscode/extensions.json
 .idea
