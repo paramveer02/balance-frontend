@@ -5,13 +5,13 @@ import { AuthContext } from '../context/AuthContext';
 import { signOut } from '../data/auth';
 
 export function Navbar() {
-  const { user, setUser } = useContext(AuthContext);
+  const { isAuth, setIsAuth } = useContext(AuthContext);
 
   const logOut = async () => {
     try {
       await signOut();
       console.log('Logout successful!');
-      setUser(null);
+      setIsAuth(false);
     } catch (error) {
       console.log('Something went wrong. Logout failed!');
     }
@@ -36,7 +36,7 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center space-x-3">
-            {user ? (
+            {isAuth ? (
               <Link to="/" className="btn btn-ghost" onClick={logOut}>
                 Logout
               </Link>

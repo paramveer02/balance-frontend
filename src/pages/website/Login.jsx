@@ -11,6 +11,7 @@ const Login = () => {
   });
   const [loading, setLoading] = useState(false);
   const { setUser } = useContext(AuthContext);
+  const { setIsAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleChange = (e) =>
@@ -22,6 +23,7 @@ const Login = () => {
       setLoading(true);
       const user = await signIn({ email, password });
       setUser(user);
+      setIsAuth(true);
       console.log('Login successful. Welcome back!');
       navigate('/');
     } catch (error) {

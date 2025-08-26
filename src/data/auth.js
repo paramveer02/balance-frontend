@@ -38,6 +38,7 @@ const signOut = async () => {
 
 const me = async () => {
   const res = await fetch(`${baseURL}/users/current-user`, {
+    method: 'GET',
     credentials: 'include',
   });
   if (!res.ok) throw new Error('Invalid Token error caught in auth.js');
