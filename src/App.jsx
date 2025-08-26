@@ -1,10 +1,10 @@
-import Home from "./pages/website/Home";
-import About from "./pages/website/About";
-import MainLayout from "./layouts/MainLayout";
-import { Routes, Route } from "react-router";
+import Home from './pages/website/Home';
+import About from './pages/website/About';
+import MainLayout from './layouts/MainLayout';
+import { Routes, Route } from 'react-router';
+import Login from './pages/website/Login';
+import SignUp from './pages/website/SignUp';
 
-import Login from "./pages/website/Login";
-import SignUp from "./pages/website/SignUp";
 const App = () => {
   return (
     <Routes>
