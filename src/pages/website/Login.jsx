@@ -1,13 +1,13 @@
-import { useNavigate } from 'react-router';
-import { Link } from 'react-router';
-import { useState, useContext } from 'react';
-import { signIn } from '../../data/auth';
-import { AuthContext } from '../../context/AuthContext';
+import { useNavigate } from "react-router";
+import { Link } from "react-router";
+import { useState, useContext } from "react";
+import { signIn } from "../../data/auth";
+import { AuthContext } from "../../context/AuthContext";
 
 const Login = () => {
   const [{ email, password }, setForm] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
   const [loading, setLoading] = useState(false);
   const { setUser } = useContext(AuthContext);
@@ -18,12 +18,12 @@ const Login = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      if (!email || !password) throw new Error('All fields required');
+      if (!email || !password) throw new Error("All fields required");
       setLoading(true);
       const user = await signIn({ email, password });
       setUser(user);
-      console.log('Login successful. Welcome back!');
-      navigate('/');
+      console.log("Login successful. Welcome back!");
+      navigate("/allowance");
     } catch (error) {
       console.log(error.message);
     } finally {
@@ -73,7 +73,7 @@ const Login = () => {
                   Login
                 </button>
                 <p className="text-base text-center">
-                  Don't have an account?{' '}
+                  Don't have an account?{" "}
                   {
                     <Link
                       to="/signup"
