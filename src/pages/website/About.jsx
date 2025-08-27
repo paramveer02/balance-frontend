@@ -1,4 +1,5 @@
 import { Badge } from "../../components/ui/Badge";
+import AIThinking from "../../components/AIThinking";
 const About = () => {
   return (
     <main className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-green-50">
@@ -15,6 +16,7 @@ const About = () => {
             favorite game. Because life is the ultimate RPG, and you're the main
             character.
           </p>
+          <AIThinking />
         </div>
       </section>
     </main>
