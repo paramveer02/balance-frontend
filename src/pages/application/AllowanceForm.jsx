@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Navigate } from "react-router";
 
 const AllowanceForm = () => {
   const [allowances, setAllowances] = useState([
@@ -160,6 +161,7 @@ const AllowanceForm = () => {
 
           <button
             type="submit"
+            onClick={Navigate("/aiplan")}
             className="w-full bg-[#009b7a] text-white font-medium py-4 rounded-full mt-12 hover:bg-emerald-800 transition-colors"
           >
             Continue

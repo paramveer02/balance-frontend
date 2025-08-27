@@ -97,3 +97,17 @@ div {
   font-size: 1.25rem; /* 20px */
   line-height: 1.2;
 }
+
+@keyframes spin360 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} /* Define the spin360 animation, for AI animation*/
+
+.rotate-360 {
+  animation: spin360 4s linear infinite;
+  transform-origin: center center;
+} /* AI animation related css*/

@@ -1,4 +1,5 @@
 import AllowanceForm from "./AllowanceForm";
+import AIPlan from "./AIPlan";
 import Dashboard from "./Dashboard";
 import IntroScreen from "./IntroScreen";
 import Report from "./Report";
@@ -7,6 +8,7 @@ import UserProfile from "./UserProfile";
 
 export {
   AllowanceForm,
+  AIPlan,
   Dashboard,
   IntroScreen,
   Report,

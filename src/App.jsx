@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { Routes, Route, useNavigate } from "react-router";
-import { AllowanceForm, IntroScreen, TaskDetail } from "./pages/application";
+import {
+  AllowanceForm,
+  AIPlan,
+  IntroScreen,
+  TaskDetail,
+} from "./pages/application";
 import { About, Home, Login, SignUp } from "./pages/website";
 import MainLayout from "./layouts/MainLayout";
 import StyleGuide from "./pages/StyleGuide";
@@ -31,7 +36,6 @@ const App = () => {
       </Route>
       <Route path="/style" element={<StyleGuide />} />
       <Route path="/detail" element={<TaskDetail />} />
-      <Route path="/allowance" element={<AllowanceForm />} />
       <Route
         path="/intro"
         element={
@@ -46,6 +50,8 @@ const App = () => {
           />
         }
       />
+      <Route path="/allowance" element={<AllowanceForm />} />
+      <Route path="/aiplan" element={<AIPlan />} />
     </Routes>
   );
 };

@@ -2,7 +2,7 @@ import React from "react";
 
 const TaskDetail = () => {
   const handleComplete = () => {
-    console.log("Workout completed! +20XP");
+    console.log("Workout completed! ");
     // Add an API call or other completion logic here.
   };
 
@@ -28,10 +28,7 @@ const TaskDetail = () => {
 
       {/* Main Content */}
       <div className="flex flex-col items-center text-center w-full max-w-sm px-4">
-        <h2 className="text-green-600 text-3xl font-bold mb-4">+20XP</h2>
-        <h1 className="text-[10rem] font-extrabold text-gray-900 dark:text-white mb-4">
-          🏃‍♂️
-        </h1>
+        <h1 className=" text-gray-900 dark:text-white mb-4">🏃‍♂️</h1>
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
           20 mins Running (Workout)
         </h1>
@@ -40,7 +37,7 @@ const TaskDetail = () => {
         </p>
 
         {/* Action card */}
-        <div className="w-full p-4 mt-8 bg-gray-100 dark:bg-gray-800 rounded-xl shadow-md">
+        <div className="w-full p-4 mt-8 bg-gray-100 dark:bg-gray-800 rounded-xl">
           <p className="text-gray-700 dark:text-gray-300 text-sm mb-4">
             This health act is efficient to balance out:
           </p>
