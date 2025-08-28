@@ -1,4 +1,3 @@
-// src/components/Hero.jsx
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaBalanceScale, FaHeartbeat, FaBolt } from "react-icons/fa";

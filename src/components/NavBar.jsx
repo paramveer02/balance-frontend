@@ -1,4 +1,3 @@
-// components/NavBar.jsx
 import { Link, useRouteLoaderData } from "react-router-dom";
 import { DashboardContext } from "../context/DashboardContext";
 import { useContext } from "react";
