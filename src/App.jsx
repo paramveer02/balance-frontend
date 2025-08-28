@@ -1,13 +1,10 @@
 import Home from "./pages/website/Home";
 import About from "./pages/website/About";
 import MainLayout from "./layouts/MainLayout";
-// import { Routes, Route } from "react-router";
 import Login, { loginAction } from "./pages/website/Login";
 import SignUp, { signupAction } from "./pages/website/SignUp";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Error404 from "./pages/Error404";
-import { rootLoader } from "./routes/loader";
-import { logoutAction } from "./routes/action";
 import Dashboard, { dashboardLoader } from "./pages/application/Dashboard";
 import Report from "./pages/application/Report";
 
