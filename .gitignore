@@ -1,5 +1,5 @@
-# Logs : Ignores environment files, log folders, and all types of log files from npm, yarn, pnpm, and lerna.
-.env.development
+# Logs
+.env.local
 
 logs
 *.log
