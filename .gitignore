@@ -1,5 +1,5 @@
 # Logs
-.env.development
+.env.local
 
 logs
 *.log
