@@ -1,95 +1,107 @@
 import { useState } from "react";
-import { Navigate } from "react-router";
+import { useNavigate } from "react-router";
+import { Minus, Plus } from "lucide-react";
 
 const AllowanceForm = () => {
+  const Navigate = useNavigate();
+  //Dummy data for allowances
   const [allowances, setAllowances] = useState([
     {
       id: "fast-food",
       emoji: "🍔",
-      label: "Fast food",
-      value: 0,
+      name: "Fast food",
+      frequency: 0,
       unit: "times/week",
     },
     {
       id: "desert",
       emoji: "🧁",
-      label: "Desert",
-      value: 0,
+      name: "Desert",
+      frequency: 0,
       unit: "times/week",
     },
     {
       id: "sugary-beverage",
       emoji: "🥤",
-      label: "Sugary Beverage",
-      value: 0,
+      name: "Sugary Beverage",
+      frequency: 0,
       unit: "cups/day",
     },
     {
       id: "alcohol",
       emoji: "🍷",
-      label: "Alcohol",
-      value: 0,
+      name: "Alcohol",
+      frequency: 0,
       unit: "cups/day",
     },
-    { id: "party", emoji: "🎭", label: "Party", value: 0, unit: "times/week" },
+    {
+      id: "party",
+      emoji: "🎭",
+      name: "Party",
+      frequency: 0,
+      unit: "times/week",
+    },
     {
       id: "binge-watching",
       emoji: "📺",
-      label: "Binge-watching",
-      value: 0,
+      name: "Binge-watching",
+      frequency: 0,
       unit: "times/week",
     },
     {
       id: "video-games",
       emoji: "🎮",
-      label: "Video Games (Extended)",
-      value: 0,
+      name: "Video Games (Extended)",
+      frequency: 0,
       unit: "times/week",
     },
     {
       id: "social-media",
       emoji: "📱",
-      label: "Social Media Scrolling (Hours)",
-      value: 0,
+      name: "Social Media Scrolling (Hours)",
+      frequency: 0,
       unit: "hours/week",
     },
   ]);
 
-  const updateValue = (id, change) => {
+  const updateFrequency = (id, change) => {
     setAllowances((prev) =>
       prev.map((item) =>
         item.id === id
-          ? { ...item, value: Math.max(0, item.value + change) }
+          ? { ...item, frequency: Math.max(0, item.frequency + change) }
           : item
       )
     );
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     //Prepare data to be sent to backend
-    const allowanceData = allowances.map(({ label, value }) => ({
-      name: label,
-      category: categories.title,
-      frequency: value,
-    }));
-    // Now send allowanceData to your backend
-    try {
-      const response = await fetch("http://localhost:3100/ai/calculate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(allowanceData),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to submit allowance data");
-      }
-      const healthPlan = await response.json();
-      console.log("Received health plan:", healthPlan);
-    } catch (error) {
-      console.error("Error submitting allowance data:", error);
-    }
+    Navigate("/aiplan");
+
+    // const allowanceData = allowances.map(({ name, frequency }) => ({
+    //   name: name,
+    //   category: categories.title,
+    //   frequency: frequency,
+    // }));
+
+    // // Now send allowanceData to your backend
+    // try {
+    //   const response = await fetch("http://localhost:3100/ai/calculate", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(allowanceData),
+    //   });
+    //   if (!response.ok) {
+    //     throw new Error("Failed to submit allowance data");
+    //   }
+    //   const healthPlan = await response.json();
+    //   console.log("Received health plan:", healthPlan);
+    // } catch (error) {
+    //   console.error("Error submitting allowance data:", error);
+    // }
   };
 
   const categories = [
@@ -113,6 +125,7 @@ const AllowanceForm = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="space-y-8">
+            {/* Map category, then map allowance items*/}
             {categories.map((category) => (
               <div key={category.title}>
                 <div className="flex justify-between items-center mb-4">
@@ -122,34 +135,35 @@ const AllowanceForm = () => {
                   <span className="text-gray-500 text-sm">{category.unit}</span>
                 </div>
 
+                {/* Allowance item List */}
                 <div className="space-y-3">
                   {category.items.map((item) => (
                     <div
                       key={item.id}
                       className="bg-gray-50 rounded-xl px-4 py-4 flex items-center justify-between"
                     >
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 flex-1">
                         <span className="text-xl">{item.emoji}</span>
                         <span className="text-gray-700 font-medium">
-                          {item.label}
+                          {item.name}
                         </span>
                       </div>
 
                       <div className="flex items-center gap-4">
                         <button
-                          onClick={() => updateValue(item.id, -1)}
-                          className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 hover:bg-gray-500 hover:text-white transition-colors"
+                          onClick={() => updateFrequency(item.id, -1)}
+                          className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300  active:bg-gray-500 transition-colors"
                         >
-                          −
+                          <Minus className="w-4 h-4 text-gray-400" />
                         </button>
-                        <span className="text-[#212529] font-medium min-w-[20px] text-center">
-                          {item.value}
+                        <span className="text-gray-600 w-4 text-center text-md">
+                          {item.frequency}
                         </span>
                         <button
-                          onClick={() => updateValue(item.id, 1)}
-                          className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 hover:bg-gray-500 hover:text-white transition-colors"
+                          onClick={() => updateFrequency(item.id, 1)}
+                          className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300  active:bg-gray-500 transition-colors"
                         >
-                          +
+                          <Plus className="w-4 h-4 text-gray-400" />
                         </button>
                       </div>
                     </div>
@@ -161,7 +175,6 @@ const AllowanceForm = () => {
 
           <button
             type="submit"
-            onClick={Navigate("/aiplan")}
             className="w-full bg-[#009b7a] text-white font-medium py-4 rounded-full mt-12 hover:bg-emerald-800 transition-colors"
           >
             Continue

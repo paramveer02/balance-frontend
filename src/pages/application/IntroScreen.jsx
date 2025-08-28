@@ -44,7 +44,7 @@ const IntroScreen = ({
         </div>
 
         {/* Content */}
-        <div className="text-left mb-12">
+        <div className="text-left mb-12 ">
           <h3 className="text-gray-900 mb-4 leading-tight">{title}</h3>
           <p className="text-lg text-gray-700 leading-relaxed">{description}</p>
         </div>
