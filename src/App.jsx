@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { Routes, Route, useNavigate } from "react-router";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import {
   About,
@@ -45,25 +43,28 @@ const router = createBrowserRouter([
         element: <Login />,
         action: loginAction,
       },
-      {
-        path: "intro",
-        element: <IntroScreen />,
-      },
-      {
-        path: "allowance",
-        element: <AllowanceForm />,
-      },
-      {
-        path: "aiplan",
-        element: <AIPlan />,
-      },
+
       // Protected: /dashboard
       {
         id: "dashboard",
         path: "dashboard",
         element: <Dashboard />,
         loader: dashboardLoader,
-        children: [{ path: "report", element: <Report /> }],
+        children: [
+          { path: "report", element: <Report /> },
+          {
+            path: "intro",
+            element: <IntroScreen />,
+          },
+          {
+            path: "allowance",
+            element: <AllowanceForm />,
+          },
+          {
+            path: "aiplan",
+            element: <AIPlan />,
+          },
+        ],
       },
     ],
   },
