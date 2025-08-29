@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { Minus, Plus } from "lucide-react";
 
 const AllowanceForm = () => {
-  const Navigate = useNavigate();
+  // const Navigate = useNavigate();
   //Dummy data for allowances
   const [allowances, setAllowances] = useState([
     {
@@ -77,31 +77,7 @@ const AllowanceForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     //Prepare data to be sent to backend
-    Navigate("/aiplan");
-
-    // const allowanceData = allowances.map(({ name, frequency }) => ({
-    //   name: name,
-    //   category: categories.title,
-    //   frequency: frequency,
-    // }));
-
-    // // Now send allowanceData to your backend
-    // try {
-    //   const response = await fetch("http://localhost:3100/ai/calculate", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(allowanceData),
-    //   });
-    //   if (!response.ok) {
-    //     throw new Error("Failed to submit allowance data");
-    //   }
-    //   const healthPlan = await response.json();
-    //   console.log("Received health plan:", healthPlan);
-    // } catch (error) {
-    //   console.error("Error submitting allowance data:", error);
-    // }
+    // Navigate("/aiplan");
   };
 
   const categories = [
