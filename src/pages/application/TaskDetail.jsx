@@ -1,8 +1,6 @@
-import React from 'react';
-
 const TaskDetail = () => {
   const handleComplete = () => {
-    console.log('Workout completed! ');
+    console.log("Workout completed! ");
     // Add an API call or other completion logic here.
   };
 

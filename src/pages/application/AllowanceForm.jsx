@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import { Minus, Plus } from "lucide-react";
 
 const AllowanceForm = () => {
-  // const Navigate = useNavigate();
   //Dummy data for allowances
   const [allowances, setAllowances] = useState([
     {
@@ -77,7 +75,6 @@ const AllowanceForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     //Prepare data to be sent to backend
-    // Navigate("/aiplan");
   };
 
   const categories = [

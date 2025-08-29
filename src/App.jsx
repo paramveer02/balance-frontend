@@ -64,6 +64,10 @@ const router = createBrowserRouter([
             path: "aiplan",
             element: <AIPlan />,
           },
+          {
+            path: "detail",
+            element: <TaskDetail />,
+          },
         ],
       },
     ],
