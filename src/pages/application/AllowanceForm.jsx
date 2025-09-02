@@ -1,66 +1,12 @@
 import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
+import { weeklyAllowance } from "../../data/weeklyAllowance";
+import customFetch from "../../utils/customFetch";
 
 const AllowanceForm = () => {
   //Dummy data for allowances
-  const [allowances, setAllowances] = useState([
-    {
-      id: "fast-food",
-      emoji: "🍔",
-      name: "Fast food",
-      frequency: 0,
-      unit: "times/week",
-    },
-    {
-      id: "desert",
-      emoji: "🧁",
-      name: "Desert",
-      frequency: 0,
-      unit: "times/week",
-    },
-    {
-      id: "sugary-beverage",
-      emoji: "🥤",
-      name: "Sugary Beverage",
-      frequency: 0,
-      unit: "cups/day",
-    },
-    {
-      id: "alcohol",
-      emoji: "🍷",
-      name: "Alcohol",
-      frequency: 0,
-      unit: "cups/day",
-    },
-    {
-      id: "party",
-      emoji: "🎭",
-      name: "Party",
-      frequency: 0,
-      unit: "times/week",
-    },
-    {
-      id: "binge-watching",
-      emoji: "📺",
-      name: "Binge-watching",
-      frequency: 0,
-      unit: "times/week",
-    },
-    {
-      id: "video-games",
-      emoji: "🎮",
-      name: "Video Games (Extended)",
-      frequency: 0,
-      unit: "times/week",
-    },
-    {
-      id: "social-media",
-      emoji: "📱",
-      name: "Social Media Scrolling (Hours)",
-      frequency: 0,
-      unit: "hours/week",
-    },
-  ]);
+  const allIndulgences = weeklyAllowance.flatMap((category) => category.items);
+  const [allowances, setAllowances] = useState(allIndulgences);
 
   const updateFrequency = (id, change) => {
     setAllowances((prev) =>
@@ -72,22 +18,28 @@ const AllowanceForm = () => {
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     //Prepare data to be sent to backend
+    const filteredAllowances = allowances.filter((item) => item.frequency > 0);
+    console.log("Submitted allowances:", filteredAllowances);
+    // ...send filteredAllowances to backend here...
+    try {
+      const response = await customFetch.post(
+        "/ai/calculate",
+        filteredAllowances
+      );
+      console.log("Backend response:", response.data);
+      console.log("Sent allowanceForm Successfully");
+      const AIPlan = response.data;
+      localStorage.setItem("AIPlan", JSON.stringify(AIPlan));
+      // Redirect to AIPlan page
+      window.location.href = "/dashboard/aiplan";
+    } catch (error) {
+      console.error(error, "Allowance sent failed");
+      return error;
+    }
   };
-
-  const categories = [
-    { title: "Food", unit: "times/week", items: allowances.slice(0, 2) },
-    { title: "Drink", unit: "cups/day", items: allowances.slice(2, 4) },
-    { title: "Social", unit: "times/week", items: allowances.slice(4, 5) },
-    {
-      title: "Entertainment",
-      unit: "times/week",
-      items: allowances.slice(5, 7),
-    },
-    { title: "Mental", unit: "hours/week", items: allowances.slice(7, 8) },
-  ];
 
   return (
     <div className="min-h-screen bg-[#ffffff] px-6 py-8">
@@ -99,48 +51,52 @@ const AllowanceForm = () => {
         <form onSubmit={handleSubmit}>
           <div className="space-y-8">
             {/* Map category, then map allowance items*/}
-            {categories.map((category) => (
-              <div key={category.title}>
+            {weeklyAllowance.map((category) => (
+              <div key={category.name}>
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-gray-700 text-lg font-medium">
-                    {category.title}
+                    {category.name}
                   </h2>
                   <span className="text-gray-500 text-sm">{category.unit}</span>
                 </div>
 
                 {/* Allowance item List */}
                 <div className="space-y-3">
-                  {category.items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="bg-gray-50 rounded-xl px-4 py-4 flex items-center justify-between"
-                    >
-                      <div className="flex items-center gap-3 flex-1">
-                        <span className="text-xl">{item.emoji}</span>
-                        <span className="text-gray-700 font-medium">
-                          {item.name}
-                        </span>
-                      </div>
+                  {allowances
+                    .filter((item) => item.category === category.name)
+                    .map((item) => (
+                      <div
+                        key={item.id}
+                        className="bg-gray-50 rounded-xl px-4 py-4 flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-3 flex-1">
+                          <span className="text-xl">{item.emoji}</span>
+                          <span className="text-gray-700 font-medium">
+                            {item.name}
+                          </span>
+                        </div>
 
-                      <div className="flex items-center gap-4">
-                        <button
-                          onClick={() => updateFrequency(item.id, -1)}
-                          className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300  active:bg-gray-500 transition-colors"
-                        >
-                          <Minus className="w-4 h-4 text-gray-400" />
-                        </button>
-                        <span className="text-gray-600 w-4 text-center text-md">
-                          {item.frequency}
-                        </span>
-                        <button
-                          onClick={() => updateFrequency(item.id, 1)}
-                          className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300  active:bg-gray-500 transition-colors"
-                        >
-                          <Plus className="w-4 h-4 text-gray-400" />
-                        </button>
+                        <div className="flex items-center gap-4">
+                          <button
+                            type="button"
+                            onClick={() => updateFrequency(item.id, -1)}
+                            className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300  active:bg-gray-500 transition-colors"
+                          >
+                            <Minus className="w-4 h-4 text-gray-400" />
+                          </button>
+                          <span className="text-gray-600 w-4 text-center text-md">
+                            {item.frequency}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => updateFrequency(item.id, 1)}
+                            className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300  active:bg-gray-500 transition-colors"
+                          >
+                            <Plus className="w-4 h-4 text-gray-400" />
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               </div>
             ))}

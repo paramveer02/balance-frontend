@@ -16,6 +16,8 @@ import {
   TaskDetail,
   Report,
 } from "./pages/application";
+import { onboardingSteps } from "./data/onboardingData";
+
 import Error404 from "./pages/Error404";
 import MainLayout from "./layouts/MainLayout";
 
@@ -54,7 +56,7 @@ const router = createBrowserRouter([
           { path: "report", element: <Report /> },
           {
             path: "intro",
-            element: <IntroScreen />,
+            element: <IntroScreen {...onboardingSteps[0]} />,
           },
           {
             path: "allowance",

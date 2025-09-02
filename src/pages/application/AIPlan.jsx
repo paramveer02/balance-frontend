@@ -2,47 +2,15 @@ import { useState, useEffect } from "react";
 import { ChevronDown, Minus, Plus } from "lucide-react";
 
 const AIPlan = () => {
+  const data = localStorage.getItem("AIPlan");
+  const planFromStorage = data ? JSON.parse(data) : null;
   const [showFullAnalysis, setShowFullAnalysis] = useState(false);
-  const weeklyAllowanceScore = 40;
+  const weeklyAllowanceScore = planFromStorage.TNW;
 
   //Dummy data for health action plan
-  const [healthActPlan, setHealthActPlan] = useState([
-    {
-      id: "1",
-      emoji: "🏋",
-      name: "30-min workouts ",
-      frequency: 2,
-      weight: 3,
-    },
-    {
-      id: "2",
-      emoji: "🚶🏻",
-      name: "Walk 20 mins after dinner",
-      frequency: 3,
-      weight: 2,
-    },
-    {
-      id: "3",
-      emoji: "🥗",
-      name: "Salad lunches",
-      frequency: 4,
-      weight: 2,
-    },
-    {
-      id: "4",
-      emoji: "🧘🏻",
-      name: "Meditation session",
-      frequency: 3,
-      weight: 2,
-    },
-    {
-      id: "5",
-      emoji: "💧",
-      name: "Water hydration",
-      frequency: 2,
-      weight: 2,
-    },
-  ]);
+  const [healthActPlan, setHealthActPlan] = useState(
+    planFromStorage.balanceMoves
+  );
 
   // Calculate total healthAct score
   const calculateHealthScore = () => {
@@ -51,12 +19,13 @@ const AIPlan = () => {
       0
     );
   };
+  console.log(healthActPlan);
 
   // Update frequency for a specific health act
-  const updateFrequency = (id, change) => {
+  const updateFrequency = (name, change) => {
     setHealthActPlan((prev) =>
       prev.map((act) => {
-        if (act.id === id) {
+        if (act.name === name) {
           const newFrequency = Math.max(0, Math.min(act.frequency + change, 7));
           return { ...act, frequency: newFrequency };
         }
@@ -64,8 +33,8 @@ const AIPlan = () => {
       })
     );
   };
-  console.log(healthActPlan);
   const healthActScore = calculateHealthScore();
+  console.log(healthActScore);
   const totalScore = weeklyAllowanceScore + healthActScore;
   const greenPercentage =
     totalScore > 0 ? (healthActScore / totalScore) * 100 : 0;
@@ -80,7 +49,7 @@ const AIPlan = () => {
   return (
     <div className="min-h-screen bg-white px-6 py-8">
       <div className="max-w-md mx-auto">
-        <h1 className="text-4xl font-bold mb-1">Analysis & Plan</h1>
+        <h1 className="text-4xl font-bold mb-2">Analysis & Plan</h1>
 
         {/* Analysis Card */}
         <div className="bg-gray-50 rounded-3xl p-6 mb-8">
@@ -88,22 +57,13 @@ const AIPlan = () => {
             <span className="text-xl">💡</span>
             <h4 className="font-semibold">Analysis</h4>
           </div>
-
-          <p className="text-gray-700 leading-relaxed mb-4">
-            Let's balance! Focus on nourishing your body through improved
-            hydration and mindful eating, as this impacts energy and metabolism.
-            Prioritizing
-            {!showFullAnalysis && "..."}
+          <p
+            className={`text-gray-700 leading-relaxed mb-4 ${
+              !showFullAnalysis ? "line-clamp-3" : ""
+            }`}
+          >
+            {planFromStorage.summary}
           </p>
-
-          {showFullAnalysis && (
-            <p className="text-gray-700 leading-relaxed mb-4">
-              sleep quality and stress management will support your overall
-              wellness journey. Remember, small consistent changes lead to
-              lasting results.
-            </p>
-          )}
-
           <button
             onClick={() => setShowFullAnalysis(!showFullAnalysis)}
             className="text-gray-500 font-medium flex items-center gap-1"
@@ -120,7 +80,7 @@ const AIPlan = () => {
         {/* Health Acts Plan Section */}
         <div className="mb-8">
           <h3 className="text-2xl font-semibold text-center mb-2">
-            Your health acts plan
+            Your balance moves
           </h3>
           <p className="text-gray-500 text-center mb-8">
             You can further customize the frequencies
@@ -159,7 +119,7 @@ const AIPlan = () => {
         <div className="space-y-6 mb-8">
           {healthActPlan.map((act) => (
             <div
-              key={act.id}
+              key={act.name}
               className="bg-gray-50 rounded-xl px-4 py-4 flex items-center justify-between"
             >
               <div className="flex items-center gap-2 flex-1">
@@ -169,7 +129,8 @@ const AIPlan = () => {
 
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => updateFrequency(act.id, -1)}
+                  type="button"
+                  onClick={() => updateFrequency(act.name, -1)}
                   className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300  active:bg-gray-500 transition-colors"
                   disabled={act.frequency === 0}
                 >
@@ -179,7 +140,8 @@ const AIPlan = () => {
                 <span className="w-4 text-center text-md">{act.frequency}</span>
 
                 <button
-                  onClick={() => updateFrequency(act.id, 1)}
+                  type="button"
+                  onClick={() => updateFrequency(act.name, 1)}
                   className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300  active:bg-gray-500 transition-colors"
                   disabled={act.frequency === 7}
                 >
