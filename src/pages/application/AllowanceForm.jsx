@@ -23,14 +23,14 @@ const AllowanceForm = () => {
     //Prepare data to be sent to backend
     const filteredAllowances = allowances.filter((item) => item.frequency > 0);
     console.log("Submitted allowances:", filteredAllowances);
-    // ...send filteredAllowances to backend here...
+
     try {
       const response = await customFetch.post(
         "/ai/calculate",
         filteredAllowances
       );
-      console.log("Backend response:", response.data);
-      console.log("Sent allowanceForm Successfully");
+      // console.log("Sent allowanceForm Successfully");
+      // console.log("Backend response:", response.data);
       const AIPlan = response.data;
       localStorage.setItem("AIPlan", JSON.stringify(AIPlan));
       // Redirect to AIPlan page

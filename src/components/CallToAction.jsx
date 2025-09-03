@@ -18,7 +18,7 @@ const CallToAction = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          Ready to Level Up?
+          Make your balance moves today.
         </motion.h2>
 
         <motion.p
@@ -41,13 +41,7 @@ const CallToAction = () => {
             to="/signup"
             className="btn btn-lg bg-white text-purple-700 hover:bg-gray-100 px-8 py-4 text-lg font-semibold"
           >
-            🚀 Start Your Journey
-          </Link>
-          <Link
-            to="/login"
-            className="btn btn-lg btn-outline border-2 border-white text-white hover:bg-white hover:text-purple-700 px-8 py-4 text-lg font-semibold"
-          >
-            🔐 I already have an account
+            Get started
           </Link>
         </motion.div>
 
