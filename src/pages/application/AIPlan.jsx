@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, Minus, Plus } from "lucide-react";
+import customFetch from "../../utils/customFetch";
 
 const AIPlan = () => {
   const data = localStorage.getItem("AIPlan");
@@ -43,7 +44,55 @@ const AIPlan = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //Prepare data to be sent to backend
+    
+    try {
+      // Prepare data to be sent to backend
+      const weekStartDate = new Date(); // Use current date as week start
+      weekStartDate.setHours(0, 0, 0, 0);
+
+      // Format health acts for backend
+      const formattedHealthActs = healthActPlan.map((act) => ({
+        name: act.name,
+        emoji: act.emoji,
+        category: act.category,
+        weight: act.weight,
+        frequency: act.frequency,
+        relatedIndulgenceKey: act.relatedIndulgenceKey || null
+      }));
+
+      // Format indulgences from the original plan
+      const formattedIndulgences = planFromStorage.weeklyAllowances.map((allowance) => ({
+        name: allowance.name,
+        emoji: allowance.emoji,
+        category: allowance.category,
+        weight: allowance.weight,
+        frequency: allowance.frequency
+      }));
+
+      const planData = {
+        weekStartDate: weekStartDate.toISOString(),
+        indulgences: formattedIndulgences,
+        healthActs: formattedHealthActs
+      };
+
+      console.log("Creating plan with data:", planData);
+
+      const response = await customFetch.post("/plan/create", planData);
+      
+      if (response.data.success) {
+        console.log("Plan created successfully:", response.data);
+        // Store plan ID for later use
+        localStorage.setItem("currentPlanId", response.data.plan._id);
+        // Redirect to dashboard
+        window.location.href = "/dashboard";
+      } else {
+        console.error("Failed to create plan:", response.data.message);
+        alert("Failed to create plan. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error creating plan:", error);
+      alert("Error creating plan. Please try again.");
+    }
   };
 
   return (
@@ -153,7 +202,10 @@ const AIPlan = () => {
         </div>
 
         {/* Get Started Button */}
-        <button className="w-full bg-blue-600 text-white font-semibold py-4 rounded-full text-lg hover:bg-blue-700 transition-colors">
+        <button 
+          onClick={handleSubmit}
+          className="w-full bg-blue-600 text-white font-semibold py-4 rounded-full text-lg hover:bg-blue-700 transition-colors"
+        >
           Get Started
         </button>
       </div>

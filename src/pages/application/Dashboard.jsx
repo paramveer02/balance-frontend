@@ -1,30 +1,169 @@
-import { Outlet, redirect, useLoaderData } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import customFetch from "../../utils/customFetch";
-import DashboardContextProvider from "../../context/DashboardContext";
-import { Footer, Navbar } from "../../components";
-
-export const dashboardLoader = async () => {
-  try {
-    const { data } = await customFetch.get("/users/current-user");
-
-    return { user: data.user };
-  } catch (error) {
-    return redirect("/login");
-  }
-};
 
 const Dashboard = () => {
-  const { user } = useLoaderData();
+  const { user } = useOutletContext();
+  const navigate = useNavigate();
+  const [currentPlan, setCurrentPlan] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchCurrentPlan();
+  }, []);
+
+  const fetchCurrentPlan = async () => {
+    try {
+      const { data } = await customFetch.get("/plan/current");
+      if (data.success) {
+        setCurrentPlan(data.plan);
+      }
+    } catch (error) {
+      console.log("No current plan found or error:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleHealthActClick = (planId, healthActId) => {
+    navigate(`/dashboard/detail?planId=${planId}&healthActId=${healthActId}`);
+  };
+
+  const handleTerminatePlan = async () => {
+    if (window.confirm("Are you sure you want to terminate your current plan? Your progress will be saved.")) {
+      try {
+        const response = await customFetch.post("/plan/terminate");
+        if (response.data.success) {
+          alert("Plan terminated successfully!");
+          // Refresh the dashboard
+          window.location.reload();
+        }
+      } catch (error) {
+        console.error("Error terminating plan:", error);
+        alert("Failed to terminate plan. Please try again.");
+      }
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your health plan...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <DashboardContextProvider initialUser={user}>
-      <main>
-        <Navbar />
-        <h2>Welcome to Dashboard, {user.name}</h2>
-        <Outlet context={{ user }} />
-        <Footer />
-      </main>
-    </DashboardContextProvider>
+    <div className="min-h-screen bg-gray-50 px-6 py-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex justify-between items-start mb-8">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  Welcome back, {user.name}!
+                </h1>
+                <p className="text-gray-600">
+                  Track your health journey and stay balanced
+                </p>
+              </div>
+              <button
+                onClick={handleTerminatePlan}
+                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors text-sm"
+              >
+                Terminate Plan
+              </button>
+            </div>
+
+            {currentPlan ? (
+              <div>
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-semibold text-gray-800">
+                    This Week's Balance Moves
+                  </h2>
+                  <span className="text-sm text-gray-500">
+                    Week of {new Date(currentPlan.weekStartDate).toLocaleDateString()}
+                  </span>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                  {currentPlan.healthActs.map((healthAct, index) => {
+                    const completedCount = healthAct.checkIns.length;
+                    const progressPercentage = Math.round((completedCount / healthAct.targetFrequency) * 100);
+                    const isCompleted = healthAct.isCompleted;
+
+                    return (
+                      <div
+                        key={index}
+                        onClick={() => handleHealthActClick(currentPlan._id, healthAct.healthActId?._id || healthAct._id)}
+                        className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
+                      >
+                        <div className="flex items-start justify-between mb-4">
+                          <div className="flex items-center gap-3">
+                            <span className="text-2xl">
+                              {healthAct.healthActId?.emoji || healthAct.emoji}
+                            </span>
+                            <div>
+                              <h3 className="font-semibold text-gray-800">
+                                {healthAct.healthActId?.name || healthAct.name}
+                              </h3>
+                              <p className="text-sm text-gray-500">
+                                {healthAct.targetFrequency} times this week
+                              </p>
+                            </div>
+                          </div>
+                          {isCompleted && (
+                            <span className="text-green-500 text-xl">✓</span>
+                          )}
+                        </div>
+
+                        <div className="mb-4">
+                          <div className="flex justify-between text-sm text-gray-600 mb-2">
+                            <span>Progress</span>
+                            <span>{completedCount}/{healthAct.targetFrequency}</span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div
+                              className={`h-2 rounded-full transition-all duration-300 ${
+                                isCompleted ? 'bg-green-500' : 'bg-blue-500'
+                              }`}
+                              style={{ width: `${Math.min(progressPercentage, 100)}%` }}
+                            ></div>
+                          </div>
+                        </div>
+
+                        <div className="text-center">
+                          <span className={`text-sm font-medium ${
+                            isCompleted ? 'text-green-600' : 'text-blue-600'
+                          }`}>
+                            {isCompleted ? 'Completed!' : `${progressPercentage}% Complete`}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">🎯</div>
+                <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                  No Health Plan Yet
+                </h2>
+                <p className="text-gray-600 mb-8">
+                  Start your wellness journey by creating your first balance plan
+                </p>
+                <button
+                  onClick={() => navigate('/dashboard/allowance')}
+                  className="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-blue-700 transition-colors"
+                >
+                  Create Your Plan
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
   );
 };
 

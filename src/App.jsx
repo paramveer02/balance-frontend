@@ -1,4 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   About,
   Home,
@@ -11,6 +13,7 @@ import {
   AllowanceForm,
   AIPlan,
   Dashboard,
+  DashboardLayout,
   dashboardLoader,
   IntroScreen,
   TaskDetail,
@@ -50,9 +53,10 @@ const router = createBrowserRouter([
       {
         id: "dashboard",
         path: "dashboard",
-        element: <Dashboard />,
+        element: <DashboardLayout />,
         loader: dashboardLoader,
         children: [
+          { index: true, element: <Dashboard /> },
           { path: "report", element: <Report /> },
           {
             path: "intro",
@@ -77,7 +81,23 @@ const router = createBrowserRouter([
 ]);
 
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </>
+  );
 };
 
 export default App;
