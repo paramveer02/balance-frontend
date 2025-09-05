@@ -1,8 +1,8 @@
 /* --- Font Import --- */
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
 /* --- Tailwind CSS Directives --- */
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "daisyui";
 
 /*@import 'tailwindcss/preflight';: This replaces @tailwind base and provides a comprehensive set of base styles to ensure cross-browser consistency.
@@ -26,7 +26,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "DM Sans", sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 600; /* semi-Bold */
 }
 
@@ -34,6 +34,11 @@ h1 {
   font-size: 2.5rem; /* 40px */
   line-height: 1.2;
 }
+
+/* .subtitlelg {
+  font-size: 4.5rem;
+  font-weight: 800;
+} */
 
 h2 {
   font-size: 2rem; /* 32px */
@@ -64,7 +69,7 @@ h6 {
 p,
 span,
 div {
-  font-family: "DM Sans", sans-serif;
+  font-family: 'DM Sans', sans-serif;
   font-weight: 400; /* Regular */
 }
 
