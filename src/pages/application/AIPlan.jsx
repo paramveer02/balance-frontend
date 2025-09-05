@@ -180,10 +180,24 @@ const AIPlan = () => {
                 <button
                   type="button"
                   onClick={() => updateFrequency(act.name, -1)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300  active:bg-gray-500 transition-colors"
+                  className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+                  style={{
+                    backgroundColor: 'var(--secondary-color)',
+                    opacity: act.frequency === 0 ? 0.5 : 1
+                  }}
+                  onMouseEnter={(e) => {
+                    if (act.frequency !== 0) {
+                      e.target.style.backgroundColor = '#4C3CF0';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (act.frequency !== 0) {
+                      e.target.style.backgroundColor = 'var(--secondary-color)';
+                    }
+                  }}
                   disabled={act.frequency === 0}
                 >
-                  <Minus className="w-4 h-4 text-gray-400" />
+                  <Minus className="w-4 h-4 text-white" />
                 </button>
 
                 <span className="w-4 text-center text-md">{act.frequency}</span>
@@ -191,10 +205,24 @@ const AIPlan = () => {
                 <button
                   type="button"
                   onClick={() => updateFrequency(act.name, 1)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300  active:bg-gray-500 transition-colors"
+                  className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+                  style={{
+                    backgroundColor: 'var(--secondary-color)',
+                    opacity: act.frequency === 7 ? 0.5 : 1
+                  }}
+                  onMouseEnter={(e) => {
+                    if (act.frequency !== 7) {
+                      e.target.style.backgroundColor = '#4C3CF0';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (act.frequency !== 7) {
+                      e.target.style.backgroundColor = 'var(--secondary-color)';
+                    }
+                  }}
                   disabled={act.frequency === 7}
                 >
-                  <Plus className="w-4 h-4 text-gray-400" />
+                  <Plus className="w-4 h-4 text-white" />
                 </button>
               </div>
             </div>
@@ -204,7 +232,17 @@ const AIPlan = () => {
         {/* Get Started Button */}
         <button 
           onClick={handleSubmit}
-          className="w-full bg-blue-600 text-white font-semibold py-4 rounded-full text-lg hover:bg-blue-700 transition-colors"
+          className="w-full text-white font-semibold py-4 rounded-full text-lg transition-colors"
+          style={{
+            backgroundColor: 'var(--primary-color)',
+            '--tw-bg-opacity': '1'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = '#007A5E';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = 'var(--primary-color)';
+          }}
         >
           Get Started
         </button>

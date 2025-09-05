@@ -119,7 +119,17 @@ const Dashboard = () => {
               </div>
               <button
                 onClick={handleTerminatePlan}
-                className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors text-sm"
+                className="text-white px-4 py-2 rounded-lg transition-colors text-sm"
+                style={{
+                  backgroundColor: '#DC2626',
+                  '--tw-bg-opacity': '1'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#B91C1C';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = '#DC2626';
+                }}
               >
                 Terminate Plan
               </button>
@@ -215,18 +225,22 @@ const Dashboard = () => {
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
                             <div
-                              className={`h-2 rounded-full transition-all duration-300 ${
-                                isCompleted ? 'bg-green-500' : 'bg-blue-500'
-                              }`}
-                              style={{ width: `${Math.min(progressPercentage, 100)}%` }}
+                              className="h-2 rounded-full transition-all duration-300"
+                              style={{ 
+                                width: `${Math.min(progressPercentage, 100)}%`,
+                                backgroundColor: isCompleted ? '#10B981' : 'var(--primary-color)'
+                              }}
                             ></div>
                           </div>
                         </div>
 
                         <div className="text-center">
-                          <span className={`text-sm font-medium ${
-                            isCompleted ? 'text-green-600' : 'text-blue-600'
-                          }`}>
+                          <span 
+                            className="text-sm font-medium"
+                            style={{
+                              color: isCompleted ? '#059669' : 'var(--primary-color)'
+                            }}
+                          >
                             {isCompleted ? 'Completed!' : `${progressPercentage}% Complete`}
                           </span>
                         </div>
@@ -246,7 +260,17 @@ const Dashboard = () => {
                 </p>
                 <button
                   onClick={() => navigate('/dashboard/allowance')}
-                  className="bg-blue-600 text-white px-8 py-4 rounded-full text-lg font-medium hover:bg-blue-700 transition-colors"
+                  className="text-white px-8 py-4 rounded-full text-lg font-medium transition-colors"
+                  style={{
+                    backgroundColor: 'var(--primary-color)',
+                    '--tw-bg-opacity': '1'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = '#007A5E';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = 'var(--primary-color)';
+                  }}
                 >
                   Create Your Plan
                 </button>

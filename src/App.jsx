@@ -57,6 +57,7 @@ const router = createBrowserRouter([
         loader: dashboardLoader,
         children: [
           { index: true, element: <Dashboard /> },
+          { path: "about", element: <About /> },
           { path: "report", element: <Report /> },
           {
             path: "intro",

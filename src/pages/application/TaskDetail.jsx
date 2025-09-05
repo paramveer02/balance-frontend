@@ -86,7 +86,17 @@ const TaskDetail = () => {
           <p className="text-gray-600 mb-4">Missing plan or task information.</p>
           <button
             onClick={() => navigate('/dashboard')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors"
+            className="text-white px-6 py-3 rounded-full transition-colors"
+            style={{
+              backgroundColor: 'var(--primary-color)',
+              '--tw-bg-opacity': '1'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = '#007A5E';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = 'var(--primary-color)';
+            }}
           >
             Back to Dashboard
           </button>
@@ -103,7 +113,17 @@ const TaskDetail = () => {
           <p className="text-gray-600 mb-4">The requested health act could not be found.</p>
           <button
             onClick={() => navigate('/dashboard')}
-            className="bg-blue-600 text-white px-6 py-3 rounded-full hover:bg-blue-700 transition-colors"
+            className="text-white px-6 py-3 rounded-full transition-colors"
+            style={{
+              backgroundColor: 'var(--primary-color)',
+              '--tw-bg-opacity': '1'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = '#007A5E';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = 'var(--primary-color)';
+            }}
           >
             Back to Dashboard
           </button>
@@ -188,10 +208,11 @@ const TaskDetail = () => {
                 </p>
                 <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                   <div
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      isCompleted ? 'bg-green-500' : 'bg-blue-500'
-                    }`}
-                    style={{ width: `${Math.min(progressPercentage, 100)}%` }}
+                    className="h-2 rounded-full transition-all duration-300"
+                    style={{ 
+                      width: `${Math.min(progressPercentage, 100)}%`,
+                      backgroundColor: isCompleted ? '#10B981' : 'var(--primary-color)'
+                    }}
                   ></div>
                 </div>
               </div>
@@ -219,11 +240,29 @@ const TaskDetail = () => {
           disabled={checkingIn || isCompleted}
           className={`w-full mb-2 max-w-sm h-14 rounded-full flex items-center justify-center space-x-2 text-white font-semibold shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
             isCompleted 
-              ? 'bg-gray-400 cursor-not-allowed' 
+              ? 'cursor-not-allowed' 
               : checkingIn
-              ? 'bg-yellow-500 cursor-not-allowed'
-              : 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
+              ? 'cursor-not-allowed'
+              : 'focus:ring-green-500'
           }`}
+          style={{
+            backgroundColor: isCompleted 
+              ? '#9CA3AF' 
+              : checkingIn
+              ? '#F59E0B'
+              : 'var(--primary-color)',
+            '--tw-bg-opacity': '1'
+          }}
+          onMouseEnter={(e) => {
+            if (!isCompleted && !checkingIn) {
+              e.target.style.backgroundColor = '#007A5E';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isCompleted && !checkingIn) {
+              e.target.style.backgroundColor = 'var(--primary-color)';
+            }
+          }}
         >
           {checkingIn ? (
             <>
