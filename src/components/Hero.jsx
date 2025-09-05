@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { FaBalanceScale, FaHeartbeat, FaBolt } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { FaBalanceScale, FaHeartbeat, FaBolt } from 'react-icons/fa';
 
 // Small motion helpers
 const fadeUp = {
@@ -11,59 +11,60 @@ const fade = { initial: { opacity: 0 }, animate: { opacity: 1 } };
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden px-6 py-20 lg:py-32 min-h-screen flex items-center">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/herobg.png)' }}
-        aria-hidden
-      />
-      
-      {/* Dark overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/40" aria-hidden />
-      
-      {/* Subtle gradient overlay */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/30"
-        {...fade}
-        transition={{ duration: 0.6 }}
-        aria-hidden
-      />
+    <div className="bg-white">
+      <section className="relative overflow-hidden px-6 py-20 lg:py-32 min-h-screen flex items-center">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/herobg.png)' }}
+          aria-hidden
+        />
 
-      <div className="relative max-w-5xl mx-auto text-center">
-        {/* Launch badge */}
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/40" aria-hidden />
+
+        {/* Subtle gradient overlay */}
         <motion.div
-          className="inline-flex items-center gap-2 mb-6 rounded-full px-4 py-2 text-sm text-white
+          className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/30"
+          {...fade}
+          transition={{ duration: 0.6 }}
+          aria-hidden
+        />
+
+        <div className="relative max-w-5xl mx-auto text-center">
+          {/* Launch badge */}
+          <motion.div
+            className="inline-flex items-center gap-2 mb-6 rounded-full px-4 py-2 text-sm text-white
                      bg-gradient-to-r from-purple-600 to-blue-600 shadow-sm"
-          {...fadeUp}
-          transition={{ duration: 0.5 }}
-        >
-          <span className="inline-block w-2 h-2 rounded-full bg-white/90 animate-pulse" />
-          <span>We launched new features</span>
-        </motion.div>
+            {...fadeUp}
+            transition={{ duration: 0.5 }}
+          >
+            <span className="inline-block w-2 h-2 rounded-full bg-white/90 animate-pulse" />
+            <span>We launched new features</span>
+          </motion.div>
 
-        {/* Title */}
-        <motion.h1
-          className="text-5xl lg:text-7xl font-bold text-white mb-4 leading-tight"
-          {...fadeUp}
-          transition={{ delay: 0.05, duration: 0.6 }}
-        >
-          Wellness isn't about perfection.
-          <br />
-          It's balance.
-        </motion.h1>
+          {/* Title */}
+          <motion.h1
+            className="text-5xl lg:text-7xl font-bold text-white mb-4 leading-tight"
+            {...fadeUp}
+            transition={{ delay: 0.05, duration: 0.6 }}
+          >
+            Wellness isn't about perfection.
+            <br />
+            It's balance.
+          </motion.h1>
 
-        {/* Subcopy */}
-        <motion.p
-          className="text-xl lg:text-2xl text-white/90 mb-10 max-w-3xl mx-auto leading-relaxed"
-          {...fadeUp}
-          transition={{ delay: 0.1, duration: 0.6 }}
-        >
-          Treats your health lifestyle like a budget.
-        </motion.p>
+          {/* Subcopy */}
+          <motion.p
+            className="text-xl lg:text-2xl text-white/90 mb-10 max-w-3xl mx-auto leading-relaxed"
+            {...fadeUp}
+            transition={{ delay: 0.1, duration: 0.6 }}
+          >
+            Treats your health lifestyle like a budget.
+          </motion.p>
 
-        {/* Quick value chips */}
-        {/* <motion.div
+          {/* Quick value chips */}
+          {/* <motion.div
           className="mx-auto mb-10 flex flex-wrap items-center justify-center gap-3"
           {...fadeUp}
           transition={{ delay: 0.15 }}
@@ -79,54 +80,54 @@ export function Hero() {
           </span>
         </motion.div> */}
 
-        {/* Primary CTA */}
-        <motion.div
-          className="flex justify-center items-center mb-14"
-          {...fadeUp}
-          transition={{ delay: 0.2 }}
-        >
-                            <Link
-                    to="/signup"
-                    className="text-white font-semibold py-4 px-8 rounded-full text-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
-                    style={{
-                      backgroundColor: 'var(--primary-color)',
-                      '--tw-bg-opacity': '1'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.backgroundColor = '#007A5E';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.backgroundColor = 'var(--primary-color)';
-                    }}
-                  >
-                    Get started
-                  </Link>
-        </motion.div>
+          {/* Primary CTA */}
+          <motion.div
+            className="flex justify-center items-center mb-14"
+            {...fadeUp}
+            transition={{ delay: 0.2 }}
+          >
+            <Link
+              to="/signup"
+              className="text-white font-semibold rounded-full text-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
+              style={{
+                backgroundColor: 'var(--primary-color)',
+                '--tw-bg-opacity': '1',
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#007A5E';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = 'var(--primary-color)';
+              }}
+            >
+              Get started
+            </Link>
+          </motion.div>
 
-        {/* Social proof / stats strip */}
-        <motion.div
-          className="flex justify-center items-center gap-8 text-sm text-white/80"
-          {...fadeUp}
-          transition={{ delay: 0.25 }}
-        >
-          <div className="flex items-center gap-2">
-            <div 
-              className="w-2 h-2 rounded-full animate-pulse" 
-              style={{ backgroundColor: 'var(--primary-color)' }}
-            />
-            <span>10k+ balanced weeks</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div 
-              className="w-2 h-2 rounded-full animate-pulse" 
-              style={{ backgroundColor: 'var(--secondary-color)' }}
-            />
-            <span>92% feel more in control</span>
-          </div>
-        </motion.div>
+          {/* Social proof / stats strip */}
+          <motion.div
+            className="flex justify-center items-center gap-8 text-sm text-white/80"
+            {...fadeUp}
+            transition={{ delay: 0.25 }}
+          >
+            <div className="flex items-center gap-2">
+              <div
+                className="w-2 h-2 rounded-full animate-pulse"
+                style={{ backgroundColor: 'var(--primary-color)' }}
+              />
+              <span>10k+ balanced weeks</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div
+                className="w-2 h-2 rounded-full animate-pulse"
+                style={{ backgroundColor: 'var(--secondary-color)' }}
+              />
+              <span>92% feel more in control</span>
+            </div>
+          </motion.div>
 
-        {/* Decorative "balance meter" */}
-        {/* <motion.div
+          {/* Decorative "balance meter" */}
+          {/* <motion.div
           className="mt-10 mx-auto h-2 w-72 rounded-full bg-white/20 overflow-hidden"
           {...fadeUp}
           transition={{ delay: 0.3 }}
@@ -139,7 +140,50 @@ export function Hero() {
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           />
         </motion.div> */}
-      </div>
-    </section>
+        </div>
+      </section>
+      <section className="bg-[#6642b3] to-[#6642b3] min-fit flex-col justify-around items-center text-white/80 px-16 lg:mt-2 lg:py-20">
+        <div className=" flex flex-col gap-8 text-center lg:flex lg:flex-row lg:justify-between lg:px-40 lg:gap-2">
+          <div className="flex flex-col text-center gap-8 justify-between items-center lg:text-left lg:justify-center lg:items-start lg:gap-8 lg:min-w-[50%]">
+            <p className="mt-8 lg:mt-0 lg:text-lg ">What is Balance?</p>
+            <h1 className="lg:!text-7xl">
+              A HEALTH<br></br> TRACKER APP,<br></br> YOU NEVER<br></br>
+              EXPERIENCED<br></br> BEFORE
+            </h1>
+            <p>
+              Fully customized to your schedule.<br></br> Another perspective to
+              view your wellbeing status.<br></br> Stay balanced.
+            </p>
+
+            <motion.div
+              className="mt-4"
+              {...fadeUp}
+              transition={{ delay: 0.2 }}
+            >
+              <Link
+                to="/signup"
+                className="text-white font-semibold py-4 px-8 rounded-full text-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
+                style={{
+                  backgroundColor: 'var(--primary-color)',
+                  '--tw-bg-opacity': '1',
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#007A5E';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'var(--primary-color)';
+                }}
+              >
+                Get started
+              </Link>
+            </motion.div>
+          </div>
+          <img
+            src="/irefusetocodethis.png"
+            className="mb-8 relative right-7 lg:overflow-hidden"
+          ></img>
+        </div>
+      </section>
+    </div>
   );
 }
