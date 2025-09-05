@@ -15,8 +15,8 @@
 
 /* --- Root Variables (Color Palette) --- */
 :root {
-  --primary-color: #009b7a;
-  --secondary-color: #584ffb;
+  --primary-color: #009B7A;
+  --secondary-color: #090909;
 }
 
 /* --- Heading Styles (h1-h6) --- */

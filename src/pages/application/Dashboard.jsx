@@ -119,17 +119,8 @@ const Dashboard = () => {
               </div>
               <button
                 onClick={handleTerminatePlan}
-                className="text-white px-4 py-2 rounded-lg transition-colors text-sm"
-                style={{
-                  backgroundColor: '#DC2626',
-                  '--tw-bg-opacity': '1'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#B91C1C';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = '#DC2626';
-                }}
+                className="btn btn-sm btn-ghost px-4 py-4 rounded-full transition-colors text-sm"
+                
               >
                 Terminate Plan
               </button>
