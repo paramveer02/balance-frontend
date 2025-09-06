@@ -8,7 +8,7 @@ const AIPlan = () => {
   const [showFullAnalysis, setShowFullAnalysis] = useState(false);
   const weeklyAllowanceScore = planFromStorage.TNW;
 
-  //Dummy data for health action plan
+  //Data for health action plan
   const [healthActPlan, setHealthActPlan] = useState(
     planFromStorage.balanceMoves
   );
@@ -44,11 +44,11 @@ const AIPlan = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       // Prepare data to be sent to backend
       const weekStartDate = new Date(); // Use current date as week start
-      weekStartDate.setHours(0, 0, 0, 0);
+      weekStartDate.setHours(0, 0, 0, 0); // Set to start of the day
 
       // Format health acts for backend
       const formattedHealthActs = healthActPlan.map((act) => ({
@@ -57,28 +57,30 @@ const AIPlan = () => {
         category: act.category,
         weight: act.weight,
         frequency: act.frequency,
-        relatedIndulgenceKey: act.relatedIndulgenceKey || null
+        relatedIndulgenceKey: act.relatedIndulgenceKey || null,
       }));
 
       // Format indulgences from the original plan
-      const formattedIndulgences = planFromStorage.weeklyAllowances.map((allowance) => ({
-        name: allowance.name,
-        emoji: allowance.emoji,
-        category: allowance.category,
-        weight: allowance.weight,
-        frequency: allowance.frequency
-      }));
+      const formattedIndulgences = planFromStorage.weeklyAllowances.map(
+        (allowance) => ({
+          name: allowance.name,
+          emoji: allowance.emoji,
+          category: allowance.category,
+          weight: allowance.weight,
+          frequency: allowance.frequency,
+        })
+      );
 
       const planData = {
         weekStartDate: weekStartDate.toISOString(),
         indulgences: formattedIndulgences,
-        healthActs: formattedHealthActs
+        healthActs: formattedHealthActs,
       };
 
       console.log("Creating plan with data:", planData);
 
       const response = await customFetch.post("/plan/create", planData);
-      
+
       if (response.data.success) {
         console.log("Plan created successfully:", response.data);
         // Store plan ID for later use
@@ -182,17 +184,17 @@ const AIPlan = () => {
                   onClick={() => updateFrequency(act.name, -1)}
                   className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
                   style={{
-                    backgroundColor: 'var(--secondary-color)',
-                    opacity: act.frequency === 0 ? 0.5 : 1
+                    backgroundColor: "var(--secondary-color)",
+                    opacity: act.frequency === 0 ? 0.5 : 1,
                   }}
                   onMouseEnter={(e) => {
                     if (act.frequency !== 0) {
-                      e.target.style.backgroundColor = '#4C3CF0';
+                      e.target.style.backgroundColor = "#4C3CF0";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (act.frequency !== 0) {
-                      e.target.style.backgroundColor = 'var(--secondary-color)';
+                      e.target.style.backgroundColor = "var(--secondary-color)";
                     }
                   }}
                   disabled={act.frequency === 0}
@@ -207,17 +209,17 @@ const AIPlan = () => {
                   onClick={() => updateFrequency(act.name, 1)}
                   className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
                   style={{
-                    backgroundColor: 'var(--secondary-color)',
-                    opacity: act.frequency === 7 ? 0.5 : 1
+                    backgroundColor: "var(--secondary-color)",
+                    opacity: act.frequency === 7 ? 0.5 : 1,
                   }}
                   onMouseEnter={(e) => {
                     if (act.frequency !== 7) {
-                      e.target.style.backgroundColor = '#4C3CF0';
+                      e.target.style.backgroundColor = "#4C3CF0";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (act.frequency !== 7) {
-                      e.target.style.backgroundColor = 'var(--secondary-color)';
+                      e.target.style.backgroundColor = "var(--secondary-color)";
                     }
                   }}
                   disabled={act.frequency === 7}
@@ -230,18 +232,18 @@ const AIPlan = () => {
         </div>
 
         {/* Get Started Button */}
-        <button 
+        <button
           onClick={handleSubmit}
           className="w-full text-white font-semibold py-4 rounded-full text-lg transition-colors"
           style={{
-            backgroundColor: 'var(--primary-color)',
-            '--tw-bg-opacity': '1'
+            backgroundColor: "var(--primary-color)",
+            "--tw-bg-opacity": "1",
           }}
           onMouseEnter={(e) => {
-            e.target.style.backgroundColor = '#007A5E';
+            e.target.style.backgroundColor = "#007A5E";
           }}
           onMouseLeave={(e) => {
-            e.target.style.backgroundColor = 'var(--primary-color)';
+            e.target.style.backgroundColor = "var(--primary-color)";
           }}
         >
           Get Started
