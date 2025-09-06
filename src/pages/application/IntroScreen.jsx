@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 const IntroScreen = ({
   title,
   description,
@@ -7,6 +10,20 @@ const IntroScreen = ({
   onNext,
   imageUrl,
 }) => {
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const navigate = useNavigate();
+
+  const handleNext = () => {
+    if (currentStepIndex < onboardingSteps.length - 1) {
+      setCurrentStepIndex(currentStepIndex + 1);
+    } else {
+      console.log("Onboarding completed!");
+      navigate("/allowance");
+    }
+  };
+  // Get current step data
+  const currentStepData = onboardingSteps[currentStepIndex];
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-6 py-8">
       <div className="w-full max-w-sm mx-auto flex flex-col items-center">

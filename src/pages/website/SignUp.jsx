@@ -160,8 +160,17 @@ export default function SignUp() {
                   {/* CTA */}
                   <button
                     type="submit"
-                    className="w-full rounded-xl py-3 font-semibold text-white shadow-lg shadow-emerald-900/30
-                               bg-gradient-to-r from-purple-500 via-sky-500 to-emerald-500 hover:brightness-110 transition hover:cursor-pointer"
+                    className="w-full rounded-xl py-3 font-semibold text-white shadow-lg transition hover:cursor-pointer"
+                    style={{
+                      background: 'linear-gradient(to right, var(--secondary-color), var(--primary-color))',
+                      '--tw-bg-opacity': '1'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.filter = 'brightness(1.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.filter = 'brightness(1)';
+                    }}
                   >
                     Create account
                   </button>

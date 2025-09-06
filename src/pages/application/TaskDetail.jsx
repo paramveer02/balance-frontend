@@ -1,22 +1,157 @@
+import { useState, useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import customFetch from "../../utils/customFetch";
+
 const TaskDetail = () => {
-  const handleComplete = () => {
-    console.log("Workout completed! ");
-    // Add an API call or other completion logic here.
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const [healthAct, setHealthAct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [checkingIn, setCheckingIn] = useState(false);
+
+  const planId = searchParams.get('planId');
+  const healthActId = searchParams.get('healthActId');
+
+  useEffect(() => {
+    if (planId && healthActId) {
+      fetchHealthActProgress();
+    } else {
+      setLoading(false);
+    }
+  }, [planId, healthActId]);
+
+  const fetchHealthActProgress = async () => {
+    try {
+      const { data } = await customFetch.get(`/plan/${planId}/health-act/${healthActId}/progress`);
+      if (data.success) {
+        setHealthAct(data.healthAct);
+      } else {
+        console.error("API returned success: false", data);
+      }
+    } catch (error) {
+      console.error("Error fetching health act progress:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleComplete = async () => {
+    if (!planId || !healthActId) return;
+    
+    setCheckingIn(true);
+    try {
+      const { data } = await customFetch.post(`/plan/${planId}/health-act/${healthActId}/checkin`, {
+        date: new Date().toISOString()
+      });
+      
+      if (data.success) {
+        // Update local state
+        setHealthAct(prev => ({
+          ...prev,
+          checkIns: [...prev.checkIns, { date: new Date(), completed: true }],
+          isCompleted: data.healthAct.isCompleted
+        }));
+        
+        // Show success message and navigate back to dashboard
+        toast.success("Great job! Check-in recorded successfully!");
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1500);
+      }
+    } catch (error) {
+      console.error("Error recording check-in:", error);
+      toast.error("Failed to record check-in. Please try again.");
+    } finally {
+      setCheckingIn(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading health act details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!planId || !healthActId) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Invalid Task Link</h1>
+          <p className="text-gray-600 mb-4">Missing plan or task information.</p>
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="text-white px-6 py-3 rounded-full transition-colors"
+            style={{
+              backgroundColor: 'var(--primary-color)',
+              '--tw-bg-opacity': '1'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = '#007A5E';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = 'var(--primary-color)';
+            }}
+          >
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!healthAct) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Health Act Not Found</h1>
+          <p className="text-gray-600 mb-4">The requested health act could not be found.</p>
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="text-white px-6 py-3 rounded-full transition-colors"
+            style={{
+              backgroundColor: 'var(--primary-color)',
+              '--tw-bg-opacity': '1'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = '#007A5E';
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = 'var(--primary-color)';
+            }}
+          >
+            Back to Dashboard
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const completedCount = healthAct.checkIns.length;
+  const progressPercentage = Math.round((completedCount / healthAct.targetFrequency) * 100);
+  const isCompleted = healthAct.isCompleted;
 
   return (
     <div className="flex min-h-screen bg-[url(../public/e6776ace47454664d5f711b83a7b111fd132edde.jpg)] bg-cover bg-top dark:bg-gray-900">
       <div class="absolute inset-0 bg-black/50 flex flex-col items-center justify-between p-6 min-h-screen">
         {/* Top Section */}
         <div className="w-full max-w-sm flex items-start mt-4">
-          {
+          <button
+            onClick={() => navigate('/dashboard')}
+            className="text-white hover:text-gray-300 transition-colors"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="w-8 h-8 cursor-pointer text-white dark:text-gray-200"
+              className="w-8 h-8"
             >
               <path
                 strokeLinecap="round"
@@ -24,22 +159,22 @@ const TaskDetail = () => {
                 d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
               />
             </svg>
-          }
+          </button>
         </div>
 
         {/* Main Content */}
         <div className="flex flex-col gap-4 items-left w-full max-w-sm text-left">
-          <div className=" text-white text-sm dark:text-white bg-[#4263eb] size-fit px-2 py-1 rounded-sm ">
-            WORKOUT
+          <div className="text-white text-sm bg-[#4263eb] size-fit px-2 py-1 rounded-sm">
+            {healthAct.healthActId?.categoryId?.name || healthAct.category || 'HEALTH ACT'}
           </div>
-          <div class="flex flex-col">
-            <h1 className="text-3xl font-bold text-white dark:text-white">
-              20 mins Running
+          <div className="flex flex-col">
+            <h1 className="text-3xl font-bold text-white">
+              {healthAct.healthActId?.name || healthAct.name}
             </h1>
-            <div class="flex flex-row items-center">
-              <img src="../public/image.png" class="w-[90px] ml-[-10px]"></img>
-              <span className="text-white dark:text-white">
-                200+ has done this challenge
+            <div className="flex flex-row items-center">
+              <span className="text-4xl mr-2">{healthAct.healthActId?.emoji || healthAct.emoji}</span>
+              <span className="text-white">
+                {healthAct.targetFrequency} times this week
               </span>
             </div>
           </div>
@@ -47,53 +182,98 @@ const TaskDetail = () => {
 
         {/* Action card */}
         <section>
-          <div class="flex gap-3">
-            <div className="flex flex-col h-[100%] gap-8 justify-between w-[66%] p-4 mt-4 bg-gray-100 dark:bg-gray-800 rounded-2xl">
-              <h2 className="text-gray-700 dark:text-gray-300 text-lg mb-4">
+          <div className="flex gap-3">
+            <div className="flex flex-col h-[100%] gap-8 justify-between w-[66%] p-4 mt-4 bg-gray-100 rounded-2xl">
+              <h2 className="text-gray-700 text-lg mb-4">
                 Balance out
               </h2>
-              <div className="flex justify-between items-center bg-white dark:bg-gray-700 p-3 rounded-2xl">
+              <div className="flex justify-between items-center bg-white p-3 rounded-2xl">
                 <div className="flex items-center space-x-2">
-                  <span className="text-xs">🍔</span>
-                  <span className="font-semibold text-gray-800 dark:text-white text-xs">
-                    Fast food session
+                  <span className="text-xs">🎯</span>
+                  <span className="font-semibold text-gray-800 text-xs">
+                    Weekly Goal
                   </span>
                 </div>
-                <span className="text-gray-600 dark:text-gray-400">x1</span>
+                <span className="text-gray-600">x{healthAct.targetFrequency}</span>
               </div>
             </div>
-            <div className="w-[33%] p-4 mt-4 bg-gray-100 dark:bg-gray-800 rounded-2xl">
-              <h2 className="text-gray-700 dark:text-gray-300 text-lg mb-10">
+            <div className="w-[33%] p-4 mt-4 bg-gray-100 rounded-2xl">
+              <h2 className="text-gray-700 text-lg mb-4">
                 Progress
               </h2>
-              <div className="text-right rounded-lg ">
-                <p>Finished</p>
-                <p className="text-gray-600 dark:text-gray-400 text-2xl">1/2</p>
+              <div className="text-right rounded-lg">
+                <p className="text-sm text-gray-600">Completed</p>
+                <p className="text-gray-800 text-2xl font-bold">
+                  {completedCount}/{healthAct.targetFrequency}
+                </p>
+                <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                  <div
+                    className="h-2 rounded-full transition-all duration-300"
+                    style={{ 
+                      width: `${Math.min(progressPercentage, 100)}%`,
+                      backgroundColor: isCompleted ? '#10B981' : 'var(--primary-color)'
+                    }}
+                  ></div>
+                </div>
               </div>
             </div>
           </div>
           <div>
-            <div className="w-full p-4 mt-3 bg-gray-100 dark:bg-gray-800 rounded-2xl ">
+            <div className="w-full p-4 mt-3 bg-gray-100 rounded-2xl">
               <div className="flex flex-row gap-2 w-full">
                 <span className="text-lg">💡</span>
-                <h2 className="text-gray-700 dark:text-gray-300 text-lg mb-4">
+                <h2 className="text-gray-700 text-lg mb-4">
                   What experts say:
                 </h2>
               </div>
-              <p>
-                Research shows workout will improve body strength by 5%.
-                Research shows workout will improve body strength by 5%.
+              <p className="text-gray-600">
+                {healthAct.healthActId?.description || 
+                  `Regular practice of ${(healthAct.healthActId?.name || healthAct.name).toLowerCase()} can significantly improve your overall health and help balance out unhealthy habits.`}
               </p>
             </div>
           </div>
         </section>
 
-        {/* Simple complete button */}
+        {/* Complete button */}
         <button
           onClick={handleComplete}
-          className="w-full mb-2 max-w-sm h-14 bg-green-600 rounded-full flex items-center justify-center space-x-2 text-white font-semibold shadow-lg transition-all duration-200 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+          disabled={checkingIn || isCompleted}
+          className={`w-full mb-2 max-w-sm h-14 rounded-full flex items-center justify-center space-x-2 text-white font-semibold shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+            isCompleted 
+              ? 'cursor-not-allowed' 
+              : checkingIn
+              ? 'cursor-not-allowed'
+              : 'focus:ring-green-500'
+          }`}
+          style={{
+            backgroundColor: isCompleted 
+              ? '#9CA3AF' 
+              : checkingIn
+              ? '#F59E0B'
+              : 'var(--primary-color)',
+            '--tw-bg-opacity': '1'
+          }}
+          onMouseEnter={(e) => {
+            if (!isCompleted && !checkingIn) {
+              e.target.style.backgroundColor = '#007A5E';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isCompleted && !checkingIn) {
+              e.target.style.backgroundColor = 'var(--primary-color)';
+            }
+          }}
         >
-          <span>Complete Task</span>
+          {checkingIn ? (
+            <>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+              <span>Recording...</span>
+            </>
+          ) : isCompleted ? (
+            <span>✓ Completed!</span>
+          ) : (
+            <span>Checkin this balance move</span>
+          )}
         </button>
       </div>
     </div>
