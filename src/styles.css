@@ -233,3 +233,23 @@ div {
   font-weight: 500; /* medium font weight */
   letter-spacing: 0.025em; /* subtle letter spacing for better readability */
 }
+
+/* Slide In Out Animation for Arrow */
+@keyframes slideInOut {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  25% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+}
