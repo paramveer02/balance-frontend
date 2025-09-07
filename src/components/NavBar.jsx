@@ -18,6 +18,7 @@ export function Navbar() {
   const logoutUser = dashboardContext?.logoutUser;
   
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navRef = useRef(null);
 
   // Close mobile menu when clicking outside
@@ -37,11 +38,26 @@ export function Navbar() {
     };
   }, [isMobileMenuOpen]);
 
+  // Handle scroll detection for dashboard navbar
+  useEffect(() => {
+    if (!isDashboardPage) return;
+
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isDashboardPage]);
+
   return (
     <nav 
       ref={navRef} 
       className={isDashboardPage 
-        ? "bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50" 
+        ? `bg-white dark:bg-gray-800 sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'border-b border-gray-200 dark:border-gray-700' : ''}` 
         : "fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl"
       }
     >
@@ -61,23 +77,26 @@ export function Navbar() {
                   {user && (
                     <Link 
                       to="/dashboard" 
-                      className="btn btn-ghost text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white"
+                      className="navbar-tab-text relative text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 group"
                     >
                       Dashboard
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 group-hover:w-full transition-all duration-300 ease-out"></span>
                     </Link>
                   )}
                   {user && (
                     <button 
-                      className="btn btn-ghost text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white"
+                      className="navbar-tab-text relative text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 group"
                     >
                       Report
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 group-hover:w-full transition-all duration-300 ease-out"></span>
                     </button>
                   )}
                   <Link 
                     to="/dashboard/about" 
-                    className="btn btn-ghost text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white"
+                    className="navbar-tab-text relative text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-colors duration-200 group"
                   >
                     About Us
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-500 group-hover:w-full transition-all duration-300 ease-out"></span>
                   </Link>
                 </div>
               </div>
@@ -86,6 +105,15 @@ export function Navbar() {
               <div className="flex items-center space-x-3">
                 {user ? (
                   <>
+                    {/* Logout button - Desktop only */}
+                    <div className="hidden md:block">
+                      <button
+                        onClick={() => logoutUser?.()}
+                        className="text-gray-400 dark:text-gray-500 font-medium hover:text-red-500 hover:underline transition-colors duration-200"
+                      >
+                        Logout
+                      </button>
+                    </div>
                     {/* User Profile Avatar */}
                     <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
                       <span className="text-md font-bold text-gray-700 dark:text-gray-200">

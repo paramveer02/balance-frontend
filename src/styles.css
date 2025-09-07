@@ -226,3 +226,10 @@ div {
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom Navbar Tab Text Styling */
+.navbar-tab-text {
+  font-size: 0.875rem; /* 14px - smaller than default */
+  font-weight: 500; /* medium font weight */
+  letter-spacing: 0.025em; /* subtle letter spacing for better readability */
+}
