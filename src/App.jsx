@@ -15,6 +15,7 @@ import {
   Dashboard,
   DashboardLayout,
   dashboardLoader,
+  dashboardIntroLoader,
   IntroScreen,
   TaskDetail,
   Report,
@@ -23,6 +24,9 @@ import { onboardingSteps } from "./data/onboardingData";
 
 import Error404 from "./pages/Error404";
 import MainLayout from "./layouts/MainLayout";
+
+// Import debug utilities for development
+import "./utils/onboardingDebug";
 
 const router = createBrowserRouter([
   {
@@ -61,7 +65,8 @@ const router = createBrowserRouter([
           { path: "report", element: <Report /> },
           {
             path: "intro",
-            element: <IntroScreen {...onboardingSteps[0]} />,
+            element: <IntroScreen />,
+            loader: dashboardIntroLoader,
           },
           {
             path: "allowance",

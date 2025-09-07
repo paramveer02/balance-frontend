@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import customFetch from '../../utils/customFetch';
 import { Menu, Wifi, Battery } from 'lucide-react';
 import Threads from '../../components/BgAnimation';
+import OnboardingRedirect from '../../components/OnboardingRedirect';
 
 const Dashboard = () => {
   const { user } = useOutletContext();
@@ -129,6 +130,9 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 relative">
+      {/* Onboarding Redirect Check */}
+      <OnboardingRedirect />
+      
       {/* Background Animation */}
       <div className="absolute inset-0 z-0 pointer-events-auto">
         <Threads
