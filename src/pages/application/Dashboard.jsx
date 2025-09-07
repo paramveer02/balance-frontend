@@ -4,7 +4,6 @@ import { useOutletContext, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import customFetch from "../../utils/customFetch";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-import { BarChart3 } from "lucide-react";
 
 const loaderUrl = "/lottie/loader.lottie";
 
@@ -66,13 +65,6 @@ const Dashboard = () => {
         alert("Failed to terminate plan. Please try again.");
       }
     }
-  };
-
-  const handleUserReport = async () => {
-    setLoading(true);
-    setShowReport(true);
-    await new Promise((res) => setTimeout(res, 1000));
-    navigate(`/dashboard/report`);
   };
 
   // Calculate balance percentage
@@ -155,27 +147,6 @@ const Dashboard = () => {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* View report CTA */}
-            <button
-              type="button"
-              onClick={() => handleUserReport()}
-              className="inline-flex items-center gap-2 rounded-full px-4 py-3 text-white font-medium shadow transition"
-              style={{
-                background:
-                  "linear-gradient(to right, var(--secondary-color), var(--primary-color))",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.filter = "brightness(1.1)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.filter = "brightness(1)")
-              }
-              aria-label="View weekly report"
-            >
-              <BarChart3 className="h-4 w-4" />
-              View report
-            </button>
-
             {/* Terminate plan (existing) */}
             <button
               onClick={handleTerminatePlan}
