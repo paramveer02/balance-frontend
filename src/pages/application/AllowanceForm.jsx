@@ -1,12 +1,21 @@
+// Allowance
+
 import { useState } from "react";
 import { Minus, Plus } from "lucide-react";
 import { weeklyAllowance } from "../../data/weeklyAllowance";
 import customFetch from "../../utils/customFetch";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+
+const loaderUrl = "/lottie/loader.lottie";
 
 const AllowanceForm = () => {
   //Dummy data for allowances
   const allIndulgences = weeklyAllowance.flatMap((category) => category.items);
   const [allowances, setAllowances] = useState(allIndulgences);
+  const navigate = useNavigate();
+  const [busy, setBusy] = useState(false);
 
   const updateFrequency = (id, change) => {
     setAllowances((prev) =>
@@ -22,27 +31,43 @@ const AllowanceForm = () => {
     e.preventDefault();
     //Prepare data to be sent to backend
     const filteredAllowances = allowances.filter((item) => item.frequency > 0);
-    console.log("Submitted allowances:", filteredAllowances);
+    if (!filteredAllowances.length) {
+      toast.info("Pick at least one allowance.");
+      return;
+    }
 
+    setBusy(true);
     try {
       const response = await customFetch.post(
         "/ai/calculate",
         filteredAllowances
       );
-      // console.log("Sent allowanceForm Successfully");
-      // console.log("Backend response:", response.data);
       const AIPlan = response.data;
       localStorage.setItem("AIPlan", JSON.stringify(AIPlan));
       // Redirect to AIPlan page
-      window.location.href = "/dashboard/aiplan";
+      navigate("/dashboard/aiplan");
     } catch (error) {
-      console.error(error, "Allowance sent failed");
       return error;
     }
   };
 
   return (
     <div className="min-h-screen bg-[#ffffff] px-6 py-8">
+      {busy && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 backdrop-blur-sm">
+          <div className="flex flex-col items-center">
+            <DotLottieReact
+              src={loaderUrl}
+              autoplay
+              loop
+              style={{ width: 160, height: 160 }}
+            />
+            <p className="mt-3 text-slate-100">
+              Preparing your balance routine…
+            </p>
+          </div>
+        </div>
+      )}
       <div className="max-w-md mx-auto">
         <h1 className="text-gray-900 text-2xl font-semibold mb-8">
           Set Your Weekly Allowance

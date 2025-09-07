@@ -1,12 +1,19 @@
-import { useOutletContext, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import customFetch from '../../utils/customFetch';
+// Dashboard
+
+import { useOutletContext, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import customFetch from "../../utils/customFetch";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { BarChart3 } from "lucide-react";
+
+const loaderUrl = "/lottie/loader.lottie";
 
 const Dashboard = () => {
   const { user } = useOutletContext();
   const navigate = useNavigate();
   const [currentPlan, setCurrentPlan] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showReport, setShowReport] = useState(false);
 
   useEffect(() => {
     fetchCurrentPlan();
@@ -18,45 +25,54 @@ const Dashboard = () => {
       fetchCurrentPlan();
     };
 
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
+    window.addEventListener("focus", handleFocus);
+    return () => window.removeEventListener("focus", handleFocus);
   }, []);
 
   const fetchCurrentPlan = async () => {
     try {
-      const { data } = await customFetch.get('/plan/current');
+      const { data } = await customFetch.get("/plan/current");
       if (data.success) {
         setCurrentPlan(data.plan);
       }
     } catch (error) {
-      console.log('No current plan found or error:', error);
+      console.log("No current plan found");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleHealthActClick = (planId, healthActId) => {
+  const handleHealthActClick = async (planId, healthActId) => {
+    setLoading(true);
+    await new Promise((res) => setTimeout(res, 1000));
     navigate(`/dashboard/detail?planId=${planId}&healthActId=${healthActId}`);
   };
 
   const handleTerminatePlan = async () => {
     if (
       window.confirm(
-        'Are you sure you want to terminate your current plan? Your progress will be saved.'
+        "Are you sure you want to terminate your current plan? Your progress will be saved."
       )
     ) {
       try {
-        const response = await customFetch.post('/plan/terminate');
+        const response = await customFetch.post("/plan/terminate");
         if (response.data.success) {
-          alert('Plan terminated successfully!');
+          alert("Plan terminated successfully!");
           // Refresh the dashboard
           window.location.reload();
         }
       } catch (error) {
-        console.error('Error terminating plan:', error);
-        alert('Failed to terminate plan. Please try again.');
+        console.error("Error terminating plan:", error);
+        alert("Failed to terminate plan. Please try again.");
       }
     }
+  };
+
+  const handleUserReport = async () => {
+    setLoading(true);
+    setShowReport(true);
+    await new Promise((res) => setTimeout(res, 1000));
+    navigate(`/dashboard/report`);
   };
 
   // Calculate balance percentage
@@ -107,10 +123,19 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your health plan...</p>
+      <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 backdrop-blur-sm">
+        <div className="flex flex-col items-center">
+          <DotLottieReact
+            src={loaderUrl}
+            autoplay
+            loop
+            style={{ width: 160, height: 160 }}
+          />
+          <p className="mt-3 text-slate-100">
+            {showReport
+              ? "Fetching your Report"
+              : "Loading Your Health Plan..."}{" "}
+          </p>
         </div>
       </div>
     );
@@ -118,24 +143,48 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 px-6 py-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex justify-between items-start mb-8">
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                  Welcome back, {user.name}!
-                </h1>
-                <p className="text-gray-600">
-                  Track your health journey and stay balanced
-                </p>
-              </div>
-              <button
-                onClick={handleTerminatePlan}
-                className="btn btn-sm btn-ghost px-4 py-4 rounded-full transition-colors text-sm"
-                
-              >
-                Terminate Plan
-              </button>
-            </div>
+      <div className="max-w-4xl mx-auto">
+        <div className="flex justify-between items-start mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Welcome back, {user.name}!
+            </h1>
+            <p className="text-gray-600">
+              Track your health journey and stay balanced
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {/* View report CTA */}
+            <button
+              type="button"
+              onClick={() => handleUserReport()}
+              className="inline-flex items-center gap-2 rounded-full px-4 py-3 text-white font-medium shadow transition"
+              style={{
+                background:
+                  "linear-gradient(to right, var(--secondary-color), var(--primary-color))",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.filter = "brightness(1.1)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.filter = "brightness(1)")
+              }
+              aria-label="View weekly report"
+            >
+              <BarChart3 className="h-4 w-4" />
+              View report
+            </button>
+
+            {/* Terminate plan (existing) */}
+            <button
+              onClick={handleTerminatePlan}
+              className="btn btn-sm btn-ghost px-4 py-3 rounded-full transition-colors text-sm"
+            >
+              Terminate Plan
+            </button>
+          </div>
+        </div>
 
         {currentPlan ? (
           <div>
@@ -173,9 +222,9 @@ const Dashboard = () => {
 
                   <p className="text-sm text-gray-500 text-center">
                     {clampedPercentage === 0
-                      ? 'Start checking in your balance moves to begin balancing out indulgences!'
+                      ? "Start checking in your balance moves to begin balancing out indulgences!"
                       : clampedPercentage === 100
-                      ? '🎉 All indulgences are balanced out! Great job!'
+                      ? "🎉 All indulgences are balanced out! Great job!"
                       : `Keep going! You're ${clampedPercentage}% there.`}
                   </p>
                 </div>
@@ -187,7 +236,7 @@ const Dashboard = () => {
                 This Week's Balance Moves
               </h2>
               <span className="text-sm text-gray-500">
-                Week of{' '}
+                Week of{" "}
                 {new Date(currentPlan.weekStartDate).toLocaleDateString()}
               </span>
             </div>
@@ -243,8 +292,8 @@ const Dashboard = () => {
                           style={{
                             width: `${Math.min(progressPercentage, 100)}%`,
                             backgroundColor: isCompleted
-                              ? '#10B981'
-                              : 'var(--primary-color)',
+                              ? "#10B981"
+                              : "var(--primary-color)",
                           }}
                         ></div>
                       </div>
@@ -255,12 +304,12 @@ const Dashboard = () => {
                         className="text-sm font-medium"
                         style={{
                           color: isCompleted
-                            ? '#059669'
-                            : 'var(--primary-color)',
+                            ? "#059669"
+                            : "var(--primary-color)",
                         }}
                       >
                         {isCompleted
-                          ? 'Completed!'
+                          ? "Completed!"
                           : `${progressPercentage}% Complete`}
                       </span>
                     </div>
@@ -279,17 +328,17 @@ const Dashboard = () => {
               Start your wellness journey by creating your first balance plan
             </p>
             <button
-              onClick={() => navigate('/dashboard/allowance')}
+              onClick={() => navigate("/dashboard/allowance")}
               className="text-white px-8 py-4 rounded-full text-lg font-medium transition-colors"
               style={{
-                backgroundColor: 'var(--primary-color)',
-                '--tw-bg-opacity': '1',
+                backgroundColor: "var(--primary-color)",
+                "--tw-bg-opacity": "1",
               }}
               onMouseEnter={(e) => {
-                e.target.style.backgroundColor = '#007A5E';
+                e.target.style.backgroundColor = "#007A5E";
               }}
               onMouseLeave={(e) => {
-                e.target.style.backgroundColor = 'var(--primary-color)';
+                e.target.style.backgroundColor = "var(--primary-color)";
               }}
             >
               Create Your Plan

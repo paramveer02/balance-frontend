@@ -1,7 +1,7 @@
 import { Outlet, redirect, useLoaderData } from "react-router-dom";
 import customFetch from "../../utils/customFetch";
 import DashboardContextProvider from "../../context/DashboardContext";
-import { Footer, Navbar } from "../../components";
+import { Navbar } from "../../components";
 
 export const dashboardLoader = async () => {
   try {
@@ -20,7 +20,6 @@ const DashboardLayout = () => {
       <main>
         <Navbar />
         <Outlet context={{ user }} />
-        <Footer />
       </main>
     </DashboardContextProvider>
   );
