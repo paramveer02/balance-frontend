@@ -1,18 +1,24 @@
-// Dashboard
-
-import { useOutletContext, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import customFetch from "../../utils/customFetch";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-
-const loaderUrl = "/lottie/loader.lottie";
+import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import customFetch from '../../utils/customFetch';
+import { Menu, Wifi, Battery } from 'lucide-react';
+import Threads from '../../components/BgAnimation';
+import OnboardingRedirect from '../../components/OnboardingRedirect';
 
 const Dashboard = () => {
   const { user } = useOutletContext();
   const navigate = useNavigate();
   const [currentPlan, setCurrentPlan] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showReport, setShowReport] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Update time every minute
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     fetchCurrentPlan();
@@ -134,28 +140,54 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-start mb-8">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Welcome back, {user.name}!
-            </h1>
-            <p className="text-gray-600">
-              Track your health journey and stay balanced
-            </p>
+    <div className="min-h-screen bg-gray-50 relative">
+      {/* Onboarding Redirect Check */}
+      <OnboardingRedirect />
+      
+      {/* Background Animation */}
+      <div className="absolute inset-0 z-0 pointer-events-auto">
+        <Threads
+          amplitude={1.5}
+          distance={0.2}
+          enableMouseInteraction={true}
+          color={[0.4, 0.8, 0.6]} // Light green color for the threads
+        />
+      </div>
+      
+      {/* Main Content */}
+      <div className="py-8 relative z-10">
+        <div className="max-w-4xl mx-auto px-6">
+          {/* Welcome Section */}
+          <div className="flex justify-between items-start mb-8">
+            <div>
+              <p className="text-gray-500 text-2xl">Hey,</p>
+              <h1 className=" text-gray-900">{user.name}</h1>
+            </div>
+            <div className="text-right">
+              <p className="text-gray-600 text-xl font-bold">
+                {currentTime.toLocaleDateString('en-US', { 
+                  day: 'numeric', 
+                  month: 'short' 
+                })}
+              </p>
+              <p className="text-3xl text-gray-900">
+                {currentTime.toLocaleDateString('en-US', { 
+                  weekday: 'long' 
+                })}
+              </p>
+            </div>
           </div>
-
-          <div className="flex items-center gap-3">
-            {/* Terminate plan (existing) */}
-            <button
-              onClick={handleTerminatePlan}
-              className="btn btn-sm btn-ghost px-4 py-3 rounded-full transition-colors text-sm"
-            >
-              Terminate Plan
-            </button>
-          </div>
-        </div>
+          {/* Terminate Plan Button - only show if there's an active plan */}
+          {currentPlan && (
+            <div className="flex justify-end mb-6">
+              <button
+                onClick={handleTerminatePlan}
+                className="text-red-600 text-sm font-medium px-4 py-2 rounded-full border border-red-200 hover:bg-red-50 transition-colors"
+              >
+                Terminate Plan
+              </button>
+            </div>
+          )}
 
         {currentPlan ? (
           <div>
@@ -206,116 +238,132 @@ const Dashboard = () => {
               <h2 className="text-2xl font-semibold text-gray-800">
                 This Week's Balance Moves
               </h2>
-              <span className="text-sm text-gray-500">
-                Week of{" "}
-                {new Date(currentPlan.weekStartDate).toLocaleDateString()}
-              </span>
+             
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {currentPlan.healthActs.map((healthAct, index) => {
-                const completedCount = healthAct.checkIns.length;
-                const progressPercentage = Math.round(
-                  (completedCount / healthAct.targetFrequency) * 100
-                );
-                const isCompleted = healthAct.isCompleted;
+            {/* Horizontal Scrolling Slider - Full Width */}
+            <div className="overflow-x-auto pb-4 -mx-6 px-6">
+              <div className="flex gap-4 min-w-max">
+                {currentPlan.healthActs.map((healthAct, index) => {
+                  const completedCount = healthAct.checkIns.length;
+                  const progressPercentage = Math.round(
+                    (completedCount / healthAct.targetFrequency) * 100
+                  );
+                  const isCompleted = healthAct.isCompleted;
 
-                return (
-                  <div
-                    key={index}
-                    onClick={() =>
-                      handleHealthActClick(
-                        currentPlan._id,
-                        healthAct.healthActId?._id || healthAct._id
-                      )
-                    }
-                    className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer"
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <span className="text-2xl">
-                          {healthAct.healthActId?.emoji || healthAct.emoji}
-                        </span>
-                        <div>
-                          <h3 className="font-semibold text-gray-800">
-                            {healthAct.healthActId?.name || healthAct.name}
-                          </h3>
-                          <p className="text-sm text-gray-500">
-                            {healthAct.targetFrequency} times this week
-                          </p>
+                  return (
+                    <div
+                      key={index}
+                      onClick={() =>
+                        handleHealthActClick(
+                          currentPlan._id,
+                          healthAct.healthActId?._id || healthAct._id
+                        )
+                      }
+                      className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer flex-shrink-0 w-[75vw] md:w-80 lg:w-96"
+                    >
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">
+                            {healthAct.healthActId?.emoji || healthAct.emoji}
+                          </span>
+                          <div>
+                            <h3 className="font-semibold text-gray-800">
+                              {healthAct.healthActId?.name || healthAct.name}
+                            </h3>
+                            <p className="text-sm text-gray-500">
+                              {healthAct.targetFrequency} times this week
+                            </p>
+                          </div>
+                        </div>
+                        {isCompleted && (
+                          <span className="text-green-500 text-xl">✓</span>
+                        )}
+                      </div>
+
+                      <div className="mb-4">
+                        <div className="flex justify-between text-sm text-gray-600 mb-2">
+                          <span>Progress</span>
+                          <span>
+                            {completedCount}/{healthAct.targetFrequency}
+                          </span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className="h-2 rounded-full transition-all duration-300"
+                            style={{
+                              width: `${Math.min(progressPercentage, 100)}%`,
+                              backgroundColor: isCompleted
+                                ? '#10B981'
+                                : 'var(--primary-color)',
+                            }}
+                          ></div>
                         </div>
                       </div>
-                      {isCompleted && (
-                        <span className="text-green-500 text-xl">✓</span>
-                      )}
-                    </div>
 
-                    <div className="mb-4">
-                      <div className="flex justify-between text-sm text-gray-600 mb-2">
-                        <span>Progress</span>
-                        <span>
-                          {completedCount}/{healthAct.targetFrequency}
+                      <div className="text-center">
+                        <span
+                          className="text-sm font-medium"
+                          style={{
+                            color: isCompleted
+                              ? '#059669'
+                              : 'var(--primary-color)',
+                          }}
+                        >
+                          {isCompleted
+                            ? 'Completed!'
+                            : `${progressPercentage}% Complete`}
                         </span>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className="h-2 rounded-full transition-all duration-300"
-                          style={{
-                            width: `${Math.min(progressPercentage, 100)}%`,
-                            backgroundColor: isCompleted
-                              ? "#10B981"
-                              : "var(--primary-color)",
-                          }}
-                        ></div>
-                      </div>
                     </div>
-
-                    <div className="text-center">
-                      <span
-                        className="text-sm font-medium"
-                        style={{
-                          color: isCompleted
-                            ? "#059669"
-                            : "var(--primary-color)",
-                        }}
-                      >
-                        {isCompleted
-                          ? "Completed!"
-                          : `${progressPercentage}% Complete`}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         ) : (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">🎯</div>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-              No Health Plan Yet
-            </h2>
-            <p className="text-gray-600 mb-8">
-              Start your wellness journey by creating your first balance plan
-            </p>
-            <button
-              onClick={() => navigate("/dashboard/allowance")}
-              className="text-white px-8 py-4 rounded-full text-lg font-medium transition-colors"
-              style={{
-                backgroundColor: "var(--primary-color)",
-                "--tw-bg-opacity": "1",
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.backgroundColor = "#007A5E";
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.backgroundColor = "var(--primary-color)";
-              }}
-            >
-              Create Your Plan
-            </button>
-          </div>
+            <div className="relative h-[66vh] md:h-auto md:aspect-video flex items-center justify-center overflow-hidden rounded-3xl">
+              {/* Empty State UI*/}
+
+              {/* Background Video */}
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover z-0"
+              >
+                <source 
+                  src="https://superpower-website.b-cdn.net/superpower-100-year-potential-video-hero.mp4" 
+                  type="video/mp4" 
+                />
+              </video>
+              
+              {/* Dark Overlay */}
+              <div className="absolute inset-0 bg-black/40 z-10"></div>
+              
+              {/* Content */}
+              <div className="relative z-20 text-center text-white px-4 py-4 max-w-2xl mx-auto">
+                <h1 className="text-2xl sm:text-3xl md:text-6xl font-bold mb-3 md:mb-6 leading-tight">
+                  Start Your
+                  <br />
+                  <span className="text-green-400">Balance Journey</span>
+                </h1>
+                
+                <p className="text-sm sm:text-base md:text-2xl text-gray-200 mb-4 md:mb-12 leading-relaxed px-2">
+                  Create your personalized health plan and begin balancing your indulgences with healthy habits
+                </p>
+                
+                <button
+                  onClick={() => navigate('/dashboard/allowance')}
+                  className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 md:px-12 md:py-4 rounded-full text-base md:text-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-2xl"
+                >
+                  Create Your Plan
+                </button>
+              </div>
+            </div>
         )}
+        </div>
       </div>
     </div>
   );

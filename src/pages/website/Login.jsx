@@ -13,8 +13,7 @@ export const loginAction = async ({ request }) => {
     await customFetch.post("/auth/login", data);
     toast.success("User logged in Successfully");
 
-    // Optional delay to render lottie loader: since await bloacks further execution
-    await new Promise((res) => setTimeout(res, 2000));
+    // Always redirect to dashboard first, let the client handle onboarding check
     return redirect("/dashboard");
   } catch (error) {
     toast.error(error?.response?.data?.message || "Login failed");
