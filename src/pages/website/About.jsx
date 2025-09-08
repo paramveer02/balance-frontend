@@ -1,14 +1,14 @@
-import { AIThinking, Prism, ProfileCard } from "../../components";
-import { Badge } from "../../components/ui/Badge";
-import { useRef } from "react";
+import { AIThinking, Prism, ProfileCard } from '../../components';
+import { Badge } from '../../components/ui/Badge';
+import { useRef } from 'react';
 
 const About = () => {
   const teamSectionRef = useRef(null);
 
   const scrollToTeam = () => {
     teamSectionRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
+      behavior: 'smooth',
+      block: 'start',
     });
   };
   return (
@@ -69,7 +69,7 @@ const About = () => {
               fill="none"
               className="text-white/60 group-hover:text-white transition-all duration-300 animate-pulse"
               style={{
-                animation: "slideInOut 2s ease-in-out infinite",
+                animation: 'slideInOut 2s ease-in-out infinite',
               }}
             >
               <path
@@ -117,7 +117,7 @@ const About = () => {
               showUserInfo={true}
               enableTilt={false}
               enableMobileTilt={false}
-              onContactClick={() => console.log("Contact Param clicked")}
+              onContactClick={() => console.log('Contact Param clicked')}
             />
 
             <ProfileCard
@@ -127,10 +127,12 @@ const About = () => {
               status="Online"
               contactText="Contact Me"
               avatarUrl="Cornelia.png"
+              className="bg-fit
+              "
               showUserInfo={true}
               enableTilt={false}
               enableMobileTilt={false}
-              onContactClick={() => console.log("Contact Cornelia clicked")}
+              onContactClick={() => console.log('Contact Cornelia clicked')}
             />
 
             <ProfileCard
@@ -143,7 +145,7 @@ const About = () => {
               showUserInfo={true}
               enableTilt={false}
               enableMobileTilt={false}
-              onContactClick={() => console.log("Contact Ciro clicked")}
+              onContactClick={() => console.log('Contact Ciro clicked')}
             />
           </div>
         </div>

@@ -12,7 +12,7 @@ export function AppExplain() {
   return (
     <div className="bg-white">
       <section className="bg-[#6642b3] to-[#6642b3] min-fit flex-col justify-around items-center text-white/80 px-16 lg:py-20">
-        <div className=" flex flex-col gap-8 text-center lg:flex lg:flex-row lg:justify-between lg:px-40 lg:gap-2">
+        <div className=" flex flex-col gap-8 text-center xl:flex xl:flex-row xl:justify-between lg:px-40 lg:gap-2">
           <div className="flex flex-col text-center gap-8 justify-between items-center lg:text-left lg:justify-center lg:items-start lg:gap-8 lg:min-w-[50%]">
             <p className="mt-8 lg:mt-0 lg:text-lg ">What is Balance?</p>
             <h1 className="lg:!text-7xl">
@@ -49,7 +49,7 @@ export function AppExplain() {
           </div>
           <img
             src="/irefusetocodethis.png"
-            className="mb-8 relative right-7 lg:overflow-hidden"
+            className="mb-8 relative xl:right-7 lg:overflow-hidden object-contain"
           ></img>
         </div>
       </section>
