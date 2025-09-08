@@ -202,11 +202,15 @@ export function Navbar() {
                         </button>
                       </div>
                       {/* User Profile Avatar */}
-                      <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
+                      <Link 
+                        to="/dashboard/profile"
+                        className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors duration-200"
+                        aria-label="Go to user profile"
+                      >
                         <span className="text-md font-bold text-gray-700 dark:text-gray-200">
                           {user.name ? user.name.charAt(0).toUpperCase() : "U"}
                         </span>
-                      </div>
+                      </Link>
                       {/* Mobile menu button */}
                       <div className="md:hidden">
                         <button
