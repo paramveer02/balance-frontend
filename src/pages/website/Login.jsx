@@ -1,8 +1,10 @@
+// Login
 import { useState } from "react";
-import { Form, Link, redirect } from "react-router-dom";
+import { Form, Link, redirect, useNavigation } from "react-router-dom";
 import customFetch from "../../utils/customFetch";
 import { toast } from "react-toastify";
 import { FiMail, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 export const loginAction = async ({ request }) => {
   const formdata = await request.formData();
@@ -10,7 +12,7 @@ export const loginAction = async ({ request }) => {
   try {
     await customFetch.post("/auth/login", data);
     toast.success("User logged in Successfully");
-    
+
     // Always redirect to dashboard first, let the client handle onboarding check
     return redirect("/dashboard");
   } catch (error) {
@@ -19,11 +21,29 @@ export const loginAction = async ({ request }) => {
   }
 };
 
+const loaderUrl = "/lottie/loader.lottie";
+
 export default function Login() {
   const [showPw, setShowPw] = useState(false);
+  const navigation = useNavigation();
+  const busy =
+    navigation.state === "submitting" || navigation.state === "loading";
 
   return (
     <div className="relative min-h-screen overflow-hidden">
+      {busy && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 backdrop-blur-sm">
+          <div className="flex flex-col items-center">
+            <DotLottieReact
+              src={loaderUrl}
+              autoplay
+              loop
+              style={{ width: 160, height: 160 }}
+            />
+            <p className="text-slate-100">Signing you in…</p>
+          </div>
+        </div>
+      )}
       {/* Bold mesh background */}
       <div className="absolute inset-0 bg-[radial-gradient(40rem_40rem_at_-10%_10%,rgba(147,51,234,0.25),transparent_60%),radial-gradient(35rem_35rem_at_110%_110%,rgba(16,185,129,0.22),transparent_55%),linear-gradient(120deg,rgba(59,130,246,0.15),transparent)]" />
 
@@ -52,6 +72,7 @@ export default function Login() {
                     <input
                       name="email"
                       type="email"
+                      defaultValue="param@test.com"
                       placeholder="you@balance.app"
                       className="w-full bg-transparent text-slate-100 placeholder-slate-500 outline-none"
                       required
@@ -69,6 +90,7 @@ export default function Login() {
                     <input
                       name="password"
                       type={showPw ? "text" : "password"}
+                      defaultValue="user123!"
                       placeholder="••••••••"
                       className="w-full bg-transparent text-slate-100 placeholder-slate-500 outline-none"
                       required
@@ -99,14 +121,15 @@ export default function Login() {
                   type="submit"
                   className="w-full rounded-xl py-3 font-semibold text-white shadow-lg transition hover:cursor-pointer"
                   style={{
-                    background: 'linear-gradient(to right, var(--secondary-color), var(--primary-color))',
-                    '--tw-bg-opacity': '1'
+                    background:
+                      "linear-gradient(to right, var(--secondary-color), var(--primary-color))",
+                    "--tw-bg-opacity": "1",
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.filter = 'brightness(1.1)';
+                    e.target.style.filter = "brightness(1.1)";
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.filter = 'brightness(1)';
+                    e.target.style.filter = "brightness(1)";
                   }}
                 >
                   Log in

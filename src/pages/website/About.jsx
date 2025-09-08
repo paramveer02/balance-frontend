@@ -9,6 +9,9 @@ const About = () => {
     teamSectionRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
+    teamSectionRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
     });
   };
   return (
@@ -20,7 +23,7 @@ const About = () => {
           <Prism
             height={4}
             baseWidth={5}
-            animationType="3drotate"
+            animationType="hover"
             glow={1}
             scale={1.3}
             hueShift={0.3}
