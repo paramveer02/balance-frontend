@@ -1,12 +1,12 @@
 // TaskDetail
 
-import { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import customFetch from "../../utils/customFetch";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import customFetch from '../../utils/customFetch';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
-const loaderUrl = "/lottie/loader.lottie";
+const loaderUrl = '/lottie/loader.lottie';
 
 const TaskDetail = () => {
   const [searchParams] = useSearchParams();
@@ -15,8 +15,8 @@ const TaskDetail = () => {
   const [checkingIn, setCheckingIn] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const planId = searchParams.get("planId");
-  const healthActId = searchParams.get("healthActId");
+  const planId = searchParams.get('planId');
+  const healthActId = searchParams.get('healthActId');
 
   useEffect(() => {
     if (planId && healthActId) {
@@ -34,10 +34,10 @@ const TaskDetail = () => {
       if (data.success) {
         setHealthAct(data.healthAct);
       } else {
-        console.error("API returned success: false", data);
+        console.error('API returned success: false', data);
       }
     } catch (error) {
-      console.error("Error fetching health act progress:", error);
+      console.error('Error fetching health act progress:', error);
     } finally {
       setLoading(false);
     }
@@ -65,14 +65,14 @@ const TaskDetail = () => {
         }));
 
         // Show success message and navigate back to dashboard
-        toast.success("Great job! Check-in recorded successfully!");
+        toast.success('Great job! Check-in recorded successfully!');
         setTimeout(() => {
-          navigate("/dashboard");
+          navigate('/dashboard');
         }, 1500);
       }
     } catch (error) {
-      console.error("Error recording check-in:", error);
-      toast.error("Failed to record check-in. Please try again.");
+      console.error('Error recording check-in:', error);
+      toast.error('Failed to record check-in. Please try again.');
     } finally {
       setCheckingIn(false);
     }
@@ -105,17 +105,17 @@ const TaskDetail = () => {
             Missing plan or task information.
           </p>
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate('/dashboard')}
             className="text-white px-6 py-3 rounded-full transition-colors"
             style={{
-              backgroundColor: "var(--primary-color)",
-              "--tw-bg-opacity": "1",
+              backgroundColor: 'var(--primary-color)',
+              '--tw-bg-opacity': '1',
             }}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#007A5E";
+              e.target.style.backgroundColor = '#007A5E';
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "var(--primary-color)";
+              e.target.style.backgroundColor = 'var(--primary-color)';
             }}
           >
             Back to Dashboard
@@ -136,17 +136,17 @@ const TaskDetail = () => {
             The requested health act could not be found.
           </p>
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate('/dashboard')}
             className="text-white px-6 py-3 rounded-full transition-colors"
             style={{
-              backgroundColor: "var(--primary-color)",
-              "--tw-bg-opacity": "1",
+              backgroundColor: 'var(--primary-color)',
+              '--tw-bg-opacity': '1',
             }}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "#007A5E";
+              e.target.style.backgroundColor = '#007A5E';
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "var(--primary-color)";
+              e.target.style.backgroundColor = 'var(--primary-color)';
             }}
           >
             Back to Dashboard
@@ -164,11 +164,11 @@ const TaskDetail = () => {
 
   return (
     <div className="flex min-h-screen bg-[url(../public/e6776ace47454664d5f711b83a7b111fd132edde.jpg)] bg-cover bg-top dark:bg-gray-900">
-      <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-between p-6 min-h-screen">
+      <div className="inset-0 bg-black/50 flex flex-col items-center justify-between p-10 min-h-screen  min-w-screen">
         {/* Top Section */}
         <div className="w-full max-w-sm flex items-start mt-4">
           <button
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate('/dashboard')}
             className="text-white hover:text-gray-300 transition-colors"
           >
             <svg
@@ -193,7 +193,7 @@ const TaskDetail = () => {
           <div className="text-white text-sm bg-[#4263eb] size-fit px-2 py-1 rounded-sm">
             {healthAct.healthActId?.categoryId?.name ||
               healthAct.category ||
-              "HEALTH ACT"}
+              'HEALTH ACT'}
           </div>
           <div className="flex flex-col">
             <h1 className="text-3xl font-bold text-white">
@@ -240,8 +240,8 @@ const TaskDetail = () => {
                     style={{
                       width: `${Math.min(progressPercentage, 100)}%`,
                       backgroundColor: isCompleted
-                        ? "#10B981"
-                        : "var(--primary-color)",
+                        ? '#10B981'
+                        : 'var(--primary-color)',
                     }}
                   ></div>
                 </div>
@@ -272,27 +272,27 @@ const TaskDetail = () => {
           disabled={checkingIn || isCompleted}
           className={`w-full mb-2 max-w-sm h-14 rounded-full flex items-center justify-center space-x-2 text-white font-semibold shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
             isCompleted
-              ? "cursor-not-allowed"
+              ? 'cursor-not-allowed'
               : checkingIn
-              ? "cursor-not-allowed"
-              : "focus:ring-green-500"
+              ? 'cursor-not-allowed'
+              : 'focus:ring-green-500'
           }`}
           style={{
             backgroundColor: isCompleted
-              ? "#9CA3AF"
+              ? '#9CA3AF'
               : checkingIn
-              ? "#F59E0B"
-              : "var(--primary-color)",
-            "--tw-bg-opacity": "1",
+              ? '#F59E0B'
+              : 'var(--primary-color)',
+            '--tw-bg-opacity': '1',
           }}
           onMouseEnter={(e) => {
             if (!isCompleted && !checkingIn) {
-              e.target.style.backgroundColor = "#007A5E";
+              e.target.style.backgroundColor = '#007A5E';
             }
           }}
           onMouseLeave={(e) => {
             if (!isCompleted && !checkingIn) {
-              e.target.style.backgroundColor = "var(--primary-color)";
+              e.target.style.backgroundColor = 'var(--primary-color)';
             }
           }}
         >
