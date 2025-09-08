@@ -53,44 +53,47 @@ const ProfileSuccesses = ({ planData }) => {
       return 'url("/1bb55c30bf6a33aaf6cfa737112420c01b47bf83.png")';
     if (balance >= 55)
       return 'url("/db22e50472f2979714b92c490ed1bcc90144f9ae.png")';
-    if (balance >= 50)
-      return 'url("/d002490ad04bcdb04e4bdc9666b5d99de43f6e26.png")';
+    if (balance >= 50) return 'url("/berge.jpg")';
+  };
+
+  const chooseText = (balance) => {
+    if (balance < 50) return 'Need more efforts';
+    if (balance >= 55) return 'Excellent';
+    if (balance >= 50) return 'Balanced week';
   };
 
   return (
-    <div className="carousel-item">
+    <div className="carousel-item overflow-hidden">
       <div
         style={{ backgroundImage: chooseImage(balancePercentage) }}
-        className="min-h-[300px] sm:min-h-[400px] lg:min-h-[40vh] w-full max-w-md bg-cover bg-center text-white rounded-2xl p-6 shadow-lg flex flex-col items-center justify-between"
+        className="min-h-[300px] sm:min-h-[400px] lg:min-h-[40vh] w-full max-w-[350px] min-w-[250px] bg-cover bg-center text-white rounded-2xl py-6 px-10 shadow-lg flex flex-col items-center justify-between"
         role="img"
         aria-label="Balance journey progress card"
       >
-        <h3 className="text-4xl sm:text-5xl lg:text-6xl font-bold">
+        <h3 className="text-!4xl sm:!text-5xl lg:!text-5xl font-bold">
           {totalHealthActs}
         </h3>
-        <p className="mt-1 text-sm sm:text-base">Balance moves</p>
+        <p className=" text-sm sm:text-base">Balance moves</p>
 
         {/* Tags */}
-        <div className="flex flex-wrap gap-2 mt-3 justify-center">
-          <span className="px-3 py-1 text-xs rounded-full bg-white/20 backdrop-blur-sm">
-            Nutrition
-          </span>
-          <span className="px-3 py-1 text-xs rounded-full bg-white/20 backdrop-blur-sm">
-            Workout
-          </span>
-          <span className="px-3 py-1 text-xs rounded-full bg-white/20 backdrop-blur-sm">
-            Hydration
-          </span>
+        <div className="flex flex-wrap gap-2 justify-center">
+          {planData.healthActs.map((act) => (
+            <span className="px-3 py-1 text-xs rounded-full bg-white/20 backdrop-blur-sm">
+              {act.category}
+            </span>
+          ))}
         </div>
 
         {/* Efforts */}
-        <p className="mt-6 text-sm sm:text-base">Need more efforts</p>
-        <div className="flex justify-between w-full text-xs sm:text-sm mt-6">
+        <p className="mt-10 !text-2xl sm:text-base !font-semibold">
+          {chooseText(balancePercentage)}
+        </p>
+        <div className="flex justify-between w-full text-xs sm:text-sm gap-4">
           <span>{balancePercentage}% Balance moves</span>
           <span>{100 - balancePercentage}% Indulgences</span>
         </div>
         <div
-          className="w-full bg-white/30 rounded-full h-2 mt-2"
+          className="w-full bg-white/30 rounded-full h-2 mb-2"
           role="progressbar"
           aria-valuenow={calculateBalancePercentage()}
           aria-valuemin="0"

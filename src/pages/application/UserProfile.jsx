@@ -134,7 +134,7 @@ const UserProfile = () => {
                 </p>
               </div>
             ) : (
-              <div className="carousel carousel-center bg-white rounded-box max-w-sm relative left-9 space-x-4 p-4">
+              <div className="carousel carousel-center bg-white rounded-box max-w-md relative space-x-4 p-4 pl-22">
                 {planData.plans.map((plan) => (
                   <ProfileSuccesses planData={plan} />
                 ))}
