@@ -1,12 +1,17 @@
-import { useState, useEffect } from "react";
+// AIPLAN
+import { useState } from "react";
 import { ChevronDown, Minus, Plus } from "lucide-react";
 import customFetch from "../../utils/customFetch";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+
+const loaderUrl = "/lottie/loader.lottie";
 
 const AIPlan = () => {
   const data = localStorage.getItem("AIPlan");
   const planFromStorage = data ? JSON.parse(data) : null;
   const [showFullAnalysis, setShowFullAnalysis] = useState(false);
   const weeklyAllowanceScore = planFromStorage.TNW;
+  const [busy, setBusy] = useState(false);
 
   //Data for health action plan
   const [healthActPlan, setHealthActPlan] = useState(
@@ -20,7 +25,6 @@ const AIPlan = () => {
       0
     );
   };
-  console.log(healthActPlan);
 
   // Update frequency for a specific health act
   const updateFrequency = (name, change) => {
@@ -35,7 +39,6 @@ const AIPlan = () => {
     );
   };
   const healthActScore = calculateHealthScore();
-  console.log(healthActScore);
   const totalScore = weeklyAllowanceScore + healthActScore;
   const greenPercentage =
     totalScore > 0 ? (healthActScore / totalScore) * 100 : 0;
@@ -77,28 +80,38 @@ const AIPlan = () => {
         healthActs: formattedHealthActs,
       };
 
-      console.log("Creating plan with data:", planData);
-
+      setBusy(true);
+      await new Promise((res) => setTimeout(res, 2000));
       const response = await customFetch.post("/plan/create", planData);
 
       if (response.data.success) {
-        console.log("Plan created successfully:", response.data);
         // Store plan ID for later use
         localStorage.setItem("currentPlanId", response.data.plan._id);
         // Redirect to dashboard
         window.location.href = "/dashboard";
       } else {
-        console.error("Failed to create plan:", response.data.message);
         alert("Failed to create plan. Please try again.");
       }
     } catch (error) {
-      console.error("Error creating plan:", error);
       alert("Error creating plan. Please try again.");
     }
   };
 
   return (
     <div className="min-h-screen bg-white px-6 py-8">
+      {busy && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 backdrop-blur-sm">
+          <div className="flex flex-col items-center">
+            <DotLottieReact
+              src={loaderUrl}
+              autoplay
+              loop
+              style={{ width: 160, height: 160 }}
+            />
+            <p className="mt-3 text-slate-100">Time to get started...</p>
+          </div>
+        </div>
+      )}
       <div className="max-w-md mx-auto">
         <h1 className="text-4xl font-bold mb-2">Analysis & Plan</h1>
 

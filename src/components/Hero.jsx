@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaBalanceScale, FaHeartbeat, FaBolt } from 'react-icons/fa';
+import { Badge } from './ui/Badge';
 
 // Small motion helpers
 const fadeUp = {
@@ -34,13 +35,12 @@ export function Hero() {
         <div className="relative max-w-5xl mx-auto text-center">
           {/* Launch badge */}
           <motion.div
-            className="inline-flex items-center gap-2 mb-6 rounded-full px-4 py-2 text-sm text-white
-                     bg-gradient-to-r from-purple-600 to-blue-600 shadow-sm"
             {...fadeUp}
             transition={{ duration: 0.5 }}
           >
-            <span className="inline-block w-2 h-2 rounded-full bg-white/90 animate-pulse" />
-            <span>We launched new features</span>
+            <Badge variant="subtle" className="mb-6">
+              We launched new features
+            </Badge>
           </motion.div>
 
           {/* Title */}
@@ -105,7 +105,7 @@ export function Hero() {
             </motion.div>
 
           {/* Social proof / stats strip */}
-          <motion.div
+          {/* <motion.div
             className="flex justify-center items-center gap-8 text-sm text-white/80 mt-6"
             {...fadeUp}
             transition={{ delay: 0.25 }}
@@ -124,7 +124,7 @@ export function Hero() {
               />
               <span>92% feel more in control</span>
             </div>
-          </motion.div>
+          </motion.div> */}
 
           {/* Decorative "balance meter" */}
           {/* <motion.div

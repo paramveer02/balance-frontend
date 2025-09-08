@@ -10,11 +10,14 @@ const MainLayout = () => {
                      location.pathname !== '/login' && 
                      location.pathname !== '/signup';
   
+  // Only show footer on public pages (not dashboard pages)
+  const showFooter = !location.pathname.startsWith('/dashboard');
+  
   return (
     <div>
       {showNavbar && <Navbar />}
       <Outlet />
-      <Footer />
+      {showFooter && <Footer />}
     </div>
   );
 };
