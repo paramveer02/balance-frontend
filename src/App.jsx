@@ -1,6 +1,6 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import {
   About,
   Home,
@@ -8,7 +8,7 @@ import {
   loginAction,
   SignUp,
   signupAction,
-} from "./pages/website";
+} from './pages/website';
 import {
   AllowanceForm,
   AIPlan,
@@ -19,19 +19,20 @@ import {
   IntroScreen,
   TaskDetail,
   Report,
-} from "./pages/application";
-import { onboardingSteps } from "./data/onboardingData";
+  UserProfile,
+} from './pages/application';
+import { onboardingSteps } from './data/onboardingData';
 
-import Error404 from "./pages/Error404";
-import MainLayout from "./layouts/MainLayout";
-import { reportLoader } from "./pages/application/Report";
+import Error404 from './pages/Error404';
+import MainLayout from './layouts/MainLayout';
+import { reportLoader } from './pages/application/Report';
 
 // Import debug utilities for development
-import "./utils/onboardingDebug";
+import './utils/onboardingDebug';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <MainLayout />,
     errorElement: <Error404 />,
     children: [
@@ -40,46 +41,50 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "about",
+        path: 'about',
         element: <About />,
       },
       {
-        path: "signup",
+        path: 'signup',
         element: <SignUp />,
         action: signupAction,
       },
       {
-        path: "login",
+        path: 'login',
         element: <Login />,
         action: loginAction,
       },
 
       // Protected: /dashboard
       {
-        id: "dashboard",
-        path: "dashboard",
+        id: 'dashboard',
+        path: 'dashboard',
         element: <DashboardLayout />,
         loader: dashboardLoader,
         children: [
           { index: true, element: <Dashboard /> },
-          { path: "about", element: <About /> },
-          { path: "report", element: <Report />, loader: reportLoader },
+          { path: 'about', element: <About /> },
+          { path: 'report', element: <Report />, loader: reportLoader },
           {
-            path: "intro",
+            path: 'intro',
             element: <IntroScreen />,
             loader: dashboardIntroLoader,
           },
           {
-            path: "allowance",
+            path: 'allowance',
             element: <AllowanceForm />,
           },
           {
-            path: "aiplan",
+            path: 'aiplan',
             element: <AIPlan />,
           },
           {
-            path: "detail",
+            path: 'detail',
             element: <TaskDetail />,
+          },
+          {
+            path: 'profile',
+            element: <UserProfile />,
           },
         ],
       },
