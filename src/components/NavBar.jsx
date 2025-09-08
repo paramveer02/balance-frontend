@@ -446,7 +446,7 @@ export function Navbar() {
                     {/* Big Title */}
                     <h1
                       className="text-white text-center leading-tight px-4"
-                      style={{ fontSize: "3rem", fontWeight: "medium" }}
+                      style={{ fontSize: "2rem", fontWeight: "medium" }}
                     >
                       MAKE YOUR BALANCE MOVE TODAY.
                     </h1>
