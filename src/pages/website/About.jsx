@@ -9,9 +9,6 @@ const About = () => {
     teamSectionRef.current?.scrollIntoView({
       behavior: "smooth",
       block: "start",
-    teamSectionRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
     });
   };
   return (
