@@ -108,15 +108,15 @@ const AIPlan = () => {
               loop
               style={{ width: 160, height: 160 }}
             />
-            <p className="mt-3 text-slate-100">Time to get started...</p>
+            <p className="mt-3 text-slate-100">Time to get started!</p>
           </div>
         </div>
       )}
       <div className="max-w-md mx-auto">
-        <h1 className="text-4xl font-bold mb-2">Analysis & Plan</h1>
+        <h2 className="font-bold mb-4">Analysis & Plan</h2>
 
         {/* Analysis Card */}
-        <div className="bg-gray-50 rounded-3xl p-6 mb-8">
+        <div className="bg-slate-100 rounded-3xl p-6 mb-8">
           <div className="flex items-start gap-2 mb-4">
             <span className="text-xl">💡</span>
             <h4 className="font-semibold">Analysis</h4>
@@ -147,9 +147,7 @@ const AIPlan = () => {
             Your balance moves
           </h3>
           <p className="text-gray-500 text-center mb-8">
-            You can further customize the frequencies
-            <br />
-            based on your schedule.
+            You can further customize the frequencies based on your schedule. Try to balance out your indulgences!
           </p>
 
           {/* Progress Bar */}
@@ -195,49 +193,21 @@ const AIPlan = () => {
                 <button
                   type="button"
                   onClick={() => updateFrequency(act.name, -1)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
-                  style={{
-                    backgroundColor: "var(--secondary-color)",
-                    opacity: act.frequency === 0 ? 0.5 : 1,
-                  }}
-                  onMouseEnter={(e) => {
-                    if (act.frequency !== 0) {
-                      e.target.style.backgroundColor = "#4C3CF0";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (act.frequency !== 0) {
-                      e.target.style.backgroundColor = "var(--secondary-color)";
-                    }
-                  }}
+                  className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300  active:bg-gray-500 transition-colors"
                   disabled={act.frequency === 0}
                 >
-                  <Minus className="w-4 h-4 text-white" />
+                  <Minus className="w-4 h-4 text-gray-400" />
                 </button>
 
-                <span className="w-4 text-center text-md">{act.frequency}</span>
+                <span className="text-gray-600 w-4 text-center text-md">{act.frequency}</span>
 
                 <button
                   type="button"
                   onClick={() => updateFrequency(act.name, 1)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
-                  style={{
-                    backgroundColor: "var(--secondary-color)",
-                    opacity: act.frequency === 7 ? 0.5 : 1,
-                  }}
-                  onMouseEnter={(e) => {
-                    if (act.frequency !== 7) {
-                      e.target.style.backgroundColor = "#4C3CF0";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (act.frequency !== 7) {
-                      e.target.style.backgroundColor = "var(--secondary-color)";
-                    }
-                  }}
+                  className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-200 hover:bg-gray-300  active:bg-gray-500 transition-colors"
                   disabled={act.frequency === 7}
                 >
-                  <Plus className="w-4 h-4 text-white" />
+                  <Plus className="w-4 h-4 text-gray-400" />
                 </button>
               </div>
             </div>
