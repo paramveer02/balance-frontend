@@ -62,12 +62,12 @@ const Indulgences = () => {
   return (
     <div 
       ref={containerRef}
-      className="w-full py-16 bg-gray-50 overflow-hidden"
+      className="w-full py-24 bg-gray-50 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className=" text-gray-900 leading-tight">
+        <div className="text-center mb-24">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
             Life has Indulgences.
             <br />
             We help you make Balance Moves.
@@ -77,20 +77,20 @@ const Indulgences = () => {
         {/* First Row - Right to Left */}
         <div className="mb-8">
           <motion.div
-            className="flex gap-6 w-max"
+            className="flex gap-4 sm:gap-6 lg:gap-8 w-max"
             style={{ x: isInView ? firstRowX : 0 }}
             transition={{ type: "none" }}
           >
             {extendedFirstRow.map((item, index) => (
-              <div key={`first-${item.id}-${index}`} className="flex gap-6">
+              <div key={`first-${item.id}-${index}`} className="flex gap-4 sm:gap-6 lg:gap-8">
                 {/* Label Element */}
-                <div className="flex-shrink-0 bg-white rounded-full border border-2 border-purple-300 flex items-center justify-center px-14 py-10 h-[6rem]">
-                  <h3 className=" font-semibold text-gray-900 text-center whitespace-nowrap">
+                <div className="flex-shrink-0 bg-white rounded-full border border-2 border-[#584FFB] flex items-center justify-center px-4 py-3 sm:px-8 sm:py-6 lg:px-12 lg:py-10 h-[4rem] sm:h-[5rem] lg:h-[7rem]">
+                  <h4 className="text-[#584FFB] text-center whitespace-nowrap text-4xl sm:text-base lg:text-lg">
                     {item.text}
-                  </h3>
+                  </h4>
                 </div>
                 {/* Image Element */}
-                <div className="flex-shrink-0 w-[18rem] h-[6rem] rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                <div className="flex-shrink-0 w-[8rem] h-[4rem] sm:w-[12rem] sm:h-[5rem] lg:w-[20rem] lg:h-[7rem] rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
                   <img
                     src={item.imageUrl}
                     alt={item.text}
@@ -110,22 +110,22 @@ const Indulgences = () => {
         </div>
 
         {/* Second Row - Left to Right */}
-        <div className="mb-12">
+        <div className="mb-24">
           <motion.div
-            className="flex gap-6 w-max"
+            className="flex gap-4 sm:gap-6 lg:gap-8 w-max"
             style={{ x: isInView ? secondRowX : 0 }}
             transition={{ type: "none" }}
           >
             {extendedSecondRow.map((item, index) => (
-                              <div key={`second-${item.id}-${index}`} className="flex gap-6">
-                  {/* Label Element */}
-                  <div className="flex-shrink-0 bg-white rounded-full border border-2 border-purple-300 flex items-center justify-center px-14 py-10 h-[6rem]">
-                    <h3 className="font-semibold text-gray-900 text-center whitespace-nowrap">
-                      {item.text}
-                    </h3>
-                  </div>
-                  {/* Image Element */}
-                  <div className="flex-shrink-0 w-[18rem] h-[6rem] rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+              <div key={`second-${item.id}-${index}`} className="flex gap-4 sm:gap-6 lg:gap-8">
+                {/* Label Element */}
+                <div className="flex-shrink-0 bg-white rounded-full border border-2 border-[#584FFB] flex items-center justify-center px-4 py-3 sm:px-8 sm:py-6 lg:px-12 lg:py-10 h-[4rem] sm:h-[5rem] lg:h-[7rem]">
+                  <h4 className="text-[#584FFB] text-center whitespace-nowrap text-4xl sm:text-base lg:text-lg">
+                    {item.text}
+                  </h4>
+                </div>
+                {/* Image Element */}
+                <div className="flex-shrink-0 w-[8rem] h-[4rem] sm:w-[12rem] sm:h-[5rem] lg:w-[20rem] lg:h-[7rem] rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
                     <img
                       src={item.imageUrl}
                       alt={item.text}
@@ -144,29 +144,7 @@ const Indulgences = () => {
           </motion.div>
         </div>
 
-        {/* CTA Button */}
-        <div className="text-center">
-          <motion.button
-            className="bg-green-800 hover:bg-green-700 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-3 mx-auto"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <span>Show balance moves</span>
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </motion.button>
-        </div>
+    
       </div>
     </div>
   );
