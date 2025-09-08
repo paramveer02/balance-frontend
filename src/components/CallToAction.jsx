@@ -1,8 +1,22 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Badge } from "./ui/Badge";
+import { useRef } from "react";
 
 const CallToAction = () => {
+  const textRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: textRef,
+    offset: ["start 80%", "end end"]
+  });
+
+  // Split text into three paragraphs for individual animation
+  const paragraphs = [
+    "Mainstream health adviser apps wants to make everyone a saint, living a restricted yet purely healthy life. However, we all know it's not possible.",
+    "We believe that just live a balanced life, you can already improve wellbeing of your life.",
+    "We built Balance to change that. Now, it's your move."
+  ];
+
   return (
     <section 
       className="relative px-4 sm:px-6 py-12 sm:py-20 h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat overflow-hidden"
@@ -23,22 +37,50 @@ const CallToAction = () => {
           </Badge>
         </motion.div>
 
-        {/* Main Paragraph */}
+        {/* Main Paragraph with Scroll-based Word Animation */}
         <motion.h3
-          className="font-semibold text-white mb-6 sm:mb-8 max-w-3xl mx-auto"
+          ref={textRef}
+          className="font-bold text-white mb-6 sm:mb-8 max-w-3xl mx-auto scroll-highlight"
           style={{ 
             fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-            lineHeight: '120%'
+            lineHeight: '120%',
+            opacity: 1
           }}
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.6 }}
         >
-          Mainstream health adviser apps wants to make everyone a saint, living a restricted yet purely healthy life. However, we all know it's not possible.
-          <br /><br />
-          We believe that just live a balanced life, you can already improve wellbeing of your life.
-          <br /><br />
-          We built Balance to change that. Now, it's your move.
+          {paragraphs.map((paragraph, paragraphIndex) => {
+            const words = paragraph.split(" ");
+            
+            return (
+              <div key={paragraphIndex} className={paragraphIndex > 0 ? "mt-6" : ""}>
+                {words.map((word, wordIndex) => {
+                  // Calculate individual word opacity based on scroll progress
+                  const globalWordIndex = paragraphs.slice(0, paragraphIndex).reduce((acc, p) => acc + p.split(" ").length, 0) + wordIndex;
+                  const totalWords = paragraphs.reduce((acc, p) => acc + p.split(" ").length, 0);
+                  
+                  // Add delay for each word (staggered effect)
+                  const wordDelay = globalWordIndex / totalWords;
+                  const wordProgress = useTransform(
+                    scrollYProgress,
+                    [wordDelay, Math.min(wordDelay + 0.05, 1)],
+                    [0.3, 1]
+                  );
+
+                  return (
+                    <motion.span
+                      key={`${paragraphIndex}-${wordIndex}`}
+                      className="word inline-block mr-2"
+                      style={{ 
+                        opacity: wordProgress,
+                        display: 'inline-block'
+                      }}
+                    >
+                      {word}
+                    </motion.span>
+                  );
+                })}
+              </div>
+            );
+          })}
         </motion.h3>
 
         {/* CTA Button */}
