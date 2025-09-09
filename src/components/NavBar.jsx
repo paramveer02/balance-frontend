@@ -25,6 +25,7 @@ export function Navbar() {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isOverLightSection, setIsOverLightSection] = useState(false);
   const navRef = useRef(null);
   const [navLoading, setNavLoading] = useState(false);
   const loaderUrl = "/lottie/loader.lottie";
@@ -56,6 +57,43 @@ export function Navbar() {
     };
 
     window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isDashboardPage]);
+
+  // Handle contrast detection for website navbar
+  useEffect(() => {
+    if (isDashboardPage) return;
+
+    const handleScroll = () => {
+      const navbar = navRef.current;
+      if (!navbar) return;
+
+      const navbarRect = navbar.getBoundingClientRect();
+      const navbarCenter = navbarRect.top + navbarRect.height / 2;
+      
+      // Get element at navbar center position
+      const elementBelow = document.elementFromPoint(
+        navbarRect.left + navbarRect.width / 2,
+        navbarCenter + navbarRect.height
+      );
+      
+      if (elementBelow) {
+        const computedStyle = window.getComputedStyle(elementBelow);
+        const backgroundColor = computedStyle.backgroundColor;
+        
+        // Check if background is light (high brightness)
+        const rgb = backgroundColor.match(/\d+/g);
+        if (rgb && rgb.length >= 3) {
+          const brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
+          setIsOverLightSection(brightness > 200);
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Check initial state
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
@@ -158,17 +196,21 @@ export function Navbar() {
                       <div className="hidden md:block">
                         <button
                           onClick={() => logoutUser?.()}
-                          className="text-gray-400 dark:text-gray-500 font-medium hover:text-red-500 hover:underline transition-colors duration-200"
+                          className="text-gray-400 cursor-pointer dark:text-gray-500 font-medium hover:text-red-500 hover:underline transition-colors duration-200"
                         >
                           Logout
                         </button>
                       </div>
                       {/* User Profile Avatar */}
-                      <div className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center">
+                      <Link 
+                        to="/dashboard/profile"
+                        className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors duration-200"
+                        aria-label="Go to user profile"
+                      >
                         <span className="text-md font-bold text-gray-700 dark:text-gray-200">
                           {user.name ? user.name.charAt(0).toUpperCase() : "U"}
                         </span>
-                      </div>
+                      </Link>
                       {/* Mobile menu button */}
                       <div className="md:hidden">
                         <button
@@ -292,7 +334,11 @@ export function Navbar() {
           </div>
         ) : (
           <div
-            className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl bg-white/10 backdrop-blur-md ${
+            className={`fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-6xl transition-all duration-300 ${
+              isOverLightSection 
+                ? "bg-black/20 backdrop-blur-lg border border-white/20 shadow-2xl" 
+                : "bg-white/10 backdrop-blur-md border border-white/10 shadow-lg"
+            } ${
               isMobileMenuOpen ? "rounded-2xl" : "rounded-full"
             }`}
           >
@@ -301,11 +347,15 @@ export function Navbar() {
                 {/* Logo/Brand */}
                 <Link
                   to={user ? "/dashboard" : "/"}
-                  className="text-white text-2xl font-bold hover:text-white/80 transition-colors"
+                  className={`text-white text-2xl font-bold hover:text-white/80 transition-all duration-300 ${
+                    isOverLightSection ? "drop-shadow-lg" : ""
+                  }`}
                 >
                   <img
                     src="/logo_BW.svg"
-                    className="h-8"
+                    className={`h-8 transition-all duration-300 ${
+                      isOverLightSection ? "drop-shadow-lg" : ""
+                    }`}
                     alt="BalanceLogoBlack&WhiteVersion"
                   />
                 </Link>
@@ -315,14 +365,18 @@ export function Navbar() {
                   <div className="flex items-center space-x-4">
                     <Link
                       to="/about"
-                      className="text-white/90 hover:text-white transition-colors font-medium"
+                      className={`text-white/90 hover:text-white transition-all duration-300 font-medium ${
+                        isOverLightSection ? "drop-shadow-md" : ""
+                      }`}
                     >
                       About Us
                     </Link>
                     {user && (
                       <Link
                         to="/dashboard"
-                        className="text-white/90 hover:text-white transition-colors font-medium"
+                        className={`text-white/90 hover:text-white transition-all duration-300 font-medium ${
+                          isOverLightSection ? "drop-shadow-md" : ""
+                        }`}
                       >
                         Dashboard
                       </Link>
@@ -335,7 +389,9 @@ export function Navbar() {
                   {user ? (
                     <button
                       onClick={() => logoutUser?.()}
-                      className="text-white/90 hover:text-white transition-colors font-medium"
+                      className={`text-white/90 hover:text-white transition-all duration-300 font-medium ${
+                        isOverLightSection ? "drop-shadow-md" : ""
+                      }`}
                     >
                       Logout
                     </button>
@@ -343,13 +399,17 @@ export function Navbar() {
                     <>
                       <Link
                         to="/login"
-                        className="text-white/90 hover:text-white transition-colors font-medium"
+                        className={`text-white/90 hover:text-white transition-all duration-300 font-medium ${
+                          isOverLightSection ? "drop-shadow-md" : ""
+                        }`}
                       >
                         Login
                       </Link>
                       <Link
                         to="/signup"
-                        className="text-white font-medium px-6 py-2 rounded-full transition-colors duration-200 shadow-lg hover:shadow-xl"
+                        className={`text-white font-medium px-6 py-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl ${
+                          isOverLightSection ? "drop-shadow-lg" : ""
+                        }`}
                         style={{
                           backgroundColor: "var(--primary-color)",
                           "--tw-bg-opacity": "1",
@@ -386,7 +446,7 @@ export function Navbar() {
                     {/* Big Title */}
                     <h1
                       className="text-white text-center leading-tight px-4"
-                      style={{ fontSize: "3rem", fontWeight: "medium" }}
+                      style={{ fontSize: "2rem", fontWeight: "medium" }}
                     >
                       MAKE YOUR BALANCE MOVE TODAY.
                     </h1>

@@ -62,16 +62,19 @@ const AllowanceForm = () => {
               loop
               style={{ width: 160, height: 160 }}
             />
-            <p className="mt-3 text-slate-100">
-              Preparing your balance routine…
+            <p className="mt-3 text-lg text-center text-slate-100">
+              Hey, I'm Balancia.<br /> Customizing a health plan for you...
             </p>
           </div>
         </div>
       )}
       <div className="max-w-md mx-auto">
-        <h1 className="text-gray-900 text-2xl font-semibold mb-8">
-          Set Your Weekly Allowance
-        </h1>
+        <h2 className="text-gray-900 font-semibold mb-4">
+          Set your weekly allowance
+        </h2>
+        <p className="text-md text-gray-600 mb-10">
+          Choose your weekly indulgences and frequencies, and I'll help you to customise a health plan.
+        </p>
 
         <form onSubmit={handleSubmit}>
           <div className="space-y-8">

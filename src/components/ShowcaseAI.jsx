@@ -5,7 +5,7 @@ const ShowcaseAI = () => {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "center center"]
+    offset: ["start 50%", "center start"]
   });
 
   // Image slider data
@@ -13,16 +13,21 @@ const ShowcaseAI = () => {
     '/Task01.png',
     '/Task02.png', 
     '/Task03.png',
-    '/Task04.png'
+    '/Task04.png',
+    '/Task03.png',
+    '/Task02.png',
+    '/Task01.png',
   ];
 
   // Transform scroll progress to horizontal movement
-  // Start with first image centered, end with fourth image centered
-  // 4 images × 320px = 1280px total width
-  const x = useTransform(scrollYProgress, [0, 1], [1440, -800]);
+  // Total width: 1304px (4 images × 320px + 3 gaps × 8px)
+  // Phone screen width: ~320px
+  // To show first image: 0px (no movement needed)
+  // To show last image: 320px - 1304px = -984px
+  const x = useTransform(scrollYProgress, [0, 1], [860, -860]);
 
   return (
-    <div ref={ref} className="min-h-screen flex flex-col items-center justify-center px-6 py-8 bg-gray-50">
+    <div ref={ref} className="min-h-screen flex flex-col items-center justify-center px-6 pt-8 pb-32 bg-gray-50">
       {/* Spherical Logo */}
       <motion.div
         className="mb-8"
@@ -61,71 +66,31 @@ const ShowcaseAI = () => {
         whileInView={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.4 }}
       >
-        <div className="w-80 h-[600px] bg-black rounded-[3rem] p-2 shadow-2xl">
-          {/* Phone Screen */}
-          <div className="w-full h-full bg-white rounded-[2.5rem] overflow-hidden relative">
-            {/* Status Bar */}
-            <div className="flex justify-between items-center px-6 pt-3 pb-2">
-              <span className="text-black text-sm font-medium">9:41</span>
-              <div className="flex items-center space-x-1">
-                <div className="w-4 h-2 bg-black rounded-sm"></div>
-                <div className="w-4 h-2 bg-black rounded-sm"></div>
-                <div className="w-6 h-3 bg-black rounded-sm"></div>
-              </div>
-            </div>
+        {/* Phone Mockup Image */}
+        <div className="relative w-80 h-[750px]">
+          <img
+            src="/phone mockup.png"
+            alt="Phone Mockup"
+            className="w-full h-full object-contain"
+          />
+        </div>
+      </motion.div>
 
-            {/* App Header */}
-            <div className="flex justify-between items-center px-6 py-4">
-              <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                Balance
-              </h1>
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-pink-400 via-purple-500 to-blue-500"></div>
-                <div className="w-6 h-6 flex flex-col justify-center space-y-1">
-                  <div className="w-4 h-0.5 bg-gray-600"></div>
-                  <div className="w-4 h-0.5 bg-gray-600"></div>
-                  <div className="w-4 h-0.5 bg-gray-600"></div>
-                </div>
-              </div>
+      {/* Image Slider - positioned independently */}
+      <motion.div
+        className="relative w-80 h-[300px] mx-auto -mt-[390px] pointer-events-none"
+        style={{ x }}
+      >
+        <div className="flex h-full gap-2" style={{ width: '1304px' }}>
+          {sliderImages.map((image, index) => (
+            <div key={index} className="flex-shrink-0 w-55 h-full">
+              <img
+                src={image}
+                alt={`Task ${index + 1}`}
+                className="w-full h-full object-fit"
+              />
             </div>
-
-            {/* Welcome Section */}
-            <div className="px-6 py-4">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-gray-500 text-sm">Welcome.</p>
-                  <h2 className="text-2xl font-bold text-gray-800">Ciro</h2>
-                </div>
-                <div className="text-right">
-                  <p className="text-gray-500 text-sm">27 Aug</p>
-                  <p className="text-gray-500 text-sm">Wednesday</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Main Content Area with Gradient */}
-            <div className="flex-1 relative">
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-100 via-transparent to-transparent"></div>
-            </div>
-          </div>
-
-          {/* Image Slider Overlay */}
-          <motion.div
-            className="absolute bottom-2 left-2 right-2 h-[300px] rounded-[2.5rem] pointer-events-none"
-            style={{ x }}
-          >
-            <div className="flex h-full">
-              {sliderImages.map((image, index) => (
-                <div key={index} className="flex-shrink-0 w-80 h-full ">
-                  <img
-                    src={image}
-                    alt={`Task ${index + 1}`}
-                    className="w-full object-fit"
-                  />
-                </div>
-              ))}
-            </div>
-          </motion.div>
+          ))}
         </div>
       </motion.div>
     </div>

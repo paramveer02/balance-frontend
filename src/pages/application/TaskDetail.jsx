@@ -163,150 +163,157 @@ const TaskDetail = () => {
   const isCompleted = healthAct.isCompleted;
 
   return (
-    <div className="flex min-h-screen bg-[url(../public/e6776ace47454664d5f711b83a7b111fd132edde.jpg)] bg-cover bg-top dark:bg-gray-900">
-      <div className="inset-0 bg-black/50 flex flex-col items-center justify-between p-10 min-h-screen  min-w-screen">
-        {/* Top Section */}
-        <div className="w-full max-w-sm flex items-start mt-4">
-          <button
-            onClick={() => navigate('/dashboard')}
-            className="text-white hover:text-gray-300 transition-colors"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-8 h-8"
+    <div className="min-h-screen bg-[url(../public/e6776ace47454664d5f711b83a7b111fd132edde.jpg)] bg-cover bg-center">
+      <div className="min-h-screen bg-black/50 flex flex-col">
+        {/* Header */}
+        <div className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="max-w-4xl mx-auto">
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="text-white hover:text-gray-300 transition-colors p-2 -ml-2"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-              />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 sm:w-8 sm:h-8"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Main Content */}
-        <div className="flex flex-col gap-4 items-left w-full max-w-sm text-left">
-          <div className="text-white text-sm bg-[#4263eb] size-fit px-2 py-1 rounded-sm">
-            {healthAct.healthActId?.categoryId?.name ||
-              healthAct.category ||
-              'HEALTH ACT'}
-          </div>
-          <div className="flex flex-col">
-            <h1 className="text-3xl font-bold text-white">
-              {healthAct.healthActId?.name || healthAct.name}
-            </h1>
-            <div className="flex flex-row items-center">
-              <span className="text-4xl mr-2">
-                {healthAct.healthActId?.emoji || healthAct.emoji}
-              </span>
-              <span className="text-white">
-                {healthAct.targetFrequency} times this week
-              </span>
+        <div className="flex-1 px-4 sm:px-6 lg:px-8 pb-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+              {/* Left Column - Task Info */}
+              <div className="space-y-6">
+                {/* Task Header */}
+                <div className="space-y-4">
+                  <div className="inline-block">
+                    <span className="text-white text-sm bg-[#4263eb] px-3 py-1.5 rounded-full font-medium">
+                      {healthAct.healthActId?.categoryId?.name ||
+                        healthAct.category ||
+                        'HEALTH ACT'}
+                    </span>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight">
+                      {healthAct.healthActId?.name || healthAct.name}
+                    </h1>
+                    <div className="flex items-center space-x-3">
+                      <span className="text-3xl sm:text-4xl">
+                        {healthAct.healthActId?.emoji || healthAct.emoji}
+                      </span>
+                      <span className="text-white text-lg sm:text-xl">
+                        {healthAct.targetFrequency} times this week
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Expert Advice Card */}
+                <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <span className="text-2xl">💡</span>
+                    <h2 className="text-gray-800 text-lg font-semibold">
+                      What experts say:
+                    </h2>
+                  </div>
+                  <p className="text-gray-600 leading-relaxed">
+                    {healthAct.healthActId?.description ||
+                      `Regular practice of ${(
+                        healthAct.healthActId?.name || healthAct.name
+                      ).toLowerCase()} can significantly improve your overall health and help balance out unhealthy habits.`}
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Column - Progress & Actions */}
+              <div className="space-y-6">
+                {/* Progress Cards Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Balance Out Card */}
+                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+                    <h2 className="text-gray-800 text-lg font-semibold mb-4">Balance out</h2>
+                    <div className="bg-gray-50 rounded-xl p-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <span className="text-lg">🎯</span>
+                          <span className="font-medium text-gray-800 text-sm">
+                            Weekly Goal
+                          </span>
+                        </div>
+                        <span className="text-gray-600 font-semibold">
+                          x{healthAct.targetFrequency}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Progress Card */}
+                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+                    <h2 className="text-gray-800 text-lg font-semibold mb-4">Progress</h2>
+                    <div className="space-y-3">
+                      <div className="text-center">
+                        <p className="text-sm text-gray-600 mb-1">Completed</p>
+                        <p className="text-gray-800 text-2xl font-bold">
+                          {completedCount}/{healthAct.targetFrequency}
+                        </p>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3">
+                        <div
+                          className="h-3 rounded-full transition-all duration-500 ease-out"
+                          style={{
+                            width: `${Math.min(progressPercentage, 100)}%`,
+                            backgroundColor: isCompleted
+                              ? '#10B981'
+                              : 'var(--primary-color)',
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Complete Button */}
+                <div className="w-full">
+                  <button
+                    onClick={handleComplete}
+                    disabled={checkingIn || isCompleted}
+                    className={`w-full h-14 rounded-2xl flex items-center justify-center space-x-3 text-white font-semibold shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                      isCompleted
+                        ? 'cursor-not-allowed bg-gray-400'
+                        : checkingIn
+                        ? 'cursor-not-allowed bg-amber-500'
+                        : 'bg-teal-600 hover:bg-teal-700 focus:ring-teal-500'
+                    }`}
+                  >
+                    {checkingIn ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                        <span>Recording...</span>
+                      </>
+                    ) : isCompleted ? (
+                      <span>✓ Completed!</span>
+                    ) : (
+                      <span>Checkin this balance move</span>
+                    )}
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Action card */}
-        <section>
-          <div className="flex gap-3">
-            <div className="flex flex-col h-[100%] gap-8 justify-between w-[66%] p-4 mt-4 bg-gray-100 rounded-2xl">
-              <h2 className="text-gray-700 text-lg mb-4">Balance out</h2>
-              <div className="flex justify-between items-center bg-white p-3 rounded-2xl">
-                <div className="flex items-center space-x-2">
-                  <span className="text-xs">🎯</span>
-                  <span className="font-semibold text-gray-800 text-xs">
-                    Weekly Goal
-                  </span>
-                </div>
-                <span className="text-gray-600">
-                  x{healthAct.targetFrequency}
-                </span>
-              </div>
-            </div>
-            <div className="w-[33%] p-4 mt-4 bg-gray-100 rounded-2xl">
-              <h2 className="text-gray-700 text-lg mb-4">Progress</h2>
-              <div className="text-right rounded-lg">
-                <p className="text-sm text-gray-600">Completed</p>
-                <p className="text-gray-800 text-2xl font-bold">
-                  {completedCount}/{healthAct.targetFrequency}
-                </p>
-                <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                  <div
-                    className="h-2 rounded-full transition-all duration-300"
-                    style={{
-                      width: `${Math.min(progressPercentage, 100)}%`,
-                      backgroundColor: isCompleted
-                        ? '#10B981'
-                        : 'var(--primary-color)',
-                    }}
-                  ></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="w-full p-4 mt-3 bg-gray-100 rounded-2xl">
-              <div className="flex flex-row gap-2 w-full">
-                <span className="text-lg">💡</span>
-                <h2 className="text-gray-700 text-lg mb-4">
-                  What experts say:
-                </h2>
-              </div>
-              <p className="text-gray-600">
-                {healthAct.healthActId?.description ||
-                  `Regular practice of ${(
-                    healthAct.healthActId?.name || healthAct.name
-                  ).toLowerCase()} can significantly improve your overall health and help balance out unhealthy habits.`}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Complete button */}
-        <button
-          onClick={handleComplete}
-          disabled={checkingIn || isCompleted}
-          className={`w-full mb-2 max-w-sm h-14 rounded-full flex items-center justify-center space-x-2 text-white font-semibold shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-            isCompleted
-              ? 'cursor-not-allowed'
-              : checkingIn
-              ? 'cursor-not-allowed'
-              : 'focus:ring-green-500'
-          }`}
-          style={{
-            backgroundColor: isCompleted
-              ? '#9CA3AF'
-              : checkingIn
-              ? '#F59E0B'
-              : 'var(--primary-color)',
-            '--tw-bg-opacity': '1',
-          }}
-          onMouseEnter={(e) => {
-            if (!isCompleted && !checkingIn) {
-              e.target.style.backgroundColor = '#007A5E';
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!isCompleted && !checkingIn) {
-              e.target.style.backgroundColor = 'var(--primary-color)';
-            }
-          }}
-        >
-          {checkingIn ? (
-            <>
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-              <span>Recording...</span>
-            </>
-          ) : isCompleted ? (
-            <span>✓ Completed!</span>
-          ) : (
-            <span>Checkin this balance move</span>
-          )}
-        </button>
       </div>
     </div>
   );

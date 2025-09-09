@@ -1,12 +1,12 @@
-import { useOutletContext, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import customFetch from "../../utils/customFetch";
-import { Menu, Wifi, Battery } from "lucide-react";
-import Threads from "../../components/BgAnimation";
-import OnboardingRedirect from "../../components/OnboardingRedirect";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import customFetch from '../../utils/customFetch';
+import { Menu, Wifi, Battery } from 'lucide-react';
+import Threads from '../../components/BgAnimation';
+import OnboardingRedirect from '../../components/OnboardingRedirect';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
-const loaderUrl = "/lottie/loader.lottie";
+const loaderUrl = '/lottie/loader.lottie';
 
 const Dashboard = () => {
   const { user } = useOutletContext();
@@ -34,18 +34,18 @@ const Dashboard = () => {
       fetchCurrentPlan();
     };
 
-    window.addEventListener("focus", handleFocus);
-    return () => window.removeEventListener("focus", handleFocus);
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
   }, []);
 
   const fetchCurrentPlan = async () => {
     try {
-      const { data } = await customFetch.get("/plan/current");
+      const { data } = await customFetch.get('/plan/current');
       if (data.success) {
         setCurrentPlan(data.plan);
       }
     } catch (error) {
-      console.log("No current plan found");
+      console.log('No current plan found');
     } finally {
       setLoading(false);
     }
@@ -60,19 +60,19 @@ const Dashboard = () => {
   const handleTerminatePlan = async () => {
     if (
       window.confirm(
-        "Are you sure you want to terminate your current plan? Your progress will be saved."
+        'Are you sure you want to terminate your current plan? Your progress will be saved.'
       )
     ) {
       try {
-        const response = await customFetch.post("/plan/terminate");
+        const response = await customFetch.post('/plan/terminate');
         if (response.data.success) {
-          alert("Plan terminated successfully!");
+          alert('Plan terminated successfully!');
           // Refresh the dashboard
           window.location.reload();
         }
       } catch (error) {
-        console.error("Error terminating plan:", error);
-        alert("Failed to terminate plan. Please try again.");
+        console.error('Error terminating plan:', error);
+        alert('Failed to terminate plan. Please try again.');
       }
     }
   };
@@ -135,8 +135,8 @@ const Dashboard = () => {
           />
           <p className="mt-3 text-slate-100">
             {showReport
-              ? "Fetching your Report"
-              : "Loading Your Health Plan..."}{" "}
+              ? 'Fetching your Report'
+              : 'Loading Your Health Plan...'}{' '}
           </p>
         </div>
       </div>
@@ -169,14 +169,14 @@ const Dashboard = () => {
             </div>
             <div className="text-right">
               <p className="text-gray-600 text-xl font-bold">
-                {currentTime.toLocaleDateString("en-US", {
-                  day: "numeric",
-                  month: "short",
+                {currentTime.toLocaleDateString('en-US', {
+                  day: 'numeric',
+                  month: 'short',
                 })}
               </p>
               <p className="text-3xl text-gray-900">
-                {currentTime.toLocaleDateString("en-US", {
-                  weekday: "long",
+                {currentTime.toLocaleDateString('en-US', {
+                  weekday: 'long',
                 })}
               </p>
             </div>
@@ -229,9 +229,9 @@ const Dashboard = () => {
 
                     <p className="text-sm text-gray-500 text-center">
                       {clampedPercentage === 0
-                        ? "Start checking in your balance moves to begin balancing out indulgences!"
+                        ? 'Start checking in your balance moves to begin balancing out indulgences!'
                         : clampedPercentage === 100
-                        ? "🎉 All indulgences are balanced out! Great job!"
+                        ? '🎉 All indulgences are balanced out! Great job!'
                         : `Keep going! You're ${clampedPercentage}% there.`}
                     </p>
                   </div>
@@ -297,8 +297,8 @@ const Dashboard = () => {
                               style={{
                                 width: `${Math.min(progressPercentage, 100)}%`,
                                 backgroundColor: isCompleted
-                                  ? "#10B981"
-                                  : "var(--primary-color)",
+                                  ? '#10B981'
+                                  : 'var(--primary-color)',
                               }}
                             ></div>
                           </div>
@@ -309,12 +309,12 @@ const Dashboard = () => {
                             className="text-sm font-medium"
                             style={{
                               color: isCompleted
-                                ? "#059669"
-                                : "var(--primary-color)",
+                                ? '#059669'
+                                : 'var(--primary-color)',
                             }}
                           >
                             {isCompleted
-                              ? "Completed!"
+                              ? 'Completed!'
                               : `${progressPercentage}% Complete`}
                           </span>
                         </div>
@@ -359,7 +359,7 @@ const Dashboard = () => {
                 </p>
 
                 <button
-                  onClick={() => navigate("/dashboard/allowance")}
+                  onClick={() => navigate('/dashboard/allowance')}
                   className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 md:px-12 md:py-4 rounded-full text-base md:text-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-2xl"
                 >
                   Create Your Plan
