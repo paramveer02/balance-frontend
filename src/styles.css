@@ -224,6 +224,10 @@ div {
   }
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+  }
+  html {
+    overflow-x: hidden; /* Prevent horizontal scroll on html element */
   }
 }
 

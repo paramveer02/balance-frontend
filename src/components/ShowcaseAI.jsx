@@ -1,8 +1,9 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 
 const ShowcaseAI = () => {
   const ref = useRef(null);
+  const [isInView, setIsInView] = useState(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 50%", "center start"]
@@ -14,20 +15,43 @@ const ShowcaseAI = () => {
     '/Task02.png', 
     '/Task03.png',
     '/Task04.png',
-    '/Task03.png',
-    '/Task02.png',
-    '/Task01.png',
   ];
 
-  // Transform scroll progress to horizontal movement
-  // Total width: 1304px (4 images × 320px + 3 gaps × 8px)
-  // Phone screen width: ~320px
-  // To show first image: 0px (no movement needed)
-  // To show last image: 320px - 1304px = -984px
-  const x = useTransform(scrollYProgress, [0, 1], [860, -860]);
+  // Create infinite loop by duplicating data multiple times
+  const createInfiniteLoop = (data, repetitions = 1) => {
+    return Array.from({ length: repetitions }, () => data).flat();
+  };
+
+  const extendedSliderImages = createInfiniteLoop(sliderImages);
+
+  // Transform scroll progress to horizontal movement using viewport units
+  const x = useTransform(scrollYProgress, [0, 1], ['0%', '-10vw']);
+
+  // Intersection Observer to detect when component enters viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px'
+      }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
 
   return (
-    <div ref={ref} className="min-h-screen flex flex-col items-center justify-center px-6 pt-8 pb-32 bg-gray-50">
+    <div ref={ref} className="min-h-screen flex flex-col items-center justify-center px-6 pt-8 pb-32 bg-gray-50 overflow-x-hidden">
       {/* Spherical Logo */}
       <motion.div
         className="mb-8"
@@ -76,18 +100,19 @@ const ShowcaseAI = () => {
         </div>
       </motion.div>
 
-      {/* Image Slider - positioned independently */}
+      {/* Image Slider - positioned independently with overflow control */}
       <motion.div
-        className="relative w-80 h-[300px] mx-auto -mt-[390px] pointer-events-none"
-        style={{ x }}
+        className="relative w-[1024px] h-[300px] mx-auto -mt-[390px] pointer-events-none overflow-hidden"
+        style={{ x: isInView ? x : 0 }}
+        transition={{ type: "none" }}
       >
-        <div className="flex h-full gap-2" style={{ width: '1304px' }}>
-          {sliderImages.map((image, index) => (
-            <div key={index} className="flex-shrink-0 w-55 h-full">
+        <div className="flex h-full gap-2 w-max">
+          {extendedSliderImages.map((image, index) => (
+            <div key={`slider-${index}`} className="flex-shrink-0 w-57 h-full">
               <img
                 src={image}
-                alt={`Task ${index + 1}`}
-                className="w-full h-full object-fit"
+                alt={`Task ${(index % sliderImages.length) + 1}`}
+                className="w-full h-full object-cover"
               />
             </div>
           ))}
