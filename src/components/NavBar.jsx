@@ -196,7 +196,7 @@ export function Navbar() {
                       <div className="hidden md:block">
                         <button
                           onClick={() => logoutUser?.()}
-                          className="text-gray-400 dark:text-gray-500 font-medium hover:text-red-500 hover:underline transition-colors duration-200"
+                          className="text-gray-400 cursor-pointer dark:text-gray-500 font-medium hover:text-red-500 hover:underline transition-colors duration-200"
                         >
                           Logout
                         </button>
