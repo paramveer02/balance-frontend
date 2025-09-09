@@ -28,16 +28,14 @@ export function Hero() {
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/30"
           {...fade}
+          np
           transition={{ duration: 0.6 }}
           aria-hidden
         />
 
         <div className="relative max-w-5xl mx-auto text-center">
           {/* Launch badge */}
-          <motion.div
-            {...fadeUp}
-            transition={{ duration: 0.5 }}
-          >
+          <motion.div {...fadeUp} transition={{ duration: 0.5 }}>
             <Badge variant="subtle" className="mb-6">
               We launched new features
             </Badge>
@@ -81,28 +79,24 @@ export function Hero() {
         </motion.div> */}
 
           {/* Primary CTA */}
-          <motion.div
-              className="mt-8"
-              {...fadeUp}
-              transition={{ delay: 0.2 }}
+          <motion.div className="mt-8" {...fadeUp} transition={{ delay: 0.2 }}>
+            <Link
+              to="/signup"
+              className="text-white font-semibold py-4 px-8 rounded-full text-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
+              style={{
+                backgroundColor: 'var(--primary-color)',
+                '--tw-bg-opacity': '1',
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#007A5E';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = 'var(--primary-color)';
+              }}
             >
-              <Link
-                to="/signup"
-                className="text-white font-semibold py-4 px-8 rounded-full text-lg transition-colors duration-200 shadow-lg hover:shadow-xl"
-                style={{
-                  backgroundColor: 'var(--primary-color)',
-                  '--tw-bg-opacity': '1',
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#007A5E';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'var(--primary-color)';
-                }}
-              >
-                Get started
-              </Link>
-            </motion.div>
+              Get started
+            </Link>
+          </motion.div>
 
           {/* Social proof / stats strip */}
           {/* <motion.div
@@ -142,7 +136,6 @@ export function Hero() {
         </motion.div> */}
         </div>
       </section>
-      
     </div>
   );
 }
