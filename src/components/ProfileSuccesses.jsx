@@ -48,6 +48,9 @@ const ProfileSuccesses = ({ planData }) => {
   const totalHealthActs = planData.healthActs.length;
   const balancePercentage = calculateBalancePercentage(planData);
 
+  // Get unique categories (remove duplicates)
+  const uniqueCategories = [...new Set(planData.healthActs.map((act) => act.category))];
+
   const chooseImage = (balance) => {
     if (balance < 50)
       return 'url("/BackgroundImage01.png")';
@@ -66,7 +69,7 @@ const ProfileSuccesses = ({ planData }) => {
     <div className="carousel-item overflow-hidden  rounded-3xl">
       <div
         style={{ backgroundImage: chooseImage(balancePercentage) }}
-        className="relative min-h-[400px] w-full max-w-[320px] min-w-[320px] bg-cover bg-center text-white rounded-3xl shadow-2xl overflow-hidden"
+        className="relative min-h-[400px] w-full max-w-[80vw] min-w-[280px] bg-cover bg-center text-white rounded-3xl shadow-2xl overflow-hidden"
         role="img"
         aria-label="Balance journey progress card"
       >
@@ -110,12 +113,12 @@ const ProfileSuccesses = ({ planData }) => {
 
           {/* Category Chips */}
           <div className="flex gap-3 mb-16">
-            {planData.healthActs.map((act) => (
+            {uniqueCategories.map((category) => (
               <div
-                key={act.category}
+                key={category}
                 className="px-4 py-2 rounded-full text-sm font-medium border bg-white/20 border-white/40 text-white"
               >
-                {act.category}
+                {category}
               </div>
             ))}
           </div>

@@ -193,7 +193,7 @@ const TaskDetail = () => {
         {/* Main Content */}
         <div className="flex-1 px-4 sm:px-6 lg:px-8 pb-8">
           <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-4 lg:gap-4">
               {/* Left Column - Task Info */}
               <div className="space-y-6">
                 {/* Task Header */}
@@ -241,16 +241,16 @@ const TaskDetail = () => {
               {/* Right Column - Progress & Actions */}
               <div className="space-y-6">
                 {/* Progress Cards Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-3 gap-4">
                   {/* Balance Out Card */}
-                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg col-span-2">
                     <h2 className="text-gray-800 text-lg font-semibold mb-4">Balance out</h2>
                     <div className="bg-gray-50 rounded-xl p-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-2">
-                          <span className="text-lg">🎯</span>
+                          <span className="text-lg">🍔</span>
                           <span className="font-medium text-gray-800 text-sm">
-                            Weekly Goal
+                            Fast Food
                           </span>
                         </div>
                         <span className="text-gray-600 font-semibold">
@@ -261,14 +261,14 @@ const TaskDetail = () => {
                   </div>
 
                   {/* Progress Card */}
-                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
+                  <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-lg col-span-1">
                     <h2 className="text-gray-800 text-lg font-semibold mb-4">Progress</h2>
                     <div className="space-y-3">
                       <div className="text-center">
-                        <p className="text-sm text-gray-600 mb-1">Completed</p>
                         <p className="text-gray-800 text-2xl font-bold">
                           {completedCount}/{healthAct.targetFrequency}
                         </p>
+                        <p className="text-sm text-gray-600 mb-1">Completed</p>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-3">
                         <div

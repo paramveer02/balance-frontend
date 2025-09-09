@@ -40,7 +40,7 @@ const UserProfile = () => {
   // console.log('Error state:', error);
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center">
+    <div className="min-h-screen bg-white flex flex-col items-center overflow-x-hidden">
       {/* BUTTON */}
 
       <section className="bg-gradient-to-t from-[#e2ebfd] via-[#e9efff] to-[#f0f5ff] pt-4 pb-8 w-full rounded-b-4xl">
@@ -134,9 +134,9 @@ const UserProfile = () => {
                 </p>
               </div>
             ) : (
-              <div className="carousel carousel-center bg-white rounded-box max-w-md relative space-x-4 p-4 pl-22">
-                {planData.plans.map((plan) => (
-                  <ProfileSuccesses planData={plan} />
+              <div className="carousel carousel-center bg-white rounded-box max-w-md relative space-x-4 p-4 pl-4 overflow-x-auto">
+                {planData.plans.map((plan, index) => (
+                  <ProfileSuccesses key={plan._id || index} planData={plan} />
                 ))}
               </div>
             )}
