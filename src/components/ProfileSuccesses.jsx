@@ -50,60 +50,112 @@ const ProfileSuccesses = ({ planData }) => {
 
   const chooseImage = (balance) => {
     if (balance < 50)
-      return 'url("/1bb55c30bf6a33aaf6cfa737112420c01b47bf83.png")';
-    if (balance >= 55)
-      return 'url("/db22e50472f2979714b92c490ed1bcc90144f9ae.png")';
-    if (balance >= 50) return 'url("/berge.jpg")';
+      return 'url("/BackgroundImage01.png")';
+    if (balance >= 50 && balance < 75)
+      return 'url("/BackgroundImage02.png")';
+    if (balance >= 75) return 'url("/BackgroundImage03.png")';
   };
 
   const chooseText = (balance) => {
     if (balance < 50) return 'Need more efforts';
-    if (balance >= 55) return 'Excellent';
-    if (balance >= 50) return 'Balanced week';
+    if (balance >= 75) return 'Excellent';
+    if (balance >= 50 && balance < 75) return 'Balanced week';
   };
 
   return (
-    <div className="carousel-item overflow-hidden">
+    <div className="carousel-item overflow-hidden  rounded-3xl">
       <div
         style={{ backgroundImage: chooseImage(balancePercentage) }}
-        className="min-h-[300px] sm:min-h-[400px] lg:min-h-[40vh] w-full max-w-[350px] min-w-[250px] bg-cover bg-center text-white rounded-2xl py-6 px-10 shadow-lg flex flex-col items-center justify-between"
+        className="relative min-h-[400px] w-full max-w-[320px] min-w-[320px] bg-cover bg-center text-white rounded-3xl shadow-2xl overflow-hidden"
         role="img"
         aria-label="Balance journey progress card"
       >
-        <h3 className="text-!4xl sm:!text-5xl lg:!text-5xl font-bold">
-          {totalHealthActs}
-        </h3>
-        <p className=" text-sm sm:text-base">Balance moves</p>
+        {/* Dark gradient overlay for better text readability */}
+        <div className="absolute inset-0  bg-gradient-to-br from-gray-900/60 via-gray-800/50 to-purple-900/40"></div>
+        
+        {/* Content container */}
+        <div className="relative z-10 h-full flex flex-col p-8 ">
+          {/* Top Section - Number and Label */}
+          <div className="flex justify-between items-start mb-6">
+            <div>
+              <h2 className="!text-8xl !font-light leading-none">
+                {totalHealthActs}
+              </h2>
+              <p className="text-lg font-medium text-white/90">Balance moves</p>
+            </div>
+            
+            {/* Date Range Badge */}
+            <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5">
+              <span className="text-sm font-normal text-white/100">
+                {planData.weekStartDate ? 
+                  (() => {
+                    const startDate = new Date(planData.weekStartDate);
+                    const endDate = new Date(startDate);
+                    endDate.setDate(startDate.getDate() + 6); // Add 6 days to get end of week
+                    
+                    const formatDate = (date) => {
+                      return date.toLocaleDateString('en-US', { 
+                        day: 'numeric', 
+                        month: 'short' 
+                      });
+                    };
+                    
+                    return `${formatDate(startDate)} - ${formatDate(endDate)}`;
+                  })() : 
+                  'No date'
+                }
+              </span>
+            </div>
+          </div>
 
-        {/* Tags */}
-        <div className="flex flex-wrap gap-2 justify-center">
-          {planData.healthActs.map((act) => (
-            <span className="px-3 py-1 text-xs rounded-full bg-white/20 backdrop-blur-sm">
-              {act.category}
-            </span>
-          ))}
-        </div>
+          {/* Category Chips */}
+          <div className="flex gap-3 mb-16">
+            {planData.healthActs.map((act) => (
+              <div
+                key={act.category}
+                className="px-4 py-2 rounded-full text-sm font-medium border bg-white/20 border-white/40 text-white"
+              >
+                {act.category}
+              </div>
+            ))}
+          </div>
 
-        {/* Efforts */}
-        <p className="mt-10 !text-2xl sm:text-base !font-semibold">
-          {chooseText(balancePercentage)}
-        </p>
-        <div className="flex justify-between w-full text-xs sm:text-sm gap-4">
-          <span>{balancePercentage}% Balance moves</span>
-          <span>{100 - balancePercentage}% Indulgences</span>
-        </div>
-        <div
-          className="w-full bg-white/30 rounded-full h-2 mb-2"
-          role="progressbar"
-          aria-valuenow={calculateBalancePercentage()}
-          aria-valuemin="0"
-          aria-valuemax="100"
-          aria-label="Balance progress"
-        >
-          <div
-            className="bg-white h-2 rounded-full transition-all duration-500 ease-out"
-            style={{ width: `${balancePercentage}%` }}
-          />
+          {/* Central Content Area */}
+          <div className="flex-1 flex flex-col items-center justify-center">
+         
+            {/* Status Text */}
+            <p className="text-2xl text-center mb-2">
+              {chooseText(balancePercentage)}
+            </p>
+          </div>
+
+          {/* Bottom Progress Section */}
+          <div className="space-y-2">
+
+          {/* Percentage Split */}
+          <div className="flex justify-between items-center text-sm">
+               <div className="text-center">
+                 <div className="text-2xl text-left !font-normal">{balancePercentage}%</div>
+                 <div className="text-white/80">Balance moves</div>
+               </div>
+               
+               <div className="w-px h-8 bg-white/30"></div>
+               
+               <div className="text-center">
+                 <div className="text-2xl text-right !font-normal">{100 - balancePercentage}%</div>
+                 <div className="text-white/80">Indulgences</div>
+               </div>
+            </div>
+            {/* Progress Bar */}
+            <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden">
+              <div
+                className="bg-white h-full rounded-full transition-all duration-700 ease-out"
+                style={{ width: `${balancePercentage}%` }}
+              />
+            </div>
+
+
+          </div>
         </div>
       </div>
     </div>
