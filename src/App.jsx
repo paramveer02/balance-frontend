@@ -8,6 +8,8 @@ import {
   loginAction,
   SignUp,
   signupAction,
+  ForgetPassword,
+  ResetPassword,
 } from './pages/website';
 import {
   AllowanceForm,
@@ -53,6 +55,14 @@ const router = createBrowserRouter([
         path: 'login',
         element: <Login />,
         action: loginAction,
+      },
+      {
+        path: 'forget-password',
+        element: <ForgetPassword />,
+      },
+      {
+        path: 'reset-password/:token',
+        element: <ResetPassword />,
       },
 
       // Protected: /dashboard

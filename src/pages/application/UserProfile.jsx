@@ -74,7 +74,7 @@ const UserProfile = () => {
 
           {/* Profile Picture */}
           <div className="flex flex-col items-center mt-2 mb-4">
-            <div className="relative rounded-full w-fit border-[6px] border-white shadow-lg">
+            <div className="relative rounded-full w-fit border-2 border-white">
               <div
                 className="w-24 h-24 rounded-full bg-[url(/profilepicture.png)] bg-cover bg-center"
                 role="img"
@@ -100,11 +100,11 @@ const UserProfile = () => {
         <div className="max-w-4xl mx-auto px-6">
           <h2
             id="balance-journey"
-            className="text-xl font-semibold text-center text-black"
+            className="text-center text-black"
           >
             My balance journey
           </h2>
-          <p className="text-center text-sm text-gray-500 mt-4">
+        {/*  <p className="text-center text-sm text-gray-500 mt-4">
             {new Date().toLocaleDateString('en-GB', {
               day: '2-digit',
               month: 'short',
@@ -119,7 +119,7 @@ const UserProfile = () => {
                 year: 'numeric',
               }
             )}
-          </p>
+          </p> */}
 
           <div className="mt-8 relative flex flex-col items-center">
             {loading ? (

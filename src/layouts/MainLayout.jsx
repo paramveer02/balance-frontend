@@ -5,10 +5,12 @@ import { Footer } from "../components";
 const MainLayout = () => {
   const location = useLocation();
   
-  // Only show navbar on public pages (not login, signup, or dashboard pages)
+  // Only show navbar on public pages (not login, signup, forgot password, reset password, or dashboard pages)
   const showNavbar = !location.pathname.startsWith('/dashboard') && 
                      location.pathname !== '/login' && 
-                     location.pathname !== '/signup';
+                     location.pathname !== '/signup' &&
+                     location.pathname !== '/forget-password' &&
+                     location.pathname !== '/reset-password';
   
   // Only show footer on public pages (not dashboard pages)
   const showFooter = !location.pathname.startsWith('/dashboard');

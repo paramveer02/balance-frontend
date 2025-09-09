@@ -150,7 +150,7 @@ const About = () => {
               title="Full-stack Developer"
               avatarUrl="/Param.png"
               githubUrl="https://github.com/paramveer02"
-              linkedinUrl="https://linkedin.com/in/param"
+              linkedinUrl="https://www.linkedin.com/in/paramveer-marwah/"
             />
 
             <SimpleProfileCard
@@ -158,7 +158,7 @@ const About = () => {
               title="Full-stack Developer"
               avatarUrl="/Cornelia.png"
               githubUrl="https://github.com/nadaslia"
-              linkedinUrl="https://linkedin.com/in/cornelia"
+              linkedinUrl="https://www.linkedin.com/in/corneliam%C3%BCller/"
             />
 
             <SimpleProfileCard

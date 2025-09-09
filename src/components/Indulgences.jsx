@@ -62,7 +62,7 @@ const Indulgences = () => {
   return (
     <div 
       ref={containerRef}
-      className="w-full py-24 bg-gray-50 overflow-hidden"
+      className="w-full pt-24 pb-12 bg-gray-50 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}

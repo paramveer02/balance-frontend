@@ -9,7 +9,7 @@ export function Footer() {
             <img 
               src="/GradientLogo.png" 
               alt="Balance" 
-              className="h-20 w-auto mx-auto"
+              className="h-16 w-auto mx-auto"
             />
           </div>
 
