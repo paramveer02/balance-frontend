@@ -204,10 +204,10 @@ export function Navbar() {
                       {/* User Profile Avatar */}
                       <Link 
                         to="/dashboard/profile"
-                        className="w-10 h-10 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors duration-200"
+                        className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-600 flex items-center justify-center hover:bg-green-200 dark:hover:bg-green-500 transition-colors duration-200"
                         aria-label="Go to user profile"
                       >
-                        <span className="text-md font-bold text-gray-700 dark:text-gray-200">
+                        <span className="text-md font-bold text-green-800 dark:text-green-100">
                           {user.name ? user.name.charAt(0).toUpperCase() : "U"}
                         </span>
                       </Link>

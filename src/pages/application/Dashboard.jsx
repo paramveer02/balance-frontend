@@ -207,18 +207,18 @@ const Dashboard = () => {
                   <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 mb-6">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-semibold text-gray-800">
-                        Weekly Balance Progress
+                        Health Balance Progress
                       </h3>
-                      <span className="text-2xl font-bold text-blue-600">
+                      <span className="text-4xl font-bold text-gray-900">
                         {clampedPercentage}%
                       </span>
                     </div>
 
                     <div className="mb-3">
-                      <div className="flex justify-between text-sm text-gray-600 mb-2">
+                      {/* <div className="flex justify-between text-sm text-gray-600 mb-2">
                         <span>Indulgences balanced out</span>
                         <span>{clampedPercentage}%</span>
-                      </div>
+                      </div> */}
                       <div className="w-full bg-gray-200 rounded-full h-3">
                         <div
                           className="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full transition-all duration-500 ease-out"
@@ -265,15 +265,15 @@ const Dashboard = () => {
                         }
                         className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow cursor-pointer flex-shrink-0 w-[75vw] md:w-80 lg:w-96"
                       >
-                        <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-start justify-between mb-8">
                           <div className="flex items-center gap-3">
                             <span className="text-2xl">
                               {healthAct.healthActId?.emoji || healthAct.emoji}
                             </span>
                             <div>
-                              <h3 className="font-semibold text-gray-800">
+                              <h4 className="font-semibold text-gray-800">
                                 {healthAct.healthActId?.name || healthAct.name}
-                              </h3>
+                              </h4>
                               <p className="text-sm text-gray-500">
                                 {healthAct.targetFrequency} times this week
                               </p>
@@ -284,7 +284,7 @@ const Dashboard = () => {
                           )}
                         </div>
 
-                        <div className="mb-4">
+                        <div className="mb-2">
                           <div className="flex justify-between text-sm text-gray-600 mb-2">
                             <span>Progress</span>
                             <span>

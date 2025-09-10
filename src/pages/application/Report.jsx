@@ -11,7 +11,7 @@ const loaderUrl = "/lottie/loader.lottie";
 export async function reportLoader() {
   const { data } = await customFetch.get("/plan", {
     params: { status: "completed", limit: 50 },
-  });
+  }); 
   return Array.isArray(data?.plans) ? data.plans : [];
 }
 
@@ -120,9 +120,9 @@ export default function Report() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-10">
       {/* Title + week picker */}
-      <div className="mb-6 flex items-end gap-6">
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-6">
         <div className="flex-1">
-          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">
             Your Weekly Balance Report
           </h1>
           <div className="mt-4 inline-flex items-center rounded-full bg-[#584FFB] px-3 py-1 text-sm text-slate-100">
@@ -131,9 +131,9 @@ export default function Report() {
         </div>
 
         <div className="shrink-0">
-          <label className="mr-2 font-medium text-gray-500">Select week:</label>
+          <label className="block sm:inline mr-2 font-medium text-gray-500 mb-2 sm:mb-0">Select week:</label>
           <select
-            className="select select-bordered bg-gray-100 text-slate-900"
+            className="select select-bordered bg-gray-100 text-slate-900 w-full sm:w-auto"
             value={selected._id}
             onChange={(e) => setSelectedId(e.target.value)}
           >
@@ -147,7 +147,7 @@ export default function Report() {
       </div>
 
       {/* Overview cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+      <div className="grid grid-cols-2 gap-4 sm:gap-6 mb-6">
         <div className="rounded-2xl bg-white p-6 shadow">
           <div className="text-4xl font-bold text-slate-900">{totalActs}</div>
           <div className="mt-1 text-slate-600">Healthy acts</div>
@@ -160,21 +160,23 @@ export default function Report() {
         </div>
       </div>
 
-      {/* Insight banner */}
-      <div className="mb-6 rounded-2xl bg-emerald-100 p-5 shadow flex gap-3">
-        <div className="text-2xl">💡</div>
-        <p className="text-emerald-900">
-          This week you completed <b>{completedActs}</b> of <b>{totalActs}</b>{" "}
-          healthy acts and logged <b>{totalCheckIns}</b> check-ins out of{" "}
-          <b>{totalTargets}</b> targets.
-        </p>
-      </div>
+      {/* Insight banner and Breakdown - 2 columns on mobile */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        {/* Insight banner */}
+        <div className="rounded-2xl bg-emerald-50 p-5 shadow flex flex-col items-start gap-3">
+          <div className="text-3xl">💡</div>
+          <p className="text-emerald-900 text-md leading-relaxed">
+            This week you completed <b>{completedActs}</b> of <b>{totalActs}</b>{" "}
+            healthy acts and logged <b>{totalCheckIns}</b> check-ins out of{" "}
+            <b>{totalTargets}</b> targets.
+          </p>
+        </div>
 
-      {/* Breakdown */}
-      <div className="rounded-2xl bg-white p-6 shadow">
-        <h3 className="font-semibold text-slate-900 mb-4">
-          Health acts breakdown
-        </h3>
+        {/* Breakdown */}
+        <div className="rounded-2xl bg-white p-6 shadow">
+          <h3 className="font-semibold text-slate-900 mb-4">
+            Health acts breakdown
+          </h3>
 
         <div className="space-y-5">
           {(selected.healthActs || []).map((act) => {
@@ -212,6 +214,7 @@ export default function Report() {
               </div>
             );
           })}
+        </div>
         </div>
       </div>
 
