@@ -122,20 +122,18 @@ export default function Report() {
       {/* Title + week picker */}
       <div className="mb-6 flex items-end gap-6">
         <div className="flex-1">
-          <h1 className="text-4xl font-extrabold tracking-tight text-white">
+          <h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
             Your Weekly Balance Report
           </h1>
-          <div className="mt-4 inline-flex items-center rounded-full bg-slate-700 px-3 py-1 text-sm text-slate-100">
+          <div className="mt-4 inline-flex items-center rounded-full bg-[#584FFB] px-3 py-1 text-sm text-slate-100">
             {weekLabel(selected.weekStartDate)}
           </div>
         </div>
 
         <div className="shrink-0">
-          <label className="mr-2 font-medium text-slate-200">
-            Select Week:
-          </label>
+          <label className="mr-2 font-medium text-gray-500">Select week:</label>
           <select
-            className="select select-bordered bg-white text-slate-900"
+            className="select select-bordered bg-gray-100 text-slate-900"
             value={selected._id}
             onChange={(e) => setSelectedId(e.target.value)}
           >
@@ -221,14 +219,17 @@ export default function Report() {
       <div className="flex items-center justify-between mt-8">
         <button
           onClick={goPrev}
-          className="btn bg-white text-slate-900 border-slate-200 hover:bg-slate-100"
+          className="btn bg-white rounded-full text-slate-900 border-slate-200 hover:bg-slate-100"
           disabled={
             plans.findIndex((p) => p._id === selected._id) === plans.length - 1
           }
         >
-          See previous report
+          Previous report
         </button>
-        <button onClick={share} className="btn btn-primary text-white">
+        <button
+          onClick={share}
+          className="btn btn-soft btn-success rounded-full"
+        >
           Share my progress
         </button>
       </div>
