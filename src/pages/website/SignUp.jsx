@@ -39,7 +39,10 @@ export default function SignUp() {
           muted
           playsInline
         >
-          <source src="https://static.vecteezy.com/system/resources/previews/009/482/964/mp4/side-view-of-a-slender-young-woman-sitting-on-a-pier-in-a-lotus-position-and-raising-her-hands-up-woman-practicing-yoga-on-the-beach-at-sunset-against-the-water-4k-slow-motion-free-video.mp4" type="video/mp4" />
+          <source
+            src="https://static.vecteezy.com/system/resources/previews/009/482/964/mp4/side-view-of-a-slender-young-woman-sitting-on-a-pier-in-a-lotus-position-and-raising-her-hands-up-woman-practicing-yoga-on-the-beach-at-sunset-against-the-water-4k-slow-motion-free-video.mp4"
+            type="video/mp4"
+          />
         </video>
         {/* Overlay for better text readability */}
         <div className="absolute inset-0 bg-black/30"></div>
@@ -49,9 +52,9 @@ export default function SignUp() {
         {/* Logo outside of card */}
         <div className="mb-8">
           <Link to="/" className="block">
-            <img 
-              src="/logo_BW.svg" 
-              alt="Balance" 
+            <img
+              src="/logo_BW.svg"
+              alt="Balance"
               className="h-12 w-auto hover:opacity-80 transition-opacity cursor-pointer"
             />
           </Link>
@@ -61,9 +64,7 @@ export default function SignUp() {
         <div className="w-full max-w-xl bg-white rounded-4xl shadow-2xl">
           {/* Header */}
           <div className="px-8 pt-10 pb-8 text-center">
-            <h1 className="font-bold text-gray-900">
-              Sign up
-            </h1>
+            <h1 className="font-bold text-gray-900">Sign up</h1>
             <p className="mt-2 text-md text-gray-600">
               Make your balance move today
             </p>
@@ -85,7 +86,7 @@ export default function SignUp() {
                       name="name"
                       type="text"
                       placeholder="Alex"
-                      className="w-full bg-transparent text-gray-900 placeholder-gray-500 outline-none"
+                      className="w-full bg-transparent text-gray-900 placeholder-gray-400 outline-none"
                       required
                     />
                   </div>
@@ -102,7 +103,7 @@ export default function SignUp() {
                       name="lastName"
                       type="text"
                       placeholder="Rivera"
-                      className="w-full bg-transparent text-gray-900 placeholder-gray-500 outline-none"
+                      className="w-full bg-transparent text-gray-900 placeholder-gray-400 outline-none"
                       required
                     />
                   </div>
@@ -119,8 +120,8 @@ export default function SignUp() {
                   <input
                     name="email"
                     type="email"
-                    placeholder="you@balance.app"
-                    className="w-full bg-transparent text-gray-900 placeholder-gray-500 outline-none"
+                    placeholder="Your email address"
+                    className="w-full bg-transparent text-gray-900 placeholder-gray-400 outline-none"
                     required
                   />
                 </div>
@@ -136,8 +137,8 @@ export default function SignUp() {
                   <input
                     name="password"
                     type={showPw ? "text" : "password"}
-                    placeholder="Create a strong password"
-                    className="w-full bg-transparent text-gray-900 placeholder-gray-500 outline-none"
+                    placeholder="At least 8 characters"
+                    className="w-full bg-transparent text-gray-900 placeholder-gray-400 outline-none"
                     required
                   />
                   <button
