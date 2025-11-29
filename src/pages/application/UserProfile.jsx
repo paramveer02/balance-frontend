@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import customFetch from '../../utils/customFetch';
 import ProfileSuccesses from '@/components/ProfileSuccesses';
 import { toast } from 'react-toastify';
+import { Camera } from 'lucide-react';
 
 const UserProfile = () => {
   const dashData = useRouteLoaderData('dashboard');
@@ -165,9 +166,11 @@ const UserProfile = () => {
               <button
                 onClick={handleEditClick}
                 disabled={uploading}
-                className="absolute bottom-0 right-0 w-6 h-6 bg-[url(/editbuttonprofilepage.png)] bg-cover bg-center rounded-full hover:scale-110 transition-transform duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="absolute bottom-0 right-0 z-10 w-8 h-8 rounded-full bg-white shadow-md ring-1 ring-black/10 flex items-center justify-center hover:scale-110 transition-transform duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="Edit profile picture"
-              ></button>
+              >
+                <Camera className="w-4 h-4 text-gray-700" />
+              </button>
             </div>
             <h2 className="mt-4 font-semibold text-gray-800 text-lg">
               {user?.name || 'User'}
