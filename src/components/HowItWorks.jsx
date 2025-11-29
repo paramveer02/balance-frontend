@@ -1,6 +1,22 @@
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
+
 const HowItWorks = () => {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start']
+  });
+
+  // Subtle parallax for the section background
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '15%']);
+
   return (
-    <div className="bg-[#f2f8ff]  max-w-screen flex flex-col justify-between p-8 gap-8 ">
+    <motion.div 
+      ref={sectionRef}
+      className="bg-[#f2f8ff]  max-w-screen flex flex-col justify-between p-8 gap-8 relative overflow-hidden"
+      style={{ y: backgroundY }}
+    >
       <p className="lg:pl-16 text-[#584ffb] md:text-center xl:text-left">
         [How it works]
       </p>
@@ -36,7 +52,7 @@ const HowItWorks = () => {
           <img src="./frontpagedetail.png"></img>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

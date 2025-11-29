@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 
 // Small motion helpers
 const fadeUp = {
@@ -9,9 +10,18 @@ const fadeUp = {
 const fade = { initial: { opacity: 0 }, animate: { opacity: 1 } };
 
 export function AppExplain() {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start']
+  });
+
+  // Parallax for image
+  const imageY = useTransform(scrollYProgress, [0, 1], ['10%', '-10%']);
+
   return (
     <div className="bg-white">
-      <section className="bg-[#584FFB] min-fit flex-col justify-around items-center text-white/80 px-16 lg:py-20">
+      <section ref={sectionRef} className="bg-[#584FFB] min-fit flex-col justify-around items-center text-white/80 px-16 lg:py-20 overflow-hidden">
         <div className=" flex flex-col gap-8 text-center xl:flex xl:flex-row xl:justify-between lg:px-40 lg:gap-2">
           <div className="flex flex-col text-center gap-4 justify-between items-center lg:text-left lg:justify-center lg:items-start lg:gap-4 lg:min-w-[50%]">
             <p className="mt-8 lg:mt-0 lg:text-lg ">What is Balance?</p>
@@ -47,10 +57,11 @@ export function AppExplain() {
               </Link>
             </motion.div>
           </div>
-          <img
+          <motion.img
             src="/irefusetocodethis.png"
             className="mb-4 relative xl:right-7 lg:overflow-hidden object-contain"
-          ></img>
+            style={{ y: imageY }}
+          />
         </div>
       </section>
     </div>

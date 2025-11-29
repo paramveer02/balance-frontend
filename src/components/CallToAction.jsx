@@ -5,10 +5,20 @@ import { useRef } from "react";
 
 const CallToAction = () => {
   const textRef = useRef(null);
+  const sectionRef = useRef(null);
+  
   const { scrollYProgress } = useScroll({
     target: textRef,
     offset: ["start 80%", "end end"]
   });
+
+  const { scrollYProgress: bgScrollProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  // Parallax effect for background
+  const backgroundY = useTransform(bgScrollProgress, [0, 1], ['0%', '20%']);
 
   // Split text into three paragraphs for individual animation
   const paragraphs = [
@@ -19,9 +29,17 @@ const CallToAction = () => {
 
   return (
     <section 
-      className="relative px-4 sm:px-6 py-12 sm:py-20 h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat overflow-hidden"
-      style={{ backgroundImage: 'url(/callToActionBg.jpg)' }}
+      ref={sectionRef}
+      className="relative px-4 sm:px-6 py-12 sm:py-20 h-screen flex items-center justify-center overflow-hidden"
     >
+      {/* Background Image with Parallax */}
+      <motion.div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ 
+          backgroundImage: 'url(/callToActionBg.jpg)',
+          y: backgroundY
+        }}
+      />
       {/* Dark overlay for better text readability */}
       <div className="absolute inset-0 bg-black/40"></div>
       <div className="relative max-w-4xl mx-auto text-center text-white px-2 sm:px-0">

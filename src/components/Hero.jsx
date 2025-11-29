@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FaBalanceScale, FaHeartbeat, FaBolt } from 'react-icons/fa';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Badge } from './ui/Badge';
+import { useRef } from 'react';
 
 // Small motion helpers
 const fadeUp = {
@@ -11,13 +11,25 @@ const fadeUp = {
 const fade = { initial: { opacity: 0 }, animate: { opacity: 1 } };
 
 export function Hero() {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end start']
+  });
+
+  // Parallax effect: moves background slower than scroll (0% to 30% movement)
+  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+
   return (
     <div className="bg-white">
-      <section className="relative overflow-hidden px-6 py-20 lg:py-32 min-h-screen flex items-center">
-        {/* Background Image */}
-        <div
+      <section ref={sectionRef} className="relative overflow-hidden px-6 py-20 lg:py-32 min-h-screen flex items-center justify-center">
+        {/* Background Image with Parallax */}
+        <motion.div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: 'url(/herobg.png)' }}
+          style={{ 
+            backgroundImage: 'url(/herobg.png)',
+            y: backgroundY
+          }}
           aria-hidden
         />
 
@@ -37,7 +49,7 @@ export function Hero() {
           {/* Launch badge */}
           <motion.div {...fadeUp} transition={{ duration: 0.5 }}>
             <Badge variant="subtle" className="mb-6">
-              We launched new features
+              Discover new Features
             </Badge>
           </motion.div>
 
@@ -134,7 +146,39 @@ export function Hero() {
             transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
           />
         </motion.div> */}
+
         </div>
+
+        {/* Scroll Indicator - Fixed to bottom of viewport */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          <motion.div
+            className="flex flex-col items-center gap-2 cursor-pointer"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <span className="text-white/80 text-sm font-medium">Scroll to explore</span>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              className="text-white/60"
+            >
+              <path
+                d="M12 5v14m0 0l-7-7m7 7l7-7"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </motion.div>
+        </motion.div>
       </section>
     </div>
   );

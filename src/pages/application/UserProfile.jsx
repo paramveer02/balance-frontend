@@ -1,4 +1,4 @@
-import { data, Link, useRouteLoaderData } from 'react-router-dom';
+import { Link, useRouteLoaderData } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import customFetch from '../../utils/customFetch';
 import ProfileSuccesses from '@/components/ProfileSuccesses';
@@ -18,11 +18,6 @@ const UserProfile = () => {
         const { data } = await customFetch.get('/plan', {
           params: { status: 'completed', limit: 50 },
         });
-        // if (!response.ok) {
-        //   throw new Error(`HTTP error! status: ${response.status}`);
-        // }
-        console.log(data.plans);
-        // return data;
         return setPlanData(data);
       } catch (err) {
         console.error('Error fetching plan data:', err);
@@ -34,10 +29,6 @@ const UserProfile = () => {
 
     fetchPlanData();
   }, []); // Empty dependency array means this runs once on mount
-  // console.log('Dashboard data:', dashData);
-
-  // console.log('Loading state:', loading);
-  // console.log('Error state:', error);
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center overflow-x-hidden">
