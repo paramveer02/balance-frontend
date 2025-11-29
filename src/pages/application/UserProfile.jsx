@@ -1,7 +1,8 @@
 import { Link, useRouteLoaderData } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import customFetch from '../../utils/customFetch';
 import ProfileSuccesses from '@/components/ProfileSuccesses';
+import { toast } from 'react-toastify';
 
 const UserProfile = () => {
   const dashData = useRouteLoaderData('dashboard');
@@ -9,6 +10,16 @@ const UserProfile = () => {
   const [planData, setPlanData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [profileImage, setProfileImage] = useState(user?.profileImage || null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
+
+  // Sync profileImage with user data
+  useEffect(() => {
+    if (user?.profileImage) {
+      setProfileImage(user.profileImage);
+    }
+  }, [user]);
 
   // Fetch plan data from backend
   useEffect(() => {
@@ -28,7 +39,65 @@ const UserProfile = () => {
     };
 
     fetchPlanData();
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
+
+  // Handle profile image upload
+  const handleImageUpload = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size should be less than 5MB');
+      return;
+    }
+
+    try {
+      setUploading(true);
+      const formData = new FormData();
+      formData.append('profileImage', file);
+
+      const { data } = await customFetch.patch('/users/profile-image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (data.success) {
+        setProfileImage(data.user.profileImage);
+        toast.success('Profile image updated successfully!');
+      }
+    } catch (err) {
+      console.error('Error uploading image:', err);
+      toast.error(err?.response?.data?.message || 'Failed to upload image');
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // Trigger file input click
+  const handleEditClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  // Get profile image URL or default
+  const getProfileImageUrl = () => {
+    if (profileImage) {
+      // If it's a full URL, return as is
+      if (profileImage.startsWith('http')) return profileImage;
+      // Otherwise, construct URL from backend
+      const API_ORIGIN = import.meta.env.VITE_API_URL || 'http://localhost:3100';
+      return `${API_ORIGIN}${profileImage}`;
+    }
+    // Default avatar image
+    return '/profilepicture.png';
+  };
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center overflow-x-hidden">
@@ -67,12 +136,36 @@ const UserProfile = () => {
           <div className="flex flex-col items-center mt-2 mb-4">
             <div className="relative rounded-full w-fit border-2 border-white">
               <div
-                className="w-24 h-24 rounded-full bg-[url(/profilepicture.png)] bg-cover bg-center"
+                className="w-24 h-24 rounded-full bg-cover bg-center relative overflow-hidden"
                 role="img"
                 aria-label="User profile picture"
-              ></div>
+              >
+                <img
+                  src={getProfileImageUrl()}
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.src = '/profilepicture.png';
+                  }}
+                />
+                {uploading && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                  </div>
+                )}
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+                disabled={uploading}
+              />
               <button
-                className="absolute bottom-0 right-0 w-6 h-6 bg-[url(/editbuttonprofilepage.png)] bg-cover bg-center rounded-full hover:scale-110 transition-transform duration-200"
+                onClick={handleEditClick}
+                disabled={uploading}
+                className="absolute bottom-0 right-0 w-6 h-6 bg-[url(/editbuttonprofilepage.png)] bg-cover bg-center rounded-full hover:scale-110 transition-transform duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="Edit profile picture"
               ></button>
             </div>
