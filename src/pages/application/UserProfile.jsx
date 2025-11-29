@@ -1,26 +1,20 @@
 import { Link, useRouteLoaderData } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import customFetch from '../../utils/customFetch';
 import ProfileSuccesses from '@/components/ProfileSuccesses';
 import { toast } from 'react-toastify';
 import { Camera } from 'lucide-react';
+import { DashboardContext } from '../../context/DashboardContext';
 
 const UserProfile = () => {
   const dashData = useRouteLoaderData('dashboard');
   const user = dashData?.user;
+  const { refreshUser } = useContext(DashboardContext);
   const [planData, setPlanData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [profileImage, setProfileImage] = useState(user?.profileImage || null);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
-
-  // Sync profileImage with user data
-  useEffect(() => {
-    if (user?.profileImage) {
-      setProfileImage(user.profileImage);
-    }
-  }, [user]);
 
   // Fetch plan data from backend
   useEffect(() => {
@@ -71,7 +65,7 @@ const UserProfile = () => {
       });
 
       if (data.success) {
-        setProfileImage(data.user.profileImage);
+        await refreshUser(); // Refresh user data across the app
         toast.success('Profile image updated successfully!');
       }
     } catch (err) {
@@ -89,12 +83,9 @@ const UserProfile = () => {
 
   // Get profile image URL or default
   const getProfileImageUrl = () => {
-    if (profileImage) {
-      // If it's a full URL, return as is
-      if (profileImage.startsWith('http')) return profileImage;
-      // Otherwise, construct URL from backend
-      const API_ORIGIN = import.meta.env.VITE_API_URL || 'http://localhost:3100';
-      return `${API_ORIGIN}${profileImage}`;
+    // Use the absolute URL provided by backend
+    if (user?.profileImageUrl) {
+      return user.profileImageUrl;
     }
     // Default avatar image
     return '/profilepicture.png';

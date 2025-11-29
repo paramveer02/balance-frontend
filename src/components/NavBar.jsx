@@ -204,12 +204,27 @@ export function Navbar() {
                       {/* User Profile Avatar */}
                       <Link 
                         to="/dashboard/profile"
-                        className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-600 flex items-center justify-center hover:bg-green-200 dark:hover:bg-green-500 transition-colors duration-200"
+                        className="w-10 h-10 rounded-full overflow-hidden hover:ring-2 hover:ring-green-400 transition-all duration-200 flex items-center justify-center"
                         aria-label="Go to user profile"
                       >
-                        <span className="text-md font-bold text-green-800 dark:text-green-100">
-                          {user.name ? user.name.charAt(0).toUpperCase() : "U"}
-                        </span>
+                        {user.profileImageUrl ? (
+                          <img 
+                            src={user.profileImageUrl} 
+                            alt="Profile" 
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              // Fallback to initial letter on image load error
+                              e.target.style.display = 'none';
+                              e.target.parentElement.innerHTML = `<span class="w-full h-full bg-green-100 dark:bg-green-600 flex items-center justify-center"><span class="text-md font-bold text-green-800 dark:text-green-100">${user.name ? user.name.charAt(0).toUpperCase() : 'U'}</span></span>`;
+                            }}
+                          />
+                        ) : (
+                          <span className="w-full h-full bg-green-100 dark:bg-green-600 flex items-center justify-center">
+                            <span className="text-md font-bold text-green-800 dark:text-green-100">
+                              {user.name ? user.name.charAt(0).toUpperCase() : "U"}
+                            </span>
+                          </span>
+                        )}
                       </Link>
                       {/* Mobile menu button */}
                       <div className="md:hidden">

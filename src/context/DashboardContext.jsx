@@ -22,8 +22,17 @@ const DashboardContextProvider = ({ children, initialUser }) => {
     navigate("/");
   };
 
+  const refreshUser = async () => {
+    try {
+      const { data } = await customFetch.get("/users/current-user");
+      setUser(data.user);
+    } catch (error) {
+      console.error("Failed to refresh user data:", error);
+    }
+  };
+
   return (
-    <DashboardContext.Provider value={{ logoutUser, user }}>
+    <DashboardContext.Provider value={{ logoutUser, user, refreshUser }}>
       {children}
     </DashboardContext.Provider>
   );
